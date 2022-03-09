@@ -4,11 +4,11 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#FFFFFF',
-      contrastText: '#954A05',
+      main: '#B6C7DD',
+      contrastText: '#000',
     },
     secondary: {
-      main: '#755846',
+      main: '#526070',
       contrastText: '#FFFFFF',
     },
     error: {
@@ -19,12 +19,12 @@ const theme = createTheme({
     },
     background: {
       default: '#FFFFFF',
-      paper: '#FFEDE2',
+      paper: '#B6C7DD',
     },
     text: {
-      primary: '#201A17',
-      secondary: '#E5BFA8',
-      disabled: '#84746A',
+      primary: '#5D5E61',
+      secondary: '#5D5E61',
+      disabled: '#5D5E61',
     },
     action: {
       active: '#000',

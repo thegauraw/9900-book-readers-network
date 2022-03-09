@@ -1,4 +1,3 @@
-import CssBaseline from '@mui/material/CssBaseline';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
@@ -11,13 +10,11 @@ const App: React.FC = () => {
   return (
     <AppProvider value={globalParas}>
       <Router>
-        <CssBaseline>
-          <Header></Header>
-          <Routes>
-            <Route path="/sign-up" element={<RegisterPage />}/>
-          </Routes>
-          <Copyright sx={{ mt: 5 }} />
-        </CssBaseline>
+        <Header></Header>
+        <Routes>
+          <Route path="/sign-up" element={<RegisterPage />}/>
+        </Routes>
+        <Copyright sx={{ mt: 5 }} />
       </Router>
     </AppProvider>
   );
