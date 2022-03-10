@@ -34,7 +34,7 @@ const CollectionPage: FC = () => {
           collectionName={collection.name}
           totalCaption={`${collection.bookNumber} Books`}
           buttonName={'Details'}
-          buttonPath={`${NavMenuList.Collections}/${collection.id}`}
+          buttonPath={`${NavMenuList.Collections}?id=${collection.id}`}
         />
       </Grid>
     ));
