@@ -1,7 +1,8 @@
 import { FC, useContext, useEffect } from 'react';
-import { CircularProgress, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import CollectionCover from './CollectionCover';
+import LoadingIndicator from './LoadingIndicator';
 import { fetchCollectionListData } from '../services/callableFunctions';
 import { Appctx } from '../utils/LocalContext';
 import { NavMenuList } from '../config/paths';
@@ -26,7 +27,7 @@ const CollectionOverview: FC = () => {
 
   return (
     <>
-      {isLoading && <CircularProgress color="primary" />}
+      {isLoading && <LoadingIndicator />}
       {!isLoading && settlement && settlement instanceof Error && (
         <Typography>{(settlement as Error).message}</Typography>
       )}

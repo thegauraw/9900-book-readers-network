@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   componentPaper: {
     display: 'flex',
+    minHeight: '261.34px', //using the height of collection overview as a temp placeholder height
   },
 }));
 
