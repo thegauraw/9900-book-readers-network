@@ -1,16 +1,32 @@
 import * as React from 'react';
 import { Box, Card, CardContent, CardMedia, Button, Typography } from '@mui/material';
-import img1 from '../assets/img1.jpeg';
-import img2 from '../assets/img2.png';
-import img3 from '../assets/img3.png';
+import { useNavigate } from 'react-router-dom';
+interface CollectionCoverProps {
+  bookCovers: string[];
+  collectionName: string;
+  totalCaption: string;
+  buttonName: string;
+  buttonPath: string;
+}
 
-const CollectionCover: React.FC = () => {
+const CollectionCover: React.FC<CollectionCoverProps> = ({
+  bookCovers,
+  collectionName,
+  totalCaption,
+  buttonName,
+  buttonPath,
+}) => {
+  let navigate = useNavigate();
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', py: 5 }}>
-        <CardMedia component="img" sx={{ mx: 1, width: '76px', height: '114px' }} image={img1} />
-        <CardMedia component="img" sx={{ mx: 1, width: '76px', height: '114px' }} image={img2} />
-        <CardMedia component="img" sx={{ mx: 1, width: '76px', height: '114px' }} image={img3} />
+        {bookCovers.map((bookCoverPath) => (
+          <CardMedia
+            component="img"
+            sx={{ mx: 1, width: '76px', height: '114px' }}
+            image={bookCoverPath}
+          />
+        ))}
       </CardContent>
       <Box
         sx={{
@@ -24,14 +40,19 @@ const CollectionCover: React.FC = () => {
       >
         <Box>
           <Typography gutterBottom variant="h4" component="div">
-            Main
+            {collectionName}
           </Typography>
           <Typography gutterBottom variant="subtitle1" component="div">
-            4 Collections
+            {totalCaption}
           </Typography>
         </Box>
-        <Button size="medium" color="secondary" variant="contained">
-          All Collections
+        <Button
+          size="medium"
+          color="secondary"
+          variant="contained"
+          onClick={() => navigate(buttonPath)}
+        >
+          {buttonName}
         </Button>
       </Box>
     </Card>
