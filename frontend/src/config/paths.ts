@@ -7,3 +7,9 @@ export const NavMenuList = {
   Achievements: '/achievements',
   Profiles: '/profiles',
 };
+
+export const AuthenticationPaths = {
+  SignUp: '/sign-up',
+  SignIn: '/sign-in',
+  SignOut: '/sign-out',
+};
