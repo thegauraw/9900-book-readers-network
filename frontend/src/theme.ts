@@ -22,7 +22,7 @@ const theme = createTheme({
       paper: '#FFFFFF',
     },
     text: {
-      primary: '#5D5E61',
+      primary: '#000',
       secondary: '#5D5E61',
       disabled: '#5D5E61',
     },
@@ -35,6 +35,10 @@ const theme = createTheme({
     button: {
       textTransform: 'capitalize',
       fontWeight: 600,
+    },
+    h6: {
+      fontSize: '1rem',
+      fontWeight: 700,
     },
   },
 });
