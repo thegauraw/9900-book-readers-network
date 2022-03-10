@@ -21,7 +21,7 @@ const NavMenuHorizontal: React.FC = () => {
           <Button
             key={page}
             onClick={() => navigate(`${NavMenuList[page]}`)}
-            sx={{ color: color, display: 'flex', typography: 'h6' }}
+            sx={{ color: color, display: 'flex', typography: 'h3' }}
           >
             {page}
           </Button>

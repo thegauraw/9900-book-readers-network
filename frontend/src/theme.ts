@@ -36,9 +36,18 @@ const theme = createTheme({
       textTransform: 'capitalize',
       fontWeight: 600,
     },
-    h6: {
+    h3: {
       fontSize: '1rem',
       fontWeight: 700,
+    },
+    h4: {
+      fontSize: '0.9rem',
+      fontWeight: 500,
+    },
+    subtitle1: {
+      fontSize: '0.85rem',
+      fontWeight: 500,
+      color: '#526070',
     },
   },
 });

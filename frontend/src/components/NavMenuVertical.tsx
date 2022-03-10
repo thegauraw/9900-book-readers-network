@@ -53,7 +53,7 @@ const NavMenuVertical: React.FC = () => {
           const color = location.pathname === NavMenuList[page] ? 'text.secondary' : 'text.primary';
           return (
             <MenuItem key={page} onClick={() => navigate(`${NavMenuList[page]}`)}>
-              <Typography textAlign="center" sx={{ p: 2, color: color, typography: 'h6' }}>
+              <Typography textAlign="center" sx={{ p: 2, color: color, typography: 'h3' }}>
                 {page}
               </Typography>
             </MenuItem>
