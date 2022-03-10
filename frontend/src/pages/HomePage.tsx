@@ -2,7 +2,7 @@ import React from 'react';
 import { Theme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { Box, Grid, Paper } from '@mui/material';
-import CollectionCover from '../components/CollectionCover';
+import CollectionOverview from '../components/CollectionOverview';
 const useStyles = makeStyles((theme: Theme) => ({
   mainContainer: {
     display: 'flex',
@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
         </Grid>
         <Grid item xs={12} sm={6} lg={4}>
           <Paper className={classes.componentPaper}>
-            <CollectionCover />
+            <CollectionOverview />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6} lg={4}>
