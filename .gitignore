@@ -1,0 +1,13 @@
+# ignore virtual env
+venv/
+
+# ignore pycache
+__pycache__/
+
+*.pyc
+
+# ignore system files
+.DS_Store
+
+# ignore database file
+instance/*.sqlite
