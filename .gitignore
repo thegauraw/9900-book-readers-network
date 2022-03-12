@@ -9,5 +9,5 @@ __pycache__/
 # ignore system files
 .DS_Store
 
-# ignore database file
-instance/*.sqlite
+# ignore instance config and database file
+instance/

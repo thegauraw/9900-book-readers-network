@@ -6,7 +6,9 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev'
+        SECRET_KEY='dev',
+        SQLALCHEMY_DATABASE_URI=os.path.join('sqlite:////', app.instance_path[1:], 'bookrs.sqlite'),
+        SQLALCHEMY_TRACK_MODIFICATIONS=True
     )
 
     if test_config is None:
@@ -27,4 +29,6 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
+    from .model import db
+    db.init_app(app)
     return app
