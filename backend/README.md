@@ -6,6 +6,18 @@ How to setup API backend?
 * Create virtual env: `virtualenv venv`
 * `pip install -r requirements.txt`
 
+
+## Setup Database:
+How to create database?
+```
+  from bookrs import create_app
+  from bookrs.model import db
+
+  app = create_app()
+  db.init_app(app)
+  db.create_all(app=app)
+```
+
 ## Running project
 How to run the app?
 
