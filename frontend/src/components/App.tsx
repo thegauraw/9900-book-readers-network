@@ -6,6 +6,7 @@ import { globalParas, AppProvider } from '../utils/LocalContext';
 import HomePage from '../pages/HomePage';
 import RegisterPage from '../pages/RegisterPage';
 import CollectionPage from '../pages/CollectionPage';
+import LoginPage from '../pages/LoginPage';
 import Copyright from './Copyright';
 import { NavMenuList, AuthenticationPaths } from '../config/paths';
 
@@ -18,8 +19,9 @@ const App: React.FC = () => {
           <Route path={NavMenuList.Home} element={<HomePage />} />
           <Route path={NavMenuList.Collections} element={<CollectionPage />} />
           <Route path={AuthenticationPaths.SignUp} element={<RegisterPage />} />
+          <Route path={AuthenticationPaths.SignIn} element={<LoginPage />} />
         </Routes>
-        <Copyright sx={{ mt: 5 }} />
+        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Router>
     </AppProvider>
   );
