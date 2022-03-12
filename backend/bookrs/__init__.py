@@ -29,6 +29,7 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    from .model import db
+    from .model import db, migrate
     db.init_app(app)
+    migrate.init_app(app, db)
     return app
