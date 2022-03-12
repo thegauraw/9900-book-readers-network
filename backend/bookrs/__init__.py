@@ -2,6 +2,8 @@ import os
 
 from flask import Flask
 from .resources.pages import pages_bp
+from flask_restful import Api
+from .resources.readers import Readers, readers_bp
 
 def create_app(test_config=None):
     # create and configure the app
@@ -29,6 +31,11 @@ def create_app(test_config=None):
     from .model import db, migrate
     db.init_app(app)
     migrate.init_app(app, db)
+
+    api = Api(app)
+
+    api.add_resource(Readers, '/readers')
+    app.register_blueprint(readers_bp)
 
     app.register_blueprint(pages_bp)
 
