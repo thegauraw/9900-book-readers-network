@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from .resources.pages import pages_bp
 
 def create_app(test_config=None):
     # create and configure the app
@@ -24,12 +25,11 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
 
     from .model import db, migrate
     db.init_app(app)
     migrate.init_app(app, db)
+
+    app.register_blueprint(pages_bp)
+
     return app
