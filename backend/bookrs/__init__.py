@@ -28,9 +28,10 @@ def create_app(test_config=None):
         pass
 
 
-    from .model import db, migrate
+    from .model import db, ma, migrate
     db.init_app(app)
     migrate.init_app(app, db)
+    ma.init_app(app)
 
     api = Api(app)
 
