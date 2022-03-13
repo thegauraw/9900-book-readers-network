@@ -29,3 +29,11 @@ How to run the app?
     export FLASK_ENV=development
     flask run
   ```
+
+## API end points available in this version:
+
+* `GET /` returns 'Hello world'
+* `GET /readers` returns dummy reader JSON
+
+
+==========================
