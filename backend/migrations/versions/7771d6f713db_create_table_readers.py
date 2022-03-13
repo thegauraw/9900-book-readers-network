@@ -25,12 +25,9 @@ def upgrade():
     sa.Column('username', sa.String(length=80), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password_hash', sa.String(length=120), nullable=False),
-    sa.Column('status', sa.Boolean(), nullable=True),
+    sa.Column('status', sa.Boolean(), default=True, server_default="true", nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('firstname'),
-    sa.UniqueConstraint('lastname'),
-    sa.UniqueConstraint('password_hash'),
     sa.UniqueConstraint('username')
     )
     # ### end Alembic commands ###
