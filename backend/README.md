@@ -30,6 +30,19 @@ How to run the app?
     flask run
   ```
 
+# Development Guide:
+
+## How to add any new database changes?
+* Create database migration for every database (mostly structural) changes:
+e.g. to create a table `readers` (plural) in the database, first create model `Reader` (singular) then run:
+```
+    export FLASK_APP=bookrs
+    export FLASK_ENV=development
+    flask db migrate -m "create table readers"
+```
+Check and edit (if necessary) newly generate migration file in `migrations/versions` then run: `flask db upgrade`
+
+
 ## API end points available in this version:
 
 * `GET /` returns 'Hello world'
