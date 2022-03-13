@@ -47,6 +47,15 @@ Check and edit (if necessary) newly generate migration file in `migrations/versi
 
 * `GET /` returns 'Hello world'
 * `GET /readers` returns dummy reader JSON
-
+* `POST /readers` with following example in body as: `Content-Type: application/json; charset=utf-8` returns status `Created 201`
+  ```
+    {
+        "firstname":"John",
+        "lastname": "Wick",
+        "username": "j-wick",
+        "email": "j-wick@example.com",
+        "password": "test"
+    }
+  ```
 
 ==========================
