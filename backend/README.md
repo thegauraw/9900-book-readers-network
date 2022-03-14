@@ -57,5 +57,12 @@ Check and edit (if necessary) newly generate migration file in `migrations/versi
         "password": "test"
     }
   ```
+* `POST /login` with this body as: `Content-Type: application/json` returns status 200 with result `{"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0NzI0ODgzMywianRpIjoiNTdjZGZiNGEtYzMyYy00ODM2LWE0MTYtZTU2ZDMxY2UyY2M1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE2NDcyNDg4MzMsImV4cCI6MTY0NzMzNTIzM30.cu5b104Xo6k6UvXhUZICQveAqA2h8OM7K_88hTLUFXE" }`
+  ```
+    {
+      "username": "j-wick",
+      "password": "test"
+    }
+  ```
 
 ==========================

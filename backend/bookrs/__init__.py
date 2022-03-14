@@ -1,15 +1,19 @@
 import os
 
 from flask import Flask
-from .resources.pages import pages_bp
+from flask_jwt_extended import JWTManager
 from flask_restful import Api
+from .resources.pages import pages_bp
 from .resources.readers import Readers, readers_bp
+from .resources.logins import Login, login_bp
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    # TODO: move this to config file
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        JWT_SECRET_KEY='test-jwt-key', # TODO: move this to config file and CHANGE THIS
+        SECRET_KEY='dev', # TODO: move this to config file and CHANGE THIS
         SQLALCHEMY_DATABASE_URI=os.path.join('sqlite:////', app.instance_path[1:], 'bookrs.sqlite'),
         SQLALCHEMY_TRACK_MODIFICATIONS=True
     )
@@ -34,9 +38,13 @@ def create_app(test_config=None):
     ma.init_app(app)
 
     api = Api(app)
+    jwt = JWTManager(app)
 
     api.add_resource(Readers, '/readers')
     app.register_blueprint(readers_bp)
+
+    api.add_resource(Login, '/login')
+    app.register_blueprint(login_bp)
 
     app.register_blueprint(pages_bp)
 
