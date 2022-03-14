@@ -16,7 +16,15 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink } from 'react-router-dom';
 
-export default function SignIn() {
+import { Appctx } from '../utils/LocalContext';
+import { fetchLogin } from '../services/callableFunctions';
+import { AuthenticationPaths } from '../config/paths';
+
+function SignIn() {
+  const context = React.useContext(Appctx);
+  const { token, setToken, logged, setLogged } = context;
+  console.log('context: xxxxxxxxxx', token);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -25,6 +33,17 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    const reqPara = {
+      email: data.get('email'),
+      password: data.get('password'),
+      setToken: setToken,
+      setLogged: setLogged,
+    };
+
+    fetchLogin(reqPara);
+    console.log('get token: ', token);
+    console.log('logged status: ', logged);
   };
 
   return (
@@ -77,7 +96,12 @@ export default function SignIn() {
               <Link variant="body2">Forgot password?</Link>
             </Grid>
             <Grid item>
-              <Link variant="body2" underline="hover" component={RouterLink} to="/sign-up">
+              <Link
+                variant="body2"
+                underline="hover"
+                component={RouterLink}
+                to={AuthenticationPaths.SignUp}
+              >
                 Don't have an account? Sign Up
               </Link>
             </Grid>
@@ -87,3 +111,5 @@ export default function SignIn() {
     </Container>
   );
 }
+
+export default SignIn;

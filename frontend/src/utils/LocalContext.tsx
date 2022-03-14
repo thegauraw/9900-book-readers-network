@@ -4,14 +4,18 @@ import { CollectionListData } from '../types/ResponseTypes';
 
 export type ContextType = {
   logged: boolean;
+  setLogged: Function;
   token: string;
+  setToken: Function;
   collectionList: TransferState<CollectionListData[]>;
   setCollectionList: Function;
 };
 
 export const globalParas = {
   logged: false,
+  setLogged: (logged: any) => {},
   token: 'xxx',
+  setToken: (token: any) => {},
   collectionList: { isLoading: false, settlement: null },
   setCollectionList: (f: Partial<TransferState<CollectionListData[]>>) => f,
 };
@@ -37,7 +41,9 @@ export const AppProvider = ({ children }: any) => {
     <Appctx.Provider
       value={{
         logged,
+        setLogged,
         token,
+        setToken,
         collectionList,
         setCollectionList,
       }}
