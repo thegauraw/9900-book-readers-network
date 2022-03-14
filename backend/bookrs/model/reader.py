@@ -1,7 +1,8 @@
 from bookrs.model import db, ma
 from marshmallow import fields, pre_load
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from marshmallow_sqlalchemy import auto_field
+
 
 class Reader(db.Model):
     __tablename__ = 'readers'
@@ -24,6 +25,9 @@ class Reader(db.Model):
         self.username = username
         self.email = email
         self.password_hash = password_hash
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
          return f'<Reader {self.id} {self.username} { "active" if self.status else "inactive" }>'
