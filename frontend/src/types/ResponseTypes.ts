@@ -5,6 +5,13 @@ export interface LoginDataType {
   setLogged: Function;
 }
 
+export interface RegisterDataType {
+  email: string;
+  password: string;
+  setToken: Function;
+  setLogged: Function;
+}
+
 export interface CollectionListData {
   id: string;
   name: string;

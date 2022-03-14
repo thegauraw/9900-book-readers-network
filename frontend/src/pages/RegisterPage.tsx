@@ -12,11 +12,16 @@ import {
   Button,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { AuthenticationPaths } from '../config/paths';
+import { Appctx } from '../utils/LocalContext';
+import { NavMenuList, AuthenticationPaths } from '../config/paths';
+import { fetchRegister } from '../services/callableFunctions';
 
 const RegisterPage: React.FC = () => {
+  const context = React.useContext(Appctx);
+  const { token, setToken, logged, setLogged } = context;
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -26,17 +31,23 @@ const RegisterPage: React.FC = () => {
       password: data.get('password'),
     });
 
-    // const reqPara = {
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    //   setToken: setToken,
-    //   setLogged: setLogged,
-    // };
+    const reqPara = {
+      email: data.get('email'),
+      password: data.get('password'),
+      setToken: setToken,
+      setLogged: setLogged,
+    };
 
-    // fetchRegister(reqPara);
+    fetchRegister(reqPara);
   };
 
   console.log('Comming to Sign-Up page');
+
+  let navigate = useNavigate();
+
+  React.useEffect(() => {
+    logged && navigate(NavMenuList.Home);
+  }, [handleSubmit]);
 
   return (
     <Container component="main" maxWidth="xs">
