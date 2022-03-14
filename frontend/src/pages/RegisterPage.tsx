@@ -14,6 +14,8 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink } from 'react-router-dom';
 
+import { AuthenticationPaths } from '../config/paths';
+
 const RegisterPage: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,6 +25,15 @@ const RegisterPage: React.FC = () => {
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    // const reqPara = {
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    //   setToken: setToken,
+    //   setLogged: setLogged,
+    // };
+
+    // fetchRegister(reqPara);
   };
 
   console.log('Comming to Sign-Up page');
@@ -99,7 +110,12 @@ const RegisterPage: React.FC = () => {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link variant="body2" underline="hover" component={RouterLink} to="/sign-in">
+              <Link
+                variant="body2"
+                underline="hover"
+                component={RouterLink}
+                to={AuthenticationPaths.SignIn}
+              >
                 Already have an account? Sign in
               </Link>
             </Grid>

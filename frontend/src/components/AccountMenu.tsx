@@ -34,7 +34,13 @@ export default function AccountMenu() {
   };
 
   const context = React.useContext(Appctx);
-  console.log('logged: ', context.logged);
+  const { logged, setLogged, setToken } = context;
+  console.log('logged: ', logged);
+
+  const handlerLogout = () => {
+    setToken('xxx');
+    setLogged(false);
+  };
 
   function ListItemLink(props: ListItemLinkProps) {
     const { primary, to } = props;
@@ -118,7 +124,7 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {context.logged
+        {logged
           ? [
               <MenuItem key={'Profile'}>
                 <Avatar /> Profile
@@ -139,7 +145,7 @@ export default function AccountMenu() {
                 </ListItemIcon>
                 Settings
               </MenuItem>,
-              <MenuItem key={'Logout'}>
+              <MenuItem key={'Logout'} onClick={handlerLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>
