@@ -13,10 +13,7 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 
-import {
-  Link as RouterLink,
-  LinkProps as RouterLinkProps,
-} from 'react-router-dom';
+import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
 
@@ -37,26 +34,37 @@ export default function AccountMenu() {
   };
 
   const context = React.useContext(Appctx);
-  console.log('logged: ', context.logged);
+  const { logged, setLogged, setToken } = context;
+  console.log('logged: ', logged);
+
+  const handlerLogout = () => {
+    setToken('xxx');
+    setLogged(false);
+  };
 
   function ListItemLink(props: ListItemLinkProps) {
     const { primary, to } = props;
-  
+
     const renderLink = React.useMemo(
       () =>
         React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'to'>>(function Link(
           itemProps,
-          ref,
+          ref
         ) {
           return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
         }),
-      [to],
+      [to]
     );
-  
+
     return (
       <li>
         <ListItem button component={renderLink}>
-          {primary ? <ListItemIcon><Avatar />{primary}</ListItemIcon> : null}
+          {primary ? (
+            <ListItemIcon>
+              <Avatar />
+              {primary}
+            </ListItemIcon>
+          ) : null}
         </ListItem>
       </li>
     );
@@ -116,43 +124,42 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {
-          context.logged
-          ? 
-          [<MenuItem key={'Profile'}>
-              <Avatar /> Profile
-            </MenuItem>,
-            <MenuItem key={'My account'}>
+        {logged
+          ? [
+              <MenuItem key={'Profile'}>
+                <Avatar /> Profile
+              </MenuItem>,
+              <MenuItem key={'My account'}>
                 <Avatar /> My account
               </MenuItem>,
-          <Divider />,
-          <MenuItem key={'Add another account'}>
-            <ListItemIcon>
-              <PersonAdd fontSize="small" />
-            </ListItemIcon>
-            Add another account
-          </MenuItem>,
-          <MenuItem key={'Settings'}>
-            <ListItemIcon>
-              <Settings fontSize="small" />
-            </ListItemIcon>
-            Settings
-          </MenuItem>,
-          <MenuItem key={'Logout'}>
-            <ListItemIcon>
-              <Logout fontSize="small" />
-            </ListItemIcon>
-            Logout
-          </MenuItem>
-          ]
-          : [<MenuItem key={'Sign Up'} >
-              <ListItemLink to="/sign-up" primary='Sign Up' />
-            </MenuItem>,
-            <MenuItem key={'Login'}>
-              <ListItemLink to="/sign-in" primary='Sign In' />
-            </MenuItem>
+              <Divider />,
+              <MenuItem key={'Add another account'}>
+                <ListItemIcon>
+                  <PersonAdd fontSize="small" />
+                </ListItemIcon>
+                Add another account
+              </MenuItem>,
+              <MenuItem key={'Settings'}>
+                <ListItemIcon>
+                  <Settings fontSize="small" />
+                </ListItemIcon>
+                Settings
+              </MenuItem>,
+              <MenuItem key={'Logout'} onClick={handlerLogout}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>,
             ]
-        }
+          : [
+              <MenuItem key={'Sign Up'}>
+                <ListItemLink to="/sign-up" primary="Sign Up" />
+              </MenuItem>,
+              <MenuItem key={'Login'}>
+                <ListItemLink to="/sign-in" primary="Sign In" />
+              </MenuItem>,
+            ]}
       </Menu>
     </React.Fragment>
   );

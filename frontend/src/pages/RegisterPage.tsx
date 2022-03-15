@@ -1,10 +1,27 @@
-import { Container, Box, Avatar, Typography, Grid, TextField, FormControlLabel, Checkbox, Button, Link } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
 import React from 'react';
+import {
+  Container,
+  Box,
+  Avatar,
+  Typography,
+  Grid,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Button,
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
+import { Appctx } from '../utils/LocalContext';
+import { NavMenuList, AuthenticationPaths } from '../config/paths';
+import { fetchRegister } from '../services/callableFunctions';
 
 const RegisterPage: React.FC = () => {
-  
+  const context = React.useContext(Appctx);
+  const { token, setToken, logged, setLogged } = context;
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -13,9 +30,24 @@ const RegisterPage: React.FC = () => {
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    const reqPara = {
+      email: data.get('email'),
+      password: data.get('password'),
+      setToken: setToken,
+      setLogged: setLogged,
+    };
+
+    fetchRegister(reqPara);
   };
 
   console.log('Comming to Sign-Up page');
+
+  let navigate = useNavigate();
+
+  React.useEffect(() => {
+    logged && navigate(NavMenuList.Home);
+  }, [handleSubmit]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -84,17 +116,17 @@ const RegisterPage: React.FC = () => {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link
+                variant="body2"
+                underline="hover"
+                component={RouterLink}
+                to={AuthenticationPaths.SignIn}
+              >
                 Already have an account? Sign in
               </Link>
             </Grid>

@@ -19,10 +19,10 @@ const theme = createTheme({
     },
     background: {
       default: '#FFFFFF',
-      paper: '#B6C7DD',
+      paper: '#FFFFFF',
     },
     text: {
-      primary: '#5D5E61',
+      primary: '#000',
       secondary: '#5D5E61',
       disabled: '#5D5E61',
     },
@@ -35,6 +35,19 @@ const theme = createTheme({
     button: {
       textTransform: 'capitalize',
       fontWeight: 600,
+    },
+    h3: {
+      fontSize: '1rem',
+      fontWeight: 700,
+    },
+    h4: {
+      fontSize: '0.9rem',
+      fontWeight: 500,
+    },
+    subtitle1: {
+      fontSize: '0.85rem',
+      fontWeight: 500,
+      color: '#526070',
     },
   },
 });
