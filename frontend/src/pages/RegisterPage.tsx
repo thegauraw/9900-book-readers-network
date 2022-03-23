@@ -138,7 +138,7 @@ const RegisterPage: React.FC = () => {
             </Grid>
             {password !== confirm_password && confirm_password !== '' ? (
               <Grid item xs={12}>
-                <Alert severity="error">Double check password!!!</Alert>
+                <Alert severity="error">Invalid password! Please double check!</Alert>
               </Grid>
             ) : (
               <></>
