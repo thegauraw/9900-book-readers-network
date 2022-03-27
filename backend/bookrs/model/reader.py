@@ -1,14 +1,15 @@
-from bookrs.model import db, ma
+import re
+
 from marshmallow import fields, pre_load
 from werkzeug.security import check_password_hash, generate_password_hash
 from marshmallow_sqlalchemy import auto_field
 
+from bookrs.utils.common import InvalidUsage
+from bookrs.model import db, ma
 
 class Reader(db.Model):
     __tablename__ = 'readers'
     id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(80), nullable=False)
-    lastname = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
@@ -19,12 +20,28 @@ class Reader(db.Model):
         db.session.commit()
         return self
 
-    def __init__(self, username, email, firstname, lastname, password_hash):
-        self.firstname = firstname
-        self.lastname = lastname
+    def __init__(self, username, email, password_hash):
         self.username = username
         self.email = email
         self.password_hash = password_hash
+
+        self.check_username(username)
+        self.check_email(email)
+    
+    def check_email(self, email):
+        user_email = self.query.filter_by(email=email).first()
+        if user_email is not None:
+            raise InvalidUsage('This email has been registered!', status_code=409)
+
+        if not re.match(r"^[0-9a-zA-Z_]{0,19}@.*.com$", email):
+            raise InvalidUsage('The email format is incorrect, please use the format of xxx@xxx.com', status_code=403)
+
+
+    def check_username(self, username):
+        username = self.query.filter_by(username=username).first()
+        if username is not None:
+            raise InvalidUsage('This username has been registered!', status_code=409)
+
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
@@ -35,7 +52,7 @@ class Reader(db.Model):
 
 class ReaderSchema(ma.Schema):
     class Meta:
-        fields = ("id", "firstname", "lastname", "username", "email", "status")
+        fields = ("id", "username", "email", "status")
         model = Reader
 
 reader_schema = ReaderSchema()
@@ -48,8 +65,6 @@ class ReaderCreatingSchema(ma.SQLAlchemySchema):
        load_instance = True
 
     id = auto_field() #fields.Number(dump_only=True)
-    firstname = fields.Str(required = True)
-    lastname = fields.Str(required = True)
     username = fields.Str(required = True)
     email = fields.Str(required = True)
     password_hash = fields.Str(load_only = True)

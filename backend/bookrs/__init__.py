@@ -1,8 +1,11 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
+from flask_cors import CORS, cross_origin
+
+from bookrs.utils.common import InvalidUsage
 from .resources.pages import pages_bp
 from .resources.readers import Readers, readers_bp
 from .resources.logins import Login, login_bp
@@ -10,6 +13,9 @@ from .resources.logins import Login, login_bp
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    # app.config['CORS_HEADERS'] = 'Content-Type'
+    cors = CORS(app, resources={r"/readers": {"origins": "http://localhost:3000"}})
+
     # TODO: move this to config file
     app.config.from_mapping(
         JWT_SECRET_KEY='test-jwt-key', # TODO: move this to config file and CHANGE THIS
@@ -47,5 +53,12 @@ def create_app(test_config=None):
     app.register_blueprint(login_bp)
 
     app.register_blueprint(pages_bp)
+
+    @app.errorhandler(InvalidUsage)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+
+        return response
 
     return app
