@@ -25,10 +25,14 @@ const RegisterPage: React.FC = () => {
 
   const [password, setPassword] = React.useState('');
   const [confirm_password, setConfirmPassword] = React.useState('');
+  const [message, setMessage] = React.useState('');
+  const [passwordMsg, setPasswordMsg] = React.useState('none');
+  const [error, setError] = React.useState('none');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    // const data = event.target.value;
     // eslint-disable-next-line no-console
     console.log({
       email: data.get('email'),
@@ -43,7 +47,7 @@ const RegisterPage: React.FC = () => {
       setLogged: setLogged,
     };
 
-    fetchRegister(reqPara);
+    fetchRegister(reqPara).then((msg) => msg !== undefined && setMessage(msg));
   };
 
   console.log('Comming to Sign-Up page');
@@ -52,7 +56,14 @@ const RegisterPage: React.FC = () => {
 
   React.useEffect(() => {
     logged && navigate(NavMenuList.Home);
-  }, [handleSubmit]);
+    if (password !== confirm_password && confirm_password !== '') setPasswordMsg('block');
+    else setPasswordMsg('none');
+  }, [handleSubmit, password, confirm_password]);
+
+  React.useEffect(() => {
+    if (message !== undefined && message !== '' && message !== 'success') setError('block');
+    else setError('none');
+  }, [message]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -137,14 +148,12 @@ const RegisterPage: React.FC = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Grid>
-            {password !== confirm_password && confirm_password !== '' ? (
-              <Grid item xs={12}>
-                <Alert severity="error">Invalid password! Please double check!</Alert>
-              </Grid>
-            ) : (
-              <></>
-            )}
-
+            <Grid item xs={12} display={passwordMsg}>
+              <Alert severity="error">Invalid password! Please double check!</Alert>
+            </Grid>
+            <Grid item xs={12} display={error}>
+              <Alert severity="error">{message}</Alert>
+            </Grid>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
