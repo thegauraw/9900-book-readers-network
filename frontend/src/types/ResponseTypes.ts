@@ -6,8 +6,9 @@ export interface LoginDataType {
 }
 
 export interface RegisterDataType {
-  email: string;
-  password: string;
+  username: string | null;
+  email: string | null;
+  password: string | null;
   setToken: Function;
   setLogged: Function;
 }
