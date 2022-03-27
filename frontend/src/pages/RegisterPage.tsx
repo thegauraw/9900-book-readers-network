@@ -36,6 +36,7 @@ const RegisterPage: React.FC = () => {
     });
 
     const reqPara = {
+      username: data.get('username'),
       email: data.get('email'),
       password: data.get('password'),
       setToken: setToken,

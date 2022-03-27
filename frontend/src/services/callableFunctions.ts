@@ -56,8 +56,9 @@ export const fetchRegister = async (props: any): Promise<RegisterDataType> => {
       },
 
       body: JSON.stringify({
+        username: props.username,
         email: props.email,
-        pwd: props.password,
+        password: props.password,
       }),
     };
 
