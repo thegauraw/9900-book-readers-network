@@ -36,12 +36,10 @@ class Reader(db.Model):
         if not re.match(r"^[0-9a-zA-Z_]{0,19}@.*.com$", email):
             raise InvalidUsage('The email format is incorrect, please use the format of xxx@xxx.com', status_code=403)
 
-
     def check_username(self, username):
         username = self.query.filter_by(username=username).first()
         if username is not None:
             raise InvalidUsage('This username has been registered!', status_code=409)
-
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
