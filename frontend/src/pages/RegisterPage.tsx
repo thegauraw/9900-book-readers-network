@@ -10,6 +10,7 @@ import {
   Checkbox,
   Link,
   Button,
+  Alert,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -21,6 +22,9 @@ import { fetchRegister } from '../services/callableFunctions';
 const RegisterPage: React.FC = () => {
   const context = React.useContext(Appctx);
   const { token, setToken, logged, setLogged } = context;
+
+  const [password, setPassword] = React.useState('');
+  const [confirm_password, setConfirmPassword] = React.useState('');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -67,7 +71,7 @@ const RegisterPage: React.FC = () => {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} display="none">
               <TextField
                 autoComplete="given-name"
                 name="firstName"
@@ -78,7 +82,7 @@ const RegisterPage: React.FC = () => {
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} display="none">
               <TextField
                 required
                 fullWidth
@@ -86,6 +90,16 @@ const RegisterPage: React.FC = () => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="family-name"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
               />
             </Grid>
             <Grid item xs={12}>
@@ -107,8 +121,29 @@ const RegisterPage: React.FC = () => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password_confirm"
+                label="Re-enter Password"
+                type="password"
+                id="password_confirm"
+                autoComplete="new-password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </Grid>
+            {password !== confirm_password && confirm_password !== '' ? (
+              <Grid item xs={12}>
+                <Alert severity="error">Invalid password! Please double check!</Alert>
+              </Grid>
+            ) : (
+              <></>
+            )}
+
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
