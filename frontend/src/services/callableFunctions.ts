@@ -44,7 +44,7 @@ export const fetchLogin = async (props: any): Promise<LoginDataType> => {
   }
 };
 
-export const fetchRegister = async (props: any): Promise<RegisterDataType> => {
+export const fetchRegister = async (props: any): Promise<string> => {
   try {
     console.log('start logging. ', props.email, props.password);
 
@@ -71,8 +71,11 @@ export const fetchRegister = async (props: any): Promise<RegisterDataType> => {
     response.status === 200 && props.setToken(data.token);
     response.status === 200 && props.setLogged(true);
     response.status === 200 && console.log('succeed to register!');
+    response.status !== 200 && console.log('register resp: ', data);
 
-    return data;
+    if (response.status !== 200 && response.status !== 201) return data.message;
+
+    return 'success';
   } catch (err) {
     return Promise.reject(err);
   }
