@@ -73,7 +73,7 @@ export const fetchRegister = async (props: any): Promise<string> => {
     response.status === 200 && console.log('succeed to register!');
     response.status !== 200 && console.log('register resp: ', data);
 
-    if (response.status !== 200) return data.message;
+    if (response.status !== 200 && response.status !== 201) return data.message;
 
     return 'success';
   } catch (err) {
