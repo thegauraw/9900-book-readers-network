@@ -16,7 +16,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
-import { NavMenuList, AuthenticationPaths } from '../config/paths';
+import { AuthenticationPaths } from '../config/paths';
 import { fetchRegister } from '../services/callableFunctions';
 
 const RegisterPage: React.FC = () => {
@@ -47,7 +47,8 @@ const RegisterPage: React.FC = () => {
       setLogged: setLogged,
     };
 
-    fetchRegister(reqPara).then((msg) => msg !== undefined && setMessage(msg));
+    if (password === confirm_password)
+      fetchRegister(reqPara).then((msg) => msg !== undefined && setMessage(msg));
   };
 
   console.log('Comming to Sign-Up page');
@@ -55,14 +56,18 @@ const RegisterPage: React.FC = () => {
   let navigate = useNavigate();
 
   React.useEffect(() => {
-    logged && navigate(NavMenuList.Home);
-    if (password !== confirm_password && confirm_password !== '') setPasswordMsg('block');
+    if (
+      (password !== confirm_password && confirm_password !== '') ||
+      (confirm_password === '' && password !== '')
+    )
+      setPasswordMsg('block');
     else setPasswordMsg('none');
-  }, [handleSubmit, password, confirm_password]);
-
-  React.useEffect(() => {
     if (message !== undefined && message !== '' && message !== 'success') setError('block');
     else setError('none');
+  }, [password, confirm_password, handleSubmit]);
+
+  React.useEffect(() => {
+    message === 'success' && navigate(AuthenticationPaths.SignIn);
   }, [message]);
 
   return (
