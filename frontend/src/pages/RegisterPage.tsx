@@ -28,12 +28,12 @@ const RegisterPage: React.FC = () => {
   const [message, setMessage] = React.useState('');
   const [passwordMsg, setPasswordMsg] = React.useState('none');
   const [error, setError] = React.useState('none');
+  const [invalidPassword, setInvalidPassword] = React.useState('none');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // const data = event.target.value;
-    // eslint-disable-next-line no-console
+
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -47,7 +47,7 @@ const RegisterPage: React.FC = () => {
       setLogged: setLogged,
     };
 
-    if (password === confirm_password)
+    if (password.length >= 8 && password.length <= 16 && password === confirm_password)
       fetchRegister(reqPara).then((msg) => msg !== undefined && setMessage(msg));
   };
 
@@ -56,15 +56,19 @@ const RegisterPage: React.FC = () => {
   let navigate = useNavigate();
 
   React.useEffect(() => {
-    if (
-      (password !== confirm_password && confirm_password !== '') ||
-      (confirm_password === '' && password !== '')
-    )
+    if (password.length !== 0 && confirm_password.length !== 0 && password !== confirm_password)
       setPasswordMsg('block');
     else setPasswordMsg('none');
+
+    if ((password.length !== 0 && password.length < 8) || password.length > 16)
+      setInvalidPassword('block');
+    else setInvalidPassword('none');
+  }, [password, confirm_password]);
+
+  React.useEffect(() => {
     if (message !== undefined && message !== '' && message !== 'success') setError('block');
     else setError('none');
-  }, [password, confirm_password, handleSubmit]);
+  }, [handleSubmit]);
 
   React.useEffect(() => {
     message === 'success' && navigate(AuthenticationPaths.SignIn);
@@ -140,6 +144,9 @@ const RegisterPage: React.FC = () => {
                 autoComplete="new-password"
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </Grid>
+            <Grid item xs={12} display={invalidPassword}>
+              <Alert severity="error">Password length must be between 8-16 for security</Alert>
             </Grid>
             <Grid item xs={12}>
               <TextField
