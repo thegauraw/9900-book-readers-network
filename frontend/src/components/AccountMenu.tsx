@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { green, pink, yellow, blue } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -58,13 +59,8 @@ export default function AccountMenu() {
 
     return (
       <li>
-        <ListItem button component={renderLink}>
-          {primary ? (
-            <ListItemIcon>
-              <Avatar />
-              {primary}
-            </ListItemIcon>
-          ) : null}
+        <ListItem button component={renderLink} sx={{ width: 200 }}>
+          {primary ? <ListItemIcon>{primary}</ListItemIcon> : null}
         </ListItem>
       </li>
     );
@@ -85,7 +81,8 @@ export default function AccountMenu() {
             aria-expanded={open ? 'true' : undefined}
             color="inherit"
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar />
+            {/* <Avatar sx={{ width: 32, height: 32 }}>M</Avatar> */}
           </IconButton>
         </Tooltip>
       </Box>
@@ -153,11 +150,11 @@ export default function AccountMenu() {
               </MenuItem>,
             ]
           : [
-              <MenuItem key={'Sign Up'}>
-                <ListItemLink to="/sign-up" primary="Sign Up" />
-              </MenuItem>,
               <MenuItem key={'Login'}>
-                <ListItemLink to="/sign-in" primary="Sign In" />
+                <ListItemLink to="/sign-in" primary="Log in" />
+              </MenuItem>,
+              <MenuItem key={'Sign Up'}>
+                <ListItemLink to="/sign-up" primary="Sign up" />
               </MenuItem>,
             ]}
       </Menu>
