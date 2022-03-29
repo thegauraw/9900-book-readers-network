@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
 import { fetchLogin } from '../services/callableFunctions';
-import { AuthenticationPaths } from '../config/paths';
+import { AuthenticationPaths, NavMenuList } from '../config/paths';
 
 function SignIn() {
   const context = React.useContext(Appctx);
@@ -45,6 +45,12 @@ function SignIn() {
     console.log('get token: ', token);
     console.log('logged status: ', logged);
   };
+
+  let navigate = useNavigate();
+
+  React.useEffect(() => {
+    logged && navigate(NavMenuList.Home);
+  }, [logged]);
 
   return (
     <Container component="main" maxWidth="xs">
