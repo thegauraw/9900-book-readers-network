@@ -24,7 +24,7 @@ export const fetchLogin = async (props: any): Promise<LoginDataType> => {
 
       body: JSON.stringify({
         email: props.email,
-        pwd: props.password,
+        password: props.password,
       }),
     };
 
