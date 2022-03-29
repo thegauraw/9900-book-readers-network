@@ -37,11 +37,11 @@ const theme = createTheme({
       fontWeight: 600,
     },
     h3: {
-      fontSize: '1rem',
-      fontWeight: 700,
+      fontSize: '1.1rem',
+      fontWeight: 550,
     },
     h4: {
-      fontSize: '0.9rem',
+      fontSize: '0.95rem',
       fontWeight: 500,
     },
     subtitle1: {
