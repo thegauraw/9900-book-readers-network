@@ -14,7 +14,10 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     # app.config['CORS_HEADERS'] = 'Content-Type'
-    cors = CORS(app, resources={r"/readers": {"origins": "http://localhost:3000"}})
+
+    originURL = "http://localhost:3000"
+    cors = CORS(app, resources={r"/readers": {"origins": originURL},
+                                r"/login": {"origins": originURL}})
 
     # TODO: move this to config file
     app.config.from_mapping(
