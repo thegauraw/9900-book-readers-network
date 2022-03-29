@@ -10,6 +10,7 @@ from .resources.pages import pages_bp
 from .resources.readers import Readers, readers_bp
 from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
+from .resources.readings import Readings, readings_bp
 
 def create_app(test_config=None):
     # create and configure the app
@@ -52,6 +53,9 @@ def create_app(test_config=None):
 
     api.add_resource(Login, '/login')
     app.register_blueprint(login_bp)
+    
+    api.add_resource(Readings, '/readings')
+    app.register_blueprint(readings_bp)
 
     app.register_blueprint(pages_bp)
 
