@@ -16,7 +16,8 @@ def create_app(test_config=None):
     # app.config['CORS_HEADERS'] = 'Content-Type'
 
     originURL = "http://localhost:3000"
-    cors = CORS(app, resources={r"/readers": {"origins": originURL}, r"/login": {"origins": originURL}})
+    cors = CORS(app, resources={r"/readers": {"origins": originURL},
+                                r"/login": {"origins": originURL}})
 
     # TODO: move this to config file
     app.config.from_mapping(
