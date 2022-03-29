@@ -11,7 +11,7 @@ export const fetchCollectionListData = async (): Promise<CollectionListData[]> =
   }
 };
 
-export const fetchLogin = async (props: any): Promise<LoginDataType> => {
+export const fetchLogin = async (props: any): Promise<string> => {
   try {
     console.log('start logging. ', props.email, props.password);
 
@@ -38,7 +38,9 @@ export const fetchLogin = async (props: any): Promise<LoginDataType> => {
     response.status === 200 && props.setLogged(true);
     response.status === 200 && console.log('succeed to login!');
 
-    return data;
+    if (response.status !== 200) return data.message;
+
+    return 'success';
   } catch (err) {
     return Promise.reject(err);
   }
@@ -46,7 +48,7 @@ export const fetchLogin = async (props: any): Promise<LoginDataType> => {
 
 export const fetchRegister = async (props: any): Promise<string> => {
   try {
-    console.log('start logging. ', props.email, props.password);
+    console.log('start registering. ', props.email, props.password);
 
     const requestOptions = {
       method: 'POST',

@@ -1,6 +1,6 @@
 export interface LoginDataType {
-  email: string;
-  password: string;
+  email: string | null;
+  password: string | null;
   setToken: Function;
   setLogged: Function;
 }
