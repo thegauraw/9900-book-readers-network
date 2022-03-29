@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -23,7 +24,9 @@ import { AuthenticationPaths, NavMenuList } from '../config/paths';
 function SignIn() {
   const context = React.useContext(Appctx);
   const { token, setToken, logged, setLogged } = context;
-  console.log('context: xxxxxxxxxx', token);
+  const [error, setError] = React.useState('none');
+  const [message, setMessage] = React.useState('');
+  console.log('token: xxxxxxxxxx', token);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,7 +44,7 @@ function SignIn() {
       setLogged: setLogged,
     };
 
-    fetchLogin(reqPara);
+    fetchLogin(reqPara).then((msg) => setMessage(msg));
     console.log('get token: ', token);
     console.log('logged status: ', logged);
   };
@@ -51,6 +54,10 @@ function SignIn() {
   React.useEffect(() => {
     logged && navigate(NavMenuList.Home);
   }, [logged]);
+
+  React.useEffect(() => {
+    message !== '' && setError('block');
+  }, [setMessage, handleSubmit]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -94,6 +101,9 @@ function SignIn() {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+          <Grid item xs={12} display={error}>
+            <Alert severity="error">{message}</Alert>
+          </Grid>
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
