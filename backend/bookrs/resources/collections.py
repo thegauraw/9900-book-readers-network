@@ -1,12 +1,20 @@
 from flask import Blueprint, jsonify, make_response, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
-from bookrs.resources import api
 from bookrs.model.collection import Collection, collection_schema, collections_schema
 from bookrs.model.reader import Reader
+from bookrs.resources import api
 
 
 collections_bp = Blueprint('collections', __name__)
+
+@collections_bp.app_errorhandler(404)
+def resource_not_found(err):
+  return make_response(jsonify({
+      'status': 'error',
+      'message': 'Collection not found',
+  }), 404)
+
 
 class CollectionMyList(Resource):
   decorators = [jwt_required()]
