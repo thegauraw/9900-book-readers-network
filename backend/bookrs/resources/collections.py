@@ -50,5 +50,21 @@ class CollectionMyId(Resource):
         'data': collection_data_dump,
     }), 200)
 
+  def put(self, collection_id):
+    """update collection info `PUT /collections/<int:collection_id> {'title': '', 'description': ''}` """
+    # only owner can update the collection record
+    current_user = get_jwt_identity()
+    collection_obj = Collection.query.filter_by(reader_id=current_user, id=collection_id).first_or_404()
+    data = request.get_json()
+    collection = collection_schema.load(data, instance=collection_obj)
+    collection.update()
+    collection_data_dump = collection_schema.dump(collection)
+    return make_response(jsonify({
+        'status': 'success',
+        'message': 'Collection updated successfully',
+        'data': collection_data_dump,
+    }), 200)
+
+
 api.add_resource(CollectionMyList, '/collections', endpoint='collections')
 api.add_resource(CollectionMyId, '/collections/<int:collection_id>', endpoint='collection_id')
