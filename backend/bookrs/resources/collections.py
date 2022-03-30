@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, make_response, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
-from bookrs.model.collection import collection_schema
 from bookrs.resources import api
+from bookrs.model.collection import Collection, collection_schema, collections_schema
 
 
 collections_bp = Blueprint('collections', __name__)
@@ -34,4 +34,21 @@ class CollectionMyList(Resource):
         'data': collection_data_dump,
     }), 201)
 
+
+class CollectionMyId(Resource):
+  decorators = [jwt_required()]
+
+  def get(self, collection_id):
+    """view collection info `GET /collections/<int:collection_id>` """
+
+    # anyone can view the collection record
+    collection = Collection.query.get_or_404(collection_id)
+    collection_data_dump = collection_schema.dump(collection)
+    return make_response(jsonify({
+        'status': 'success',
+        'message': 'Collection returned successfully',
+        'data': collection_data_dump,
+    }), 200)
+
 api.add_resource(CollectionMyList, '/collections', endpoint='collections')
+api.add_resource(CollectionMyId, '/collections/<int:collection_id>', endpoint='collection_id')
