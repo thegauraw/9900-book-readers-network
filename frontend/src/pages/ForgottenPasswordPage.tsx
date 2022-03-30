@@ -19,20 +19,28 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
-import { fetchLogin } from '../services/callableFunctions';
+import { fetchUser } from '../services/callableFunctions';
 import { AuthenticationPaths, NavMenuList } from '../config/paths';
 
 function ForgottenPassword() {
   const [error, setError] = React.useState('none');
-  const [message, setMessage] = React.useState('');
+  const [message, setMessage] = React.useState('success');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get('email'));
+    console.log('email: ', data.get('email'));
+    const email = data.get('email');
+
+    if (email !== undefined) {
+      fetchUser({ email: email }).then((msg) => setMessage(msg));
+    }
   };
 
-  let navigate = useNavigate();
+  React.useEffect(() => {
+    message !== 'success' && setError('block');
+    message === 'success' && setError('none');
+  }, [message]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,7 +59,7 @@ function ForgottenPassword() {
         <Typography component="h1" variant="h5">
           Reset Password
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '80%' }}>
           <TextField
             margin="normal"
             required
@@ -62,7 +70,7 @@ function ForgottenPassword() {
             autoComplete="email"
             autoFocus
           />
-          <Grid item xs={12} display={error}>
+          <Grid item display={error} component="span">
             <Alert severity="error">{message}</Alert>
           </Grid>
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
