@@ -10,6 +10,17 @@ collections_bp = Blueprint('collections', __name__)
 class CollectionMyList(Resource):
   decorators = [jwt_required()]
   
+  def get(self):
+    """list all my collections `GET /collections` """
+    current_user = get_jwt_identity()
+    collections = Collection.query.filter_by(reader_id=current_user).all()
+    collections_data_dump = collections_schema.dump(collections)
+    return make_response(jsonify({
+        'status': 'success',
+        'message': 'Collections listed successfully',
+        'data': collections_data_dump,
+    }), 200)
+
   def post(self):
     """create my collection `POST /collections {'title': '', 'description': ''}` """
     data = request.get_json()
