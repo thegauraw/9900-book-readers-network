@@ -14,13 +14,7 @@ How to run the app?
 
 - From the folder `backend/`
 - Activate virtual env: `source venv/bin/activate`
-- Run flask app:
-  ```
-    python install_database.py
-    export FLASK_APP=bookrs
-    export FLASK_ENV=development
-    flask run
-  ```
+- Run flask app: `source start_flask.sh`
 
 # Development Guide:
 
