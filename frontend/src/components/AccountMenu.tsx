@@ -1,18 +1,20 @@
 import * as React from 'react';
+import { green, pink, yellow, blue } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import MenuIcon from '@mui/icons-material/Menu';
+import LoginIcon from '@mui/icons-material/Login';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
+import { NavMenuList } from '../config/paths';
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
@@ -57,35 +59,46 @@ export default function AccountMenu() {
     );
 
     return (
-      <li>
-        <ListItem button component={renderLink}>
-          {primary ? (
-            <ListItemIcon>
-              <Avatar />
-              {primary}
-            </ListItemIcon>
-          ) : null}
-        </ListItem>
-      </li>
+      <ListItem button component={renderLink}>
+        {primary ? <ListItemIcon sx={{ width: '100%' }}>{primary}</ListItemIcon> : null}
+      </ListItem>
     );
   }
 
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Typography sx={{ minWidth: 100 }}>Contact</Typography>
-        {/* <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2 }}
+            sx={{
+              ml: 2,
+              backgroundColor: 'background.default',
+              height: '40%',
+              width: '90%',
+              borderRadius: '21px',
+            }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             color="inherit"
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <MenuIcon
+              sx={{
+                color: 'text.primary',
+                height: '16px',
+                width: '16px',
+              }}
+            />
+            <Avatar
+              sx={{
+                ml: 1,
+                height: '30px',
+                width: '30px',
+                backgroundColor: 'text.primary',
+              }}
+            />
           </IconButton>
         </Tooltip>
       </Box>
@@ -101,6 +114,8 @@ export default function AccountMenu() {
             overflow: 'visible',
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
             mt: 1.5,
+            p: 1,
+            minWidth: '200px',
             '& .MuiAvatar-root': {
               width: 32,
               height: 32,
@@ -126,37 +141,34 @@ export default function AccountMenu() {
       >
         {logged
           ? [
-              <MenuItem key={'Profile'}>
-                <Avatar /> Profile
+              <MenuItem key={'Profile'} sx={{ color: 'text.primary', typography: 'h4' }}>
+                <PersonIcon />
+                <ListItemLink to={NavMenuList.Profiles} primary="My Profile" />
               </MenuItem>,
-              <MenuItem key={'My account'}>
-                <Avatar /> My account
+              <MenuItem
+                key={'Achievements'}
+                sx={{ color: 'text.primary', typography: 'h4', mb: 2 }}
+                divider={true}
+              >
+                <MilitaryTechIcon />
+                <ListItemLink to={NavMenuList.Achievements} primary="My Achievements" />
               </MenuItem>,
-              <Divider />,
-              <MenuItem key={'Add another account'}>
-                <ListItemIcon>
-                  <PersonAdd fontSize="small" />
-                </ListItemIcon>
-                Add another account
-              </MenuItem>,
-              <MenuItem key={'Settings'}>
-                <ListItemIcon>
-                  <Settings fontSize="small" />
-                </ListItemIcon>
-                Settings
-              </MenuItem>,
-              <MenuItem key={'Logout'} onClick={handlerLogout}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Logout
+              <MenuItem
+                key={'Logout'}
+                onClick={handlerLogout}
+                sx={{ color: 'text.primary', typography: 'h4' }}
+              >
+                <LogoutIcon />
+                <ListItem>Logout</ListItem>
               </MenuItem>,
             ]
           : [
-              <MenuItem key={'Sign Up'}>
+              <MenuItem key={'Sign Up'} sx={{ color: 'text.primary', typography: 'h4' }}>
+                <AppRegistrationIcon />
                 <ListItemLink to="/sign-up" primary="Sign Up" />
               </MenuItem>,
-              <MenuItem key={'Login'}>
+              <MenuItem key={'Login'} sx={{ color: 'text.primary', typography: 'h4' }}>
+                <LoginIcon />
                 <ListItemLink to="/sign-in" primary="Sign In" />
               </MenuItem>,
             ]}

@@ -5,3 +5,4 @@ Flask-RESTful==0.3.9
 flask-marshmallow==0.14.0
 marshmallow-sqlalchemy==0.28.0
 Flask-JWT-Extended==4.3.1
+flask-cors==3.0.10
