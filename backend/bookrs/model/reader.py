@@ -1,4 +1,5 @@
 from bookrs.model import db, ma
+from bookrs.model.collection import Collection
 from marshmallow import fields, pre_load
 from werkzeug.security import check_password_hash, generate_password_hash
 from marshmallow_sqlalchemy import auto_field
@@ -13,6 +14,7 @@ class Reader(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
     status = db.Column(db.Boolean)
+    collections = db.relationship("Collection", backref="owner")
 
     def create(self):
         db.session.add(self)
@@ -56,7 +58,8 @@ class ReaderCreatingSchema(ma.SQLAlchemySchema):
 
     @pre_load
     def process_password(self, user, many, **kwargs):
-        user['password_hash'] = generate_password_hash(user.pop('password'), method='sha256')
+        if 'password' in user:
+            user['password_hash'] = generate_password_hash(user.pop('password'), method='sha256')
         return user
 
 reader_creating_schema = ReaderCreatingSchema()

@@ -5,6 +5,7 @@ from flask_restful import Resource
 import datetime
 
 from bookrs.model.reader import Reader
+from bookrs.resources import api
 
 login_bp = Blueprint('login', __name__)
 
@@ -25,3 +26,6 @@ class Login(Resource):
           return make_response(jsonify({"token": token}), 200)
 
         return make_response(jsonify({"error" : "Error! Invalid email or password!"}), 401)
+
+
+api.add_resource(Login, '/login', endpoint='account')
