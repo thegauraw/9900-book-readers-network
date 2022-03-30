@@ -1,9 +1,8 @@
 from marshmallow import fields, pre_load, validate
-from bookrs.utils.common import InvalidUsage
 from bookrs.model import db, ma
-from sqlalchemy.sql import func
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from bookrs.utils.custom_datetime import get_str_now
+from bookrs.utils.custom_datetime import get_str_datetime_now
+
 class Reading(db.Model):
     __tablename__ = 'readings'
     id = db.Column(db.Integer, primary_key=True)
@@ -42,9 +41,9 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
     @pre_load
     def preprocess_validation(self, reading, many, **kwargs):
         if ('rating' in reading or 'review' in reading):
-            reading['last_update_review_rating_at'] = get_str_now()
+            reading['last_update_review_rating_at'] = get_str_datetime_now()
         if ('has_read' in reading):
-            reading['last_update_read_at'] = get_str_now()
+            reading['last_update_read_at'] = get_str_datetime_now()
         return reading
         
 reading_schema = ReadingSchema()

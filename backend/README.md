@@ -14,7 +14,7 @@ How to run the app?
 
 - From the folder `backend/`
 - Activate virtual env: `source venv/bin/activate`
-- Run flask app: `source start_flask.sh`
+- Run flask app: `source start_app.sh`
 
 # Development Guide:
 
