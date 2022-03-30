@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship, backref
 
 from bookrs.utils.exceptions import EmailRegisteredException, EmailFormatException, UsernameRegisteredException
 from bookrs.model import db, ma
-from .reading import ReadingSchema
+from .reading import Reading
 
 class ReaderModel(db.Model):
     __tablename__ = 'readers'
@@ -16,7 +16,7 @@ class ReaderModel(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
     status = db.Column(db.Boolean)
-    readings = relationship('Reading', backref=backref('readers'))
+    readings = relationship(Reading, backref=backref('readers'))
 
     def create(self):
         db.session.add(self)
@@ -53,9 +53,8 @@ class ReaderModel(db.Model):
 
 class ReaderSchema(ma.Schema):
     class Meta:
-        fields = ("id", "username", "email", "status", "readings")
+        fields = ("id", "username", "email", "status")
         model = ReaderModel
-    readings = fields.List(fields.Nested(ReadingSchema(exclude=("reader_id",))))
 
 reader_schema = ReaderSchema()
 readers_schema = ReaderSchema(many=True)
