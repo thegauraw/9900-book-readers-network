@@ -1,7 +1,7 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask_restful import Resource
 
-from bookrs.model.reading import Reading, readings_schema, reading_schema
+from bookrs.model.readingModel import ReadingModel, readings_schema, reading_schema
 from bookrs.utils.common import SUCCESS
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -11,7 +11,7 @@ class Readings(Resource):
     decorators = [jwt_required()]
     def get(self):
         current_user = get_jwt_identity()
-        readings = Reading.query.filter_by(reader_id=current_user).all()
+        readings = ReadingModel.query.filter_by(reader_id=current_user).all()
         return SUCCESS(payload=readings_schema.dump(readings))
 
     def post(self):

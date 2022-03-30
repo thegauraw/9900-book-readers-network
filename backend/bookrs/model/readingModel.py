@@ -3,7 +3,7 @@ from bookrs.model import db, ma
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from bookrs.utils.custom_datetime import get_str_datetime_now
 
-class Reading(db.Model):
+class ReadingModel(db.Model):
     __tablename__ = 'readings'
     id = db.Column(db.Integer, primary_key=True)
     
@@ -33,7 +33,7 @@ class Reading(db.Model):
 
 class ReadingSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Reading
+        model = ReadingModel
         load_instance = True
         include_fk = True
     rating = fields.Float(validate=validate.Range(min=0, max=5))
