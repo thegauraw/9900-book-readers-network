@@ -8,12 +8,13 @@ from flask_cors import CORS, cross_origin
 from bookrs.utils.common import InvalidUsage
 from .resources.pages import pages_bp
 from .resources.readers import Readers, readers_bp
+from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config['CORS_HEADERS'] = 'Content-Type'
+    # app.config['CORS_HEADERS'] = 'Content-Type'
     cors = CORS(app)
 
     # TODO: move this to config file
@@ -53,6 +54,9 @@ def create_app(test_config=None):
     app.register_blueprint(login_bp)
 
     app.register_blueprint(pages_bp)
+
+    api.add_resource(Reader, '/reader')
+    app.register_blueprint(reader_bp)
 
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):

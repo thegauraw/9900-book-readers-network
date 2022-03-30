@@ -7,7 +7,7 @@ from marshmallow_sqlalchemy import auto_field
 from bookrs.utils.exceptions import EmailRegisteredException, EmailFormatException, UsernameRegisteredException
 from bookrs.model import db, ma
 
-class Reader(db.Model):
+class ReaderModel(db.Model):
     __tablename__ = 'readers'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -51,7 +51,7 @@ class Reader(db.Model):
 class ReaderSchema(ma.Schema):
     class Meta:
         fields = ("id", "username", "email", "status")
-        model = Reader
+        model = ReaderModel
 
 reader_schema = ReaderSchema()
 readers_schema = ReaderSchema(many=True)
@@ -59,7 +59,7 @@ readers_schema = ReaderSchema(many=True)
 
 class ReaderCreatingSchema(ma.SQLAlchemySchema):
     class Meta(ma.SQLAlchemySchema.Meta):
-       model = Reader
+       model = ReaderModel
        load_instance = True
 
     id = auto_field() #fields.Number(dump_only=True)

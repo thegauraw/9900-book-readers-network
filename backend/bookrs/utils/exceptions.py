@@ -17,7 +17,7 @@ def NullLoginFildsException():
   return InvalidUsage('Email or Password are not allowed to be empty!', status_code=403)
 
 def InvalidEmailException():
-  return InvalidUsage('Invalid email!', status_code=401)
+  return InvalidUsage('This email does not exist in the system!', status_code=401)
 
 def InvalidPasswordException():
   return InvalidUsage('Invalid password!', status_code=401)
