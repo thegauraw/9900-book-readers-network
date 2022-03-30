@@ -65,6 +65,22 @@ class CollectionMyId(Resource):
         'data': collection_data_dump,
     }), 200)
 
+  def delete(self, collection_id):
+    """delete collection record `DELETE /collections/<int:collection_id>` """
+    # only owner can delete the collection record
+    current_user = get_jwt_identity()
+    collection = Collection.query.filter_by(reader_id=current_user, id=collection_id).first_or_404()
+    if collection.delete():
+      return make_response(jsonify({
+          'status': 'success',
+          'message': 'Collection deleted successfully',
+      }), 200)
+    else:
+      return make_response(jsonify({
+          'status': 'error',
+          'message': 'Could not delete collection'
+      }), 500)
+
 
 api.add_resource(CollectionMyList, '/collections', endpoint='collections')
 api.add_resource(CollectionMyId, '/collections/<int:collection_id>', endpoint='collection_id')
