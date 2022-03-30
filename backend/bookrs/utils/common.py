@@ -24,7 +24,7 @@ class SuccessUsage(object):
       pass
 
   def __call__(self, message='success', status_code=200, payload=None):
-    resp = dict(payload or ())
+    resp = {"payload": payload}
     resp['message'] = message
 
     return make_response(jsonify(resp), status_code)

@@ -14,7 +14,7 @@ How to run the app?
 
 - From the folder `backend/`
 - Activate virtual env: `source venv/bin/activate`
-- Run flask app: `source start_flask.sh`
+- Run flask app: `source start_app.sh`
 
 # Development Guide:
 
@@ -32,6 +32,9 @@ How to run the app?
 
 Check and edit (if necessary) newly generate migration file in
 `migrations/versions` then run: `flask db upgrade`
+
+- NOTE: the migration file can be generated after defining a model class. If you
+  make update on the class, you have to update the migration file accordingly.
 
 ## API end points available in this version:
 
