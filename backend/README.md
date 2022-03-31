@@ -18,6 +18,17 @@ How to run the app?
 
 # Development Guide:
 
+##  Setup email service for password reset
+
+Export the environment variables to setup email service.
+
+`export MAIL_USERNAME=Your email`
+`export MAIL_PASSWORD=Your password`
+`export MAIL_SERVER = 'smtp.qq.com'`
+`export MAIL_PORT = 587`
+`export MAIL_USE_TLS = True`
+`export MAIL_USE_SSL = False`
+
 ## How to add any new database changes?
 
 - Create database migration for every database (mostly structural) changes: e.g.
