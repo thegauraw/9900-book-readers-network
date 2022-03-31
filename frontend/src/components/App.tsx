@@ -8,6 +8,8 @@ import RegisterPage from '../pages/RegisterPage';
 import CollectionPage from '../pages/CollectionPage';
 import LoginPage from '../pages/LoginPage';
 import ForgottenPassword from '../pages/ForgottenPasswordPage';
+import PasswordResetPage from '../pages/PasswordResetPage';
+import ResetPasswordSuccessPage from '../pages/PasswordResetSuccessPage';
 import Copyright from './Copyright';
 import { NavMenuList, AuthenticationPaths } from '../config/paths';
 
@@ -22,6 +24,11 @@ const App: React.FC = () => {
           <Route path={AuthenticationPaths.SignUp} element={<RegisterPage />} />
           <Route path={AuthenticationPaths.SignIn} element={<LoginPage />} />
           <Route path={AuthenticationPaths.ForgottenPassword} element={<ForgottenPassword />} />
+          <Route path={AuthenticationPaths.PasswordReset} element={<PasswordResetPage />} />
+          <Route
+            path={AuthenticationPaths.ResetPasswordSuccess}
+            element={<ResetPasswordSuccessPage />}
+          />
         </Routes>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Router>

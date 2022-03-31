@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from flask_cors import CORS, cross_origin
 
+
 from bookrs.utils.common import InvalidUsage
 from .resources.pages import pages_bp
 from .resources.readers import Readers, readers_bp
@@ -12,9 +13,11 @@ from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
 from .resources.readings import Readings, readings_bp
 
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+
     # app.config['CORS_HEADERS'] = 'Content-Type'
     cors = CORS(app)
 

@@ -5,26 +5,21 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
-  Checkbox,
-  FormControlLabel,
   Grid,
   Link,
   TextField,
   Typography,
-  ListItem,
 } from '@mui/material';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { Appctx } from '../utils/LocalContext';
 import { fetchUser } from '../services/callableFunctions';
 import { AuthenticationPaths, NavMenuList } from '../config/paths';
 
 function ForgottenPassword() {
   const [error, setError] = React.useState('none');
-  const [message, setMessage] = React.useState('success');
+  const [message, setMessage] = React.useState('');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,14 +32,21 @@ function ForgottenPassword() {
     }
   };
 
+  let navigate = useNavigate();
+
   React.useEffect(() => {
-    message !== 'success' && setError('block');
-    message === 'success' && setError('none');
+    if (message === 'success') {
+      setError('none');
+      navigate(AuthenticationPaths.ResetPasswordSuccess);
+    } else if (message !== '') {
+      setError('block');
+    } else {
+      setError('none');
+    }
   }, [message]);
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
@@ -69,6 +71,7 @@ function ForgottenPassword() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={() => setMessage('')}
           />
           <Grid item display={error} component="span">
             <Alert severity="error">{message}</Alert>

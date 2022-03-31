@@ -36,6 +36,10 @@ const theme = createTheme({
       textTransform: 'capitalize',
       fontWeight: 600,
     },
+    h2: {
+      fontSize: '3.50rem',
+      fontWeight: 800,
+    },
     h3: {
       fontSize: '1.1rem',
       fontWeight: 550,

@@ -13,4 +13,6 @@ export const AuthenticationPaths = {
   SignIn: '/sign-in',
   SignOut: '/sign-out',
   ForgottenPassword: '/forgottenPassword',
+  PasswordReset: '/passwordReset/:token',
+  ResetPasswordSuccess: '/passwordResetSuccess',
 };
