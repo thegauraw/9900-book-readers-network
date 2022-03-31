@@ -24,3 +24,6 @@ def InvalidPasswordException():
 
 def InvalidEmailorPasswordException():
   return InvalidUsage('Invalid email or password!', status_code=401)
+
+def UpdateReaderException():
+  return InvalidUsage('Fail to update reader info', status_code=500)

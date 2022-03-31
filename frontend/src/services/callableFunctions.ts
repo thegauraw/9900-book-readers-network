@@ -38,7 +38,7 @@ export const fetchLogin = async (props: any): Promise<string> => {
     response.status === 200 && props.setLogged(true);
     response.status === 200 && console.log('succeed to login!');
 
-    if (response.status !== 200) return data.message;
+    if (response.status !== 200) return data.msg;
 
     return 'success';
   } catch (err) {
@@ -75,7 +75,7 @@ export const fetchRegister = async (props: any): Promise<string> => {
     response.status === 200 && console.log('succeed to register!');
     response.status !== 200 && console.log('register resp: ', data);
 
-    if (response.status !== 200 && response.status !== 201) return data.message;
+    if (response.status !== 200 && response.status !== 201) return data.msg;
 
     return 'success';
   } catch (err) {
@@ -91,7 +91,7 @@ export const fetchUser = async (props: any): Promise<string> => {
       method: 'GET',
     };
 
-    const response = await fetch(`${UserApiURL}?email=${props.email}`, requestOptions);
+    const response = await fetch(`${UserApiURL}?email=${props.email}&reset=true`, requestOptions);
     const data = await response.json();
 
     console.log('status: ', response.status);
@@ -99,7 +99,38 @@ export const fetchUser = async (props: any): Promise<string> => {
     response.status === 200 && console.log('succeed to get user info!');
     response.status !== 200 && console.log('error message: ', data);
 
-    return data.message;
+    return data.msg;
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const fectchUpdateUser = async (props: any): Promise<string> => {
+  try {
+    console.log('start updating user info. ', props.email);
+
+    const requestOptions = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+        Authorization: 'Bearer ' + props.token,
+      },
+
+      body: JSON.stringify({
+        password: props.password,
+      }),
+    };
+
+    const response = await fetch(`${UserApiURL}`, requestOptions);
+    const data = await response.json();
+
+    console.log('status: ', response.status);
+
+    response.status === 200 && console.log('succeed to update user info!');
+    response.status !== 200 && console.log('error message: ', data);
+
+    return data.msg;
   } catch (err) {
     return Promise.reject(err);
   }

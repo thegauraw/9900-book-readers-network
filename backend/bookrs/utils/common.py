@@ -14,10 +14,9 @@ class InvalidUsage(Exception):
 
   def to_dict(self):
     resp = dict(self.payload or ())
-    resp['message'] = self.message
+    resp['msg'] = self.message
 
     return resp
-
 
 class SuccessUsage(object):
   def __init__(self):
@@ -25,7 +24,8 @@ class SuccessUsage(object):
 
   def __call__(self, message='success', status_code=200, payload=None):
     resp = {"payload": payload}
-    resp['message'] = message
+    resp = dict(payload or ())
+    resp['msg'] = message
 
     return make_response(jsonify(resp), status_code)
 
