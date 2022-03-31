@@ -30,22 +30,23 @@ def send_password_reset_email(email, sync=False):
       DEBUG = True,
       MAIL_SERVER = os.environ.get('MAIL_SERVER'),
       MAIL_PORT = os.environ.get('MAIL_PORT'),
-      MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS'),
-      MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL'),
+      MAIL_USE_TLS = True if str(os.environ.get('MAIL_USE_TLS')) == 'True' else False,
+      MAIL_USE_SSL = True if str(os.environ.get('MAIL_USE_SSL')) == 'True' else False,
       MAIL_USERNAME = os.environ.get('MAIL_USERNAME'),
       MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD'),
   ))
 
   mail = Mail(app)
+  # print(os.environ.get('MAIL_PORT'))
 
   if not isinstance(email, list):
     email = [email]
 
-  print(f'email: {email}')
-  msg = Message('Reset Password', sender = MAIL_USERNAME, recipients = email)
+  msg = Message('Reset Password', sender = os.environ.get('MAIL_SENDER'), recipients = email)
   msg.body = ""
+  
+  #create token for the user
   token = create_token(email)
-  print('token, ', token)
   msg.html = create_reset_html(token)
 
   if sync:
