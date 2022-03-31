@@ -1,10 +1,9 @@
 from flask import Blueprint, request
 from flask_restful import Resource
-from flask_mail import Message
 from werkzeug.security import generate_password_hash
 from bookrs.model import db
 
-from bookrs.model.readerModel import ReaderModel, reader_creating_schema
+from bookrs.model.readerModel import ReaderModel
 from bookrs.utils.exceptions import InvalidEmailException, SendEmailException
 from bookrs.utils.common import SUCCESS
 from bookrs.tools.email import send_password_reset_email
