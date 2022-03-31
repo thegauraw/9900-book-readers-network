@@ -64,10 +64,6 @@ function PasswordResetPage() {
     } else setError('none');
   }, [password, passwordConfirm]);
 
-  // React.useEffect(() => {
-  //   passwordMsg !== '';
-  // }, [passwordMsg]);
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
