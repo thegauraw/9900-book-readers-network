@@ -65,12 +65,6 @@ def create_app(test_config=None):
     api.add_resource(Reader, '/reader')
     app.register_blueprint(reader_bp)
 
-    """mail config"""
-
-    # msg = Message('Hello from the other side!', sender = 'apolloliuhx@gmail.com', recipients = ['z5326602@ad.unsw.edu.au'])
-    # msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works"
-    # mail.send(msg)
-
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):
         response = jsonify(error.to_dict())

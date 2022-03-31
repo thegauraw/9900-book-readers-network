@@ -1,3 +1,4 @@
+import os
 
 from threading import Thread
 from flask import current_app
@@ -27,12 +28,12 @@ def send_password_reset_email(email, sync=False):
 
   app.config.update(dict(
       DEBUG = True,
-      MAIL_SERVER = 'smtp.qq.com',
-      MAIL_PORT = 587,
-      MAIL_USE_TLS = True,
-      MAIL_USE_SSL = False,
-      MAIL_USERNAME = '674744997@qq.com',
-      MAIL_PASSWORD = 'bmeejkmkemuybfji',
+      MAIL_SERVER = os.environ.get('MAIL_SERVER'),
+      MAIL_PORT = os.environ.get('MAIL_PORT'),
+      MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS'),
+      MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL'),
+      MAIL_USERNAME = os.environ.get('MAIL_USERNAME'),
+      MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD'),
   ))
 
   mail = Mail(app)
@@ -41,7 +42,7 @@ def send_password_reset_email(email, sync=False):
     email = [email]
 
   print(f'email: {email}')
-  msg = Message('Reset Password', sender = '674744997@qq.com', recipients = email)
+  msg = Message('Reset Password', sender = MAIL_USERNAME, recipients = email)
   msg.body = ""
   token = create_token(email)
   print('token, ', token)
