@@ -2,7 +2,8 @@ from flask import Blueprint, jsonify, make_response, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 from bookrs.model.collection import Collection, collection_schema, collections_schema
-from bookrs.model.reader import Reader
+# from bookrs.model.reader import Reader
+from bookrs.model.readerModel import ReaderModel
 from bookrs.resources import api
 
 
@@ -96,7 +97,8 @@ class CollectionOthersList(Resource):
 
   def get(self, username):
     """list a user's collection"""
-    reader = Reader.query.filter_by(username=username).first()  # first_or_404()
+    reader = ReaderModel.query.filter_by(username=username).first()  # first_or_404()
+    # reader = Reader.query.filter_by(username=username).first()  # first_or_404()
     collections_data_dump = []
     if reader is not None:
       collections = Collection.query.filter_by(reader_id=reader.id).all()
