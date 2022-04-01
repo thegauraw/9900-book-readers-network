@@ -13,30 +13,39 @@ import ResetPasswordSuccessPage from '../pages/PasswordResetSuccessPage';
 import BookPage from '../pages/BookPage';
 import Copyright from './Copyright';
 import { NavMenuList, AuthenticationPaths } from '../config/paths';
+import { Box } from '@mui/material';
 
 const App: React.FC = () => {
   return (
-    <AppProvider value={globalParas}>
-      <Router>
-        <Header></Header>
-        <Routes>
-          <Route path={NavMenuList.Home} element={<HomePage />} />
-          <Route path={NavMenuList.Collections} element={<CollectionPage />} />
-          <Route path={AuthenticationPaths.SignUp} element={<RegisterPage />} />
-          <Route path={AuthenticationPaths.SignIn} element={<LoginPage />} />
-          <Route path={AuthenticationPaths.ForgottenPassword} element={<ForgottenPassword />} />
-          <Route path={AuthenticationPaths.PasswordReset} element={<PasswordResetPage />} />
-          <Route
-            path={AuthenticationPaths.ResetPasswordSuccess}
-            element={<ResetPasswordSuccessPage />}
-          />
-          <Route path="/books">
-            <Route path=":bookId" element={<BookPage />} />
-          </Route>
-        </Routes>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Router>
-    </AppProvider>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+      }}
+    >
+      <AppProvider value={globalParas}>
+        <Router>
+          <Header></Header>
+          <Routes>
+            <Route path={NavMenuList.Home} element={<HomePage />} />
+            <Route path={NavMenuList.Collections} element={<CollectionPage />} />
+            <Route path={AuthenticationPaths.SignUp} element={<RegisterPage />} />
+            <Route path={AuthenticationPaths.SignIn} element={<LoginPage />} />
+            <Route path={AuthenticationPaths.ForgottenPassword} element={<ForgottenPassword />} />
+            <Route path={AuthenticationPaths.PasswordReset} element={<PasswordResetPage />} />
+            <Route
+              path={AuthenticationPaths.ResetPasswordSuccess}
+              element={<ResetPasswordSuccessPage />}
+            />
+            <Route path="/books">
+              <Route path=":bookId" element={<BookPage />} />
+            </Route>
+          </Routes>
+          <Copyright />
+        </Router>
+      </AppProvider>
+    </Box>
   );
 };
 
