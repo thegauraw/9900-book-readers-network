@@ -53,6 +53,11 @@ const theme = createTheme({
       fontWeight: 500,
       color: '#526070',
     },
+    subtitle2: {
+      fontSize: '0.8rem',
+      fontWeight: 500,
+      color: '#526070',
+    },
   },
 });
 

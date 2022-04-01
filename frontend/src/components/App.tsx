@@ -10,6 +10,7 @@ import LoginPage from '../pages/LoginPage';
 import ForgottenPassword from '../pages/ForgottenPasswordPage';
 import PasswordResetPage from '../pages/PasswordResetPage';
 import ResetPasswordSuccessPage from '../pages/PasswordResetSuccessPage';
+import BookPage from '../pages/BookPage';
 import Copyright from './Copyright';
 import { NavMenuList, AuthenticationPaths } from '../config/paths';
 
@@ -29,6 +30,9 @@ const App: React.FC = () => {
             path={AuthenticationPaths.ResetPasswordSuccess}
             element={<ResetPasswordSuccessPage />}
           />
+          <Route path="/books">
+            <Route path=":bookId" element={<BookPage />} />
+          </Route>
         </Routes>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Router>
