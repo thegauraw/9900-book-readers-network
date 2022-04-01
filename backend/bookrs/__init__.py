@@ -1,14 +1,15 @@
 import os
 
 from flask import Flask, jsonify, make_response
-from flask_jwt_extended import JWTManager
 from flask_cors import CORS, cross_origin
+from flask_jwt_extended import JWTManager
 
 from bookrs.utils.common import InvalidUsage
 from .resources.pages import pages_bp
 from .resources.readers import Readers, readers_bp
 from .resources.logins import Login, login_bp
 from .resources.collections import collections_bp
+from .resources.books import books_bp
 
 def resource_not_found(e):
     return make_response(jsonify({
@@ -63,6 +64,7 @@ def create_app(test_config=None):
     ma.init_app(app)
 
     from .resources import api
+
     # workaround to allow flask custom error handlers handle the erros instead of flask-restful
     # from https://github.com/flask-restful/flask-restful/issues/280#issuecomment-280648790
     # replace: `api.init_app(app)` with:
@@ -84,7 +86,6 @@ def create_app(test_config=None):
 
     app.register_blueprint(pages_bp)
 
-
     app.register_blueprint(readers_bp)
 
     @app.errorhandler(InvalidUsage)
@@ -92,5 +93,7 @@ def create_app(test_config=None):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
         return response
+
+    app.register_blueprint(books_bp)
 
     return app
