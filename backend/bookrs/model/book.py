@@ -25,3 +25,9 @@ class BookSchema(ma.SQLAlchemySchema):
 
 book_schema = BookSchema()
 books_schema = BookSchema(many=True)
+
+
+collectedbooks = db.Table('collected_books',
+                          db.Column('collection_id', db.Integer, db.ForeignKey('collections.id'), primary_key=True),
+                          db.Column('book_id', db.Integer, db.ForeignKey('books.id'), primary_key=True)
+)
