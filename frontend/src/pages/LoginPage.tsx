@@ -12,6 +12,7 @@ import {
   Link,
   TextField,
   Typography,
+  ListItem,
 } from '@mui/material';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -31,7 +32,7 @@ function SignIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
+
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -109,7 +110,13 @@ function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link variant="body2">Forgot password?</Link>
+              <Link
+                variant="body2"
+                component={RouterLink}
+                to={AuthenticationPaths.ForgottenPassword}
+              >
+                Forgot password?
+              </Link>
             </Grid>
             <Grid item>
               <Link

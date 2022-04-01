@@ -1,10 +1,11 @@
+from flask import make_response, jsonify
+
 class InvalidUsage(Exception):
   status_code = 400
 
   def __init__(self, message, status_code=None, payload=None):
     Exception.__init__(self)
     
-    print(message)
     self.message = message
     self.payload = payload
 
@@ -13,6 +14,19 @@ class InvalidUsage(Exception):
 
   def to_dict(self):
     resp = dict(self.payload or ())
-    resp['message'] = self.message
+    resp['msg'] = self.message
 
     return resp
+
+class SuccessUsage(object):
+  def __init__(self):
+      pass
+
+  def __call__(self, message='success', status_code=200, payload=None):
+    resp = {"payload": payload}
+    resp = dict(payload or ())
+    resp['msg'] = message
+
+    return make_response(jsonify(resp), status_code)
+
+SUCCESS = SuccessUsage()

@@ -4,7 +4,8 @@ from flask import Blueprint, current_app, request, make_response, jsonify
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource
 
-from bookrs.model.reader import Reader
+# from bookrs.model.reader import Reader
+from bookrs.model.readerModel import ReaderModel
 from bookrs.resources import api
 from bookrs.utils.exceptions import NullLoginFildsException, InvalidEmailException, InvalidPasswordException, InvalidEmailorPasswordException
 
@@ -24,7 +25,7 @@ class Login(Resource):
         if not auth.get('password'):
           raise InvalidPasswordException()
         
-        account = Reader.query.filter_by(email=auth.get('email')).first()
+        account = ReaderModel.query.filter_by(email=auth.get('email')).first()
 
         if not account:
           raise InvalidEmailorPasswordException()
