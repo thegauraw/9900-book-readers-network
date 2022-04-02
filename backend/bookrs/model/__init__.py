@@ -23,7 +23,7 @@ class BaseModel(db.Model):
     try:
       db.session.add(self)
       db.session.commit()
-      return True
+      return self
     except IntegrityError:
       db.session.rollback()
       return False
@@ -35,7 +35,7 @@ class BaseModel(db.Model):
     """Update an instance of the model from the database."""
     try:
       db.session.commit()
-      return True
+      return self
     except SQLAlchemyError:
       db.session.rollback()
       return False
@@ -45,7 +45,7 @@ class BaseModel(db.Model):
     try:
       db.session.delete(self)
       db.session.commit()
-      return True
+      return self
     except SQLAlchemyError:
       db.session.rollback()
       return False

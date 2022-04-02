@@ -1,10 +1,9 @@
 from marshmallow import fields, post_dump, pre_load, validate
-from bookrs.model import db, ma
+from bookrs.model import BaseModel, db, ma
 from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format
 
-class ReadingModel(db.Model):
+class ReadingModel(BaseModel):
     __tablename__ = 'readings'
-    id = db.Column(db.Integer, primary_key=True)
     
     #TODO: Update it to foreign key after books table ready.
     book_id = db.Column(db.Integer, nullable=True)
@@ -16,21 +15,6 @@ class ReadingModel(db.Model):
     has_read = db.Column(db.Boolean, default=False)
     last_update_read_at = db.Column(db.DateTime(timezone=True), nullable=True)
     
-    #TODO: Inherit common classes and remove these after codebase update.    
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-        return self
-    
-    def update(self):
-        db.session.commit()
-        return self
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
-
     def __repr__(self):
          return f'<Reading {self.id} for book {self.book_id} by {self.reader_id} { "has read" if self.has_read else "unread" }>'
 
@@ -53,9 +37,9 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
         return reading
     @post_dump
     def process_datetime_format(self, reading, many, **kwargs):
-        if (reading['last_update_review_rating_at'] is not None):
+        if (reading and reading['last_update_review_rating_at'] is not None):
             reading['last_update_review_rating_at'] = get_response_datetime_format(reading['last_update_review_rating_at'])
-        if (reading['last_update_read_at'] is not None):
+        if (reading and reading['last_update_read_at'] is not None):
             reading['last_update_read_at'] = get_response_datetime_format(reading['last_update_read_at'])
         return reading
     
