@@ -36,6 +36,10 @@ const theme = createTheme({
       textTransform: 'capitalize',
       fontWeight: 600,
     },
+    h2: {
+      fontSize: '3.50rem',
+      fontWeight: 800,
+    },
     h3: {
       fontSize: '1.1rem',
       fontWeight: 550,
@@ -46,6 +50,11 @@ const theme = createTheme({
     },
     subtitle1: {
       fontSize: '0.85rem',
+      fontWeight: 500,
+      color: '#526070',
+    },
+    subtitle2: {
+      fontSize: '0.8rem',
       fontWeight: 500,
       color: '#526070',
     },

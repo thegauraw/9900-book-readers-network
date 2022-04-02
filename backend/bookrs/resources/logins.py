@@ -4,7 +4,8 @@ from flask import Blueprint, current_app, request, make_response, jsonify
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource
 
-from bookrs.model.reader import Reader
+# from bookrs.model.reader import Reader
+from bookrs.model.readerModel import ReaderModel
 from bookrs.resources import api
 from bookrs.utils.exceptions import NullLoginFildsException, InvalidEmailException, InvalidPasswordException, InvalidEmailorPasswordException
 
@@ -24,13 +25,15 @@ class Login(Resource):
         if not auth.get('password'):
           raise InvalidPasswordException()
         
-        account = Reader.query.filter_by(email=auth.get('email')).first()
+        account = ReaderModel.query.filter_by(email=auth.get('email')).first()
 
         if not account:
           raise InvalidEmailorPasswordException()
 
         if account.check_password(auth.get('password')):
-          token = create_access_token(identity=str(account.id), expires_delta=datetime.timedelta(days=1))
+          #Set the token to never expire temporarily for development.
+          #TODO: Discuss token refreshing solution in Sprint3.
+          token = create_access_token(identity=str(account.id), expires_delta=False)#datetime.timedelta(days=1))
           return make_response(jsonify({"token": token}), 200)
 
         raise InvalidEmailorPasswordException()

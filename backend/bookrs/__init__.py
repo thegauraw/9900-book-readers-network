@@ -1,39 +1,28 @@
 import os
 
 from flask import Flask, jsonify, make_response
+from flask_jwt_extended import JWTManager
+from flask_restful import Api
 from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager
 
-from bookrs.utils.common import InvalidUsage
 from .resources.pages import pages_bp
-from .resources.readers import Readers, readers_bp
+# from .resources.readers import Readers, readers_bp
+from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
 from .resources.collections import collections_bp
 from .resources.books import books_bp
-
-def resource_not_found(e):
-    return make_response(jsonify({
-        'status': 'error',
-        'message': 'Requested resource not found',
-    }), 404)
-
-def internal_server_error(err):
-  return make_response(jsonify({
-      'status': 'error',
-      'message': 'Could not perform requested operation',
-  }), 500)
-
-def bad_request(err):
-  return make_response(jsonify({
-      'status': 'error',
-      'message': 'Please check your request',
-  }), 400)
+from .resources.readings import Readings, ReadingsByBookId, readings_bp
+from .resources.owned_readings import OwnedReadingByBookId, owned_readings_bp
+from bookrs.utils.common import InvalidUsage
+from bookrs.utils.exceptions import BadRequestError, InternalServerError, ResourceNotFoundError
 
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config['CORS_HEADERS'] = 'Content-Type'
+
+    # app.config['CORS_HEADERS'] = 'Content-Type'
     cors = CORS(app)
 
     # TODO: move this to config file
@@ -76,17 +65,23 @@ def create_app(test_config=None):
     jwt = JWTManager(app)
 
     # add generic error handler before registering blueprint
-    app.register_error_handler(400, bad_request)
-    app.register_error_handler(404, resource_not_found)
-    app.register_error_handler(500, internal_server_error)
+    app.register_error_handler(400, BadRequestError)
+    app.register_error_handler(404, ResourceNotFoundError)
+    app.register_error_handler(500, InternalServerError)
 
     app.register_blueprint(collections_bp)
 
     app.register_blueprint(login_bp)
 
+    app.register_blueprint(readings_bp)
+
+    app.register_blueprint(owned_readings_bp)
+
     app.register_blueprint(pages_bp)
 
-    app.register_blueprint(readers_bp)
+    # app.register_blueprint(readers_bp)    
+    api.add_resource(Reader, '/reader')
+    app.register_blueprint(reader_bp)
 
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):

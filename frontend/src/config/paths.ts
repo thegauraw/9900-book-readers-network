@@ -12,4 +12,9 @@ export const AuthenticationPaths = {
   SignUp: '/sign-up',
   SignIn: '/sign-in',
   SignOut: '/sign-out',
+  ForgottenPassword: '/forgottenPassword',
+  PasswordReset: '/passwordReset/:token',
+  ResetPasswordSuccess: '/passwordResetSuccess',
 };
+
+export const NotFoundPath = '/404';

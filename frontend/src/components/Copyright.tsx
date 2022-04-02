@@ -1,17 +1,19 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-export default function Copyright(props: any) {
+export default function Copyright() {
   return (
-    <Typography
-      variant="inherit"
-      color="text.secondary"
-      align="center"
-      marginTop="-50px"
-      {...props}
+    <Box
+      sx={{
+        mt: 'auto',
+        pb: 2,
+        width: '100%',
+      }}
     >
-      {'Copyright © '}
-      {new Date().getFullYear()} Day Day Up.
-      {' All rights reserved.'}
-    </Typography>
+      <Typography variant="subtitle2" align="center">
+        {'Copyright © '}
+        {new Date().getFullYear()} Day Day Up.
+        {' All rights reserved.'}
+      </Typography>
+    </Box>
   );
 }

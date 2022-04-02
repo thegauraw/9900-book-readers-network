@@ -26,6 +26,7 @@
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
+    "react-show-more-text": "^1.5.2",
     "typescript": "^4.6.2",
     "web-vitals": "^2.1.4"
   },
@@ -58,6 +59,7 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.179"
+    "@types/lodash": "^4.14.179",
+    "@types/react-show-more-text": "^1.4.2"
   }
 }
