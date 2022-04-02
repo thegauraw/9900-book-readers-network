@@ -6,7 +6,7 @@ from bookrs.model.collection import Collection, collection_schema, collections_s
 from bookrs.model.readerModel import ReaderModel
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
-from bookrs.utils.exceptions import CollectionDeleteException
+from bookrs.utils.exceptions import CollectionCreateException, CollectionDeleteException, CollectionUpdateException
 
 
 collections_bp = Blueprint('collections', __name__)
@@ -34,9 +34,11 @@ class CollectionMyList(Resource):
     data = request.get_json()
     data['reader_id'] = get_jwt_identity()
     collection = collection_schema.load(data)
-    collection.save()
-    collection_data_dump = collection_schema.dump(collection)
-    return SUCCESS(message='Collection created successfully', status_code=201, payload=collection_data_dump)
+    if collection.save():
+      collection_data_dump = collection_schema.dump(collection)
+      return SUCCESS(message='Collection created successfully', status_code=201, payload=collection_data_dump)
+    else:
+      raise CollectionCreateException
 
 
 class CollectionMyId(Resource):
@@ -57,9 +59,11 @@ class CollectionMyId(Resource):
     collection_obj = Collection.query.filter_by(reader_id=current_user, id=collection_id).first_or_404()
     data = request.get_json()
     collection = collection_schema.load(data, instance=collection_obj)
-    collection.update()
-    collection_data_dump = collection_schema.dump(collection)
-    return SUCCESS(message='Collection updated successfully', payload=collection_data_dump)
+    if collection.update():
+      collection_data_dump = collection_schema.dump(collection)
+      return SUCCESS(message='Collection updated successfully', payload=collection_data_dump)
+    else:
+      raise CollectionUpdateException
 
   def delete(self, collection_id):
     """delete collection record `DELETE /collections/<int:collection_id>` """

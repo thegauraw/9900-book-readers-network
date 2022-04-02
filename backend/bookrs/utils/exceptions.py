@@ -33,8 +33,14 @@ def SendEmailException():
 
 
 # Collection related exceptions
+def CollectionCreateException():
+  return InvalidUsage('Could not create collection', status_code=500)
+
 def CollectionDeleteException():
   return InvalidUsage('Could not delete collection', status_code=500)
+
+def CollectionUpdateException():
+  return InvalidUsage('Could not update collection', status_code=500)
 
 
 # Generic Errors
