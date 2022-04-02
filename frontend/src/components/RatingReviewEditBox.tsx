@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Box, OutlinedInput } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
-import { RatingAndReviewForm } from '../types/ResponseTypes';
+import { RatingAndReviewForm } from '../types/ReadingTypes';
 import FoldableContent from './FoldableContent';
 import ReviewEditButtons from './ReviewEditButtons';
 import RatingStatus from './RatingStatus';
@@ -10,12 +10,14 @@ interface RatingReviewEditBoxProps {
   review: string | null;
   lastUpdatedAt: string | null;
   handleSubmitData: ({ rating, review }: RatingAndReviewForm) => void | null;
+  handleDelete: () => void | null;
 }
 const RatingReviewEditBox: FC<RatingReviewEditBoxProps> = ({
   rating,
   review,
   lastUpdatedAt,
   handleSubmitData,
+  handleDelete,
 }) => {
   const [hasContent, setHasContent] = useState(!isEmpty(lastUpdatedAt));
   const [ratingValue, setRatingValue] = useState<number | null>(rating);
@@ -36,6 +38,7 @@ const RatingReviewEditBox: FC<RatingReviewEditBoxProps> = ({
     setInEditing(false);
     setRatingValue(null);
     setReviewValue(null);
+    handleDelete();
   };
 
   const onEdit = () => {

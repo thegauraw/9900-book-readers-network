@@ -1,8 +1,10 @@
 import os
 
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
+from flask_restful import Api
 from flask_cors import CORS, cross_origin
+
 
 from bookrs.utils.common import InvalidUsage
 from .resources.pages import pages_bp
@@ -10,7 +12,8 @@ from .resources.readers import Readers, readers_bp
 from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
 from .resources.collections import collections_bp
-from .resources.readings import Readings, readings_bp
+from .resources.readings import Readings, ReadingsByBookId, readings_bp
+from .resources.owned_readings import OwnedReadingByBookId, owned_readings_bp
 from bookrs.utils.exceptions import BadRequestError, InternalServerError, ResourceNotFoundError
 
 
@@ -68,12 +71,14 @@ def create_app(test_config=None):
 
     app.register_blueprint(login_bp)
     
-    api.add_resource(Readings, '/readings')
     app.register_blueprint(readings_bp)
+
+
+    app.register_blueprint(owned_readings_bp)
 
     app.register_blueprint(pages_bp)
 
-    # app.register_blueprint(readers_bp)
+    # app.register_blueprint(readers_bp)    
     api.add_resource(Reader, '/reader')
     app.register_blueprint(reader_bp)
 

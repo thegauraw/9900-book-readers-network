@@ -1,60 +1,49 @@
 import { FC, useContext, useEffect } from 'react';
-import { Typography, Grid, Box, Button } from '@mui/material';
+import { Typography } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
-import RatingReviewEditBox from '../components/RatingReviewEditBox';
+import BookRatingReview from '../components/BookRatingReview';
 import LoadingIndicator from '../components/LoadingIndicator';
 import { Appctx } from '../utils/LocalContext';
-import { useNavigate, useParams } from 'react-router-dom';
-import { RatingAndReviewForm } from '../types/ResponseTypes';
-const reviewByBookIdFromOwner = {
-  username: 'userCurrentLoggedIn',
-  has_read: true,
-  last_update_read_at: 'Jan 1, 2022',
-  last_update_review_rating_at: 'Jan 1, 2022',
-  rating: 5.0,
-  review:
-    'Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines Test multiple lines ',
-};
+import { getReadingByBookIdForOwner } from '../services/readingAPIs';
+import { NotFoundPath } from '../config/paths';
 
-const recentReviewsListByBookId = [
-  {
-    last_update_review_rating_at: '2022-03-30T22:28:51.253547',
-    rating: 5.0,
-    username: 'userA',
-    review: 'very good',
-  },
-  {
-    last_update_review_rating_at: '2022-03-30T20:28:51.253547',
-    rating: 4.0,
-    username: 'userB',
-    review: null,
-  },
-  {
-    last_update_review_rating_at: '2022-03-30T12:28:51.253547',
-    rating: null,
-    username: 'userC',
-    review: 'No rating',
-  },
-];
 const BookPage: FC = () => {
   const context = useContext(Appctx);
+  let navigate = useNavigate();
   const { bookId } = useParams();
-  //TODO:Check if the book exists in our database, if not, return 404 page.
+  const { ownedReadingByBookId, setOwnedReadingByBookId, token } = context;
+  const { settlement, isLoading, error } = ownedReadingByBookId;
+  //TODO: Add the book detail
+  //TODO: Add "Mark it as read" button
 
-  const onSubmit = ({ rating, review }: RatingAndReviewForm) => {
-    console.log('Post the review and rating', rating, review);
-    //handleSubmitData(data);
-  };
-  if (reviewByBookIdFromOwner.has_read) {
-    return (
-      <RatingReviewEditBox
-        rating={reviewByBookIdFromOwner.rating}
-        review={reviewByBookIdFromOwner.review}
-        lastUpdatedAt={reviewByBookIdFromOwner.last_update_review_rating_at}
-        handleSubmitData={onSubmit}
-      />
-    );
-  } else return <Button>Mark it as read and write a review</Button>;
+  useEffect(() => {
+    if (isEmpty(bookId)) {
+      navigate(NotFoundPath);
+    }
+    //TODO: Check if the book exists in our database, if not, return 404 page.
+  }, []);
+
+  useEffect(() => {
+    (async function () {
+      try {
+        setOwnedReadingByBookId({ isLoading: true, settlement: null });
+        const response = await getReadingByBookIdForOwner(bookId, token);
+        setOwnedReadingByBookId({ settlement: response, error: null });
+      } catch (error) {
+        setOwnedReadingByBookId({ error: error });
+      } finally {
+        setOwnedReadingByBookId({ isLoading: false });
+      }
+    })();
+  }, []);
+  return (
+    <>
+      {isLoading && <LoadingIndicator />}
+      {!isLoading && !isEmpty(error) && <Typography>{error}</Typography>}
+      {bookId && !isLoading && isEmpty(error) && <BookRatingReview />}
+    </>
+  );
 };
 
 export default BookPage;
