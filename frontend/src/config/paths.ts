@@ -16,3 +16,5 @@ export const AuthenticationPaths = {
   PasswordReset: '/passwordReset/:token',
   ResetPasswordSuccess: '/passwordResetSuccess',
 };
+
+export const NotFoundPath = '/404';
