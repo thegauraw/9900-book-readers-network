@@ -19,3 +19,8 @@ export interface CollectionListData {
   bookNumber: number;
   recentBookCovers: string[];
 }
+
+export interface RatingAndReviewForm {
+  rating: number | null;
+  review: string | null;
+}

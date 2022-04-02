@@ -31,7 +31,9 @@ class Login(Resource):
           raise InvalidEmailorPasswordException()
 
         if account.check_password(auth.get('password')):
-          token = create_access_token(identity=str(account.id), expires_delta=datetime.timedelta(days=1))
+          #Set the token to never expire temporarily for development.
+          #TODO: Discuss token refreshing solution in Sprint3.
+          token = create_access_token(identity=str(account.id), expires_delta=False)#datetime.timedelta(days=1))
           return make_response(jsonify({"token": token}), 200)
 
         raise InvalidEmailorPasswordException()
