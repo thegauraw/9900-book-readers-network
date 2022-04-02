@@ -11,8 +11,8 @@ from .resources.pages import pages_bp
 from .resources.readers import Readers, readers_bp
 from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
-from .resources.readings import Readings, readings_bp
-
+from .resources.readings import Readings, ReadingsByBookId, readings_bp
+from .resources.owned_readings import OwnedReadingByBookId, owned_readings_bp
 
 def create_app(test_config=None):
     # create and configure the app
@@ -58,8 +58,12 @@ def create_app(test_config=None):
     app.register_blueprint(login_bp)
     
     api.add_resource(Readings, '/readings')
+    api.add_resource(ReadingsByBookId, '/readings/<int:book_id>')
     app.register_blueprint(readings_bp)
 
+    api.add_resource(OwnedReadingByBookId, '/owned_readings/<int:book_id>')
+    app.register_blueprint(owned_readings_bp)
+    
     app.register_blueprint(pages_bp)
 
     api.add_resource(Reader, '/reader')

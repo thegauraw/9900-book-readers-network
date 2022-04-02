@@ -30,3 +30,25 @@ def UpdateReaderException():
 
 def SendEmailException():
   return InvalidUsage('Fail to send password reset email', status_code=500)
+
+def InvalidParameterException(error):
+  return InvalidUsage(error, status_code=400)
+
+def BookNotFoundException():
+  return InvalidUsage('Requested book not found', status_code=404)
+
+def ReadingNotFoundException():
+  return InvalidUsage('Requested reading not found', status_code=404)
+
+def OwnedReadingHasExistedException():
+  return InvalidUsage('Requested reading has existed', status_code=400)
+
+# Generic Errors
+def BadRequestError():
+  return InvalidUsage('Please check your request', status_code=400)
+
+def ResourceNotFoundError():
+  return InvalidUsage('Requested resource not found', status_code=404)
+
+def InternalServerError():
+  return InvalidUsage('Requested operation could not be performed', status_code=500)

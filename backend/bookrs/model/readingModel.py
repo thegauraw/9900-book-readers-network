@@ -1,7 +1,6 @@
-from marshmallow import fields, pre_load, validate
+from marshmallow import fields, post_dump, pre_load, validate
 from bookrs.model import db, ma
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from bookrs.utils.custom_datetime import get_str_datetime_now
+from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format
 
 class ReadingModel(db.Model):
     __tablename__ = 'readings'
@@ -16,13 +15,18 @@ class ReadingModel(db.Model):
     last_update_review_rating_at = db.Column(db.DateTime(timezone=True), nullable=True)
     has_read = db.Column(db.Boolean, default=False)
     last_update_read_at = db.Column(db.DateTime(timezone=True), nullable=True)
-        
-    def save_to_db(self):
+    
+    #TODO: Inherit common classes and remove these after codebase update.    
+    def save(self):
         db.session.add(self)
         db.session.commit()
         return self
+    
+    def update(self):
+        db.session.commit()
+        return self
 
-    def delete_from_db(self):
+    def delete(self):
         db.session.delete(self)
         db.session.commit()
         return self
@@ -36,7 +40,9 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
         model = ReadingModel
         load_instance = True
         include_fk = True
+    
     rating = fields.Float(validate=validate.Range(min=0, max=5))
+   
             
     @pre_load
     def preprocess_validation(self, reading, many, **kwargs):
@@ -45,6 +51,14 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
         if ('has_read' in reading):
             reading['last_update_read_at'] = get_str_datetime_now()
         return reading
+    @post_dump
+    def process_datetime_format(self, reading, many, **kwargs):
+        if (reading['last_update_review_rating_at'] is not None):
+            reading['last_update_review_rating_at'] = get_response_datetime_format(reading['last_update_review_rating_at'])
+        if (reading['last_update_read_at'] is not None):
+            reading['last_update_read_at'] = get_response_datetime_format(reading['last_update_read_at'])
+        return reading
+    
         
 reading_schema = ReadingSchema()
 readings_schema = ReadingSchema(many=True)
