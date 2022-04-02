@@ -31,6 +31,18 @@ def UpdateReaderException():
 def SendEmailException():
   return InvalidUsage('Fail to send password reset email', status_code=500)
 
+
+# Collection related exceptions
+def CollectionCreateException():
+  return InvalidUsage('Could not create collection', status_code=500)
+
+def CollectionDeleteException():
+  return InvalidUsage('Could not delete collection', status_code=500)
+
+def CollectionUpdateException():
+  return InvalidUsage('Could not update collection', status_code=500)
+
+
 def InvalidParameterException(error):
   return InvalidUsage(error, status_code=400)
 
@@ -52,3 +64,5 @@ def ResourceNotFoundError():
 
 def InternalServerError():
   return InvalidUsage('Requested operation could not be performed', status_code=500)
+
+

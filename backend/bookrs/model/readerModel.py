@@ -5,8 +5,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from marshmallow_sqlalchemy import auto_field
 from sqlalchemy.orm import relationship, backref
 
-from bookrs.utils.exceptions import EmailRegisteredException, EmailFormatException, UsernameRegisteredException
 from bookrs.model import db, ma
+from bookrs.model.collection import Collection
+from bookrs.utils.exceptions import EmailRegisteredException, EmailFormatException, UsernameRegisteredException
 from .readingModel import ReadingModel
 
 class ReaderModel(db.Model):
@@ -16,6 +17,7 @@ class ReaderModel(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
     status = db.Column(db.Boolean)
+    collections = db.relationship("Collection", backref="owner")
     readings = relationship(ReadingModel, backref=backref('readers'))
 
     def create(self):
@@ -30,7 +32,7 @@ class ReaderModel(db.Model):
 
         self.check_username(username)
         self.check_email(email)
-    
+
     def check_email(self, email):
         user_email = self.query.filter_by(email=email).first()
         if user_email is not None:
@@ -72,7 +74,8 @@ class ReaderCreatingSchema(ma.SQLAlchemySchema):
 
     @pre_load
     def process_password(self, user, many, **kwargs):
-        user['password_hash'] = generate_password_hash(user.pop('password'), method='sha256')
+        if 'password' in user:
+            user['password_hash'] = generate_password_hash(user.pop('password'), method='sha256')
         return user
 
 reader_creating_schema = ReaderCreatingSchema()
