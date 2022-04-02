@@ -71,16 +71,14 @@ def create_app(test_config=None):
 
     app.register_blueprint(login_bp)
     
-    api.add_resource(Readings, '/readings')
-    api.add_resource(ReadingsByBookId, '/readings/<int:book_id>')
     app.register_blueprint(readings_bp)
 
-    api.add_resource(OwnedReadingByBookId, '/owned_readings/<int:book_id>')
+
     app.register_blueprint(owned_readings_bp)
 
     app.register_blueprint(pages_bp)
 
-    # app.register_blueprint(readers_bp)
+    # app.register_blueprint(readers_bp)    
     api.add_resource(Reader, '/reader')
     app.register_blueprint(reader_bp)
 

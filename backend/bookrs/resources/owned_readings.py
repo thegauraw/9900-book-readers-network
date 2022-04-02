@@ -7,6 +7,7 @@ from bookrs.utils.common import SUCCESS
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from bookrs.utils.exceptions import InvalidParameterException, BookNotFoundException, ReadingNotFoundException, OwnedReadingHasExistedException
 from werkzeug.exceptions import NotFound
+from bookrs.resources import api
 
 owned_readings_bp = Blueprint('owned_readings', __name__)
 class OwnedReadingByBookId(Resource):
@@ -19,7 +20,9 @@ class OwnedReadingByBookId(Resource):
             
             #The reading record can be not found at the beginning
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
-            return SUCCESS(payload=reading_schema.dump(db_result))
+            if(db_result):
+                db_result = reading_schema.dump(db_result)
+            return SUCCESS(payload=db_result)
         except NotFound:
             raise BookNotFoundException()
         
@@ -30,7 +33,7 @@ class OwnedReadingByBookId(Resource):
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
             #Limit: one user can only create a reading for a book
-            if not db_result:
+            if db_result:
                 raise OwnedReadingHasExistedException()
             data = request.get_json()
             data['reader_id'] = current_user
@@ -50,7 +53,6 @@ class OwnedReadingByBookId(Resource):
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
             data = request.get_json()
-            print("data", data)
             data['reader_id'] = current_user
             data['book_id'] = book_id
             if db_result:
@@ -77,3 +79,4 @@ class OwnedReadingByBookId(Resource):
         except NotFound:
             raise ReadingNotFoundException()
       
+api.add_resource(OwnedReadingByBookId, '/owned_readings/<int:book_id>')
