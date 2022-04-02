@@ -3,3 +3,5 @@ export const getCollectionListApi = `https://australia-southeast1-daydayup-9900.
 export const LoginApiURL = `${BASE_URL}/login`;
 export const RegisterApiURL = `${BASE_URL}/readers`;
 export const UserApiURL = `${BASE_URL}/reader`;
+export const ReadingsURL = `${BASE_URL}/readings`;
+export const OwnedReadingsURL = `${BASE_URL}/owned_readings`;
