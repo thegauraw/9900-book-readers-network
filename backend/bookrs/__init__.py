@@ -11,25 +11,7 @@ from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
 from .resources.collections import collections_bp
 from .resources.readings import Readings, readings_bp
-
-
-def resource_not_found(e):
-    return make_response(jsonify({
-        'status': 'error',
-        'message': 'Requested resource not found',
-    }), 404)
-
-def internal_server_error(err):
-  return make_response(jsonify({
-      'status': 'error',
-      'message': 'Could not perform requested operation',
-  }), 500)
-
-def bad_request(err):
-  return make_response(jsonify({
-      'status': 'error',
-      'message': 'Please check your request',
-  }), 400)
+from bookrs.utils.exceptions import BadRequestError, InternalServerError, ResourceNotFoundError
 
 
 def create_app(test_config=None):
@@ -78,9 +60,9 @@ def create_app(test_config=None):
     jwt = JWTManager(app)
 
     # add generic error handler before registering blueprint
-    app.register_error_handler(400, bad_request)
-    app.register_error_handler(404, resource_not_found)
-    app.register_error_handler(500, internal_server_error)
+    app.register_error_handler(400, BadRequestError)
+    app.register_error_handler(404, ResourceNotFoundError)
+    app.register_error_handler(500, InternalServerError)
 
     app.register_blueprint(collections_bp)
 
