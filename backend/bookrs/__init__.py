@@ -1,17 +1,17 @@
 import os
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from flask_jwt_extended import JWTManager
-from flask_restful import Api
 from flask_cors import CORS, cross_origin
-
 
 from bookrs.utils.common import InvalidUsage
 from .resources.pages import pages_bp
 from .resources.readers import Readers, readers_bp
 from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
+from .resources.collections import collections_bp
 from .resources.readings import Readings, readings_bp
+from bookrs.utils.exceptions import BadRequestError, InternalServerError, ResourceNotFoundError
 
 
 def create_app(test_config=None):
@@ -48,13 +48,24 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
     ma.init_app(app)
 
-    api = Api(app)
+    from .resources import api
+    # workaround to allow flask custom error handlers handle the erros instead of flask-restful
+    # from https://github.com/flask-restful/flask-restful/issues/280#issuecomment-280648790
+    # replace: `api.init_app(app)` with:
+    handle_exception = app.handle_exception
+    handle_user_exception = app.handle_user_exception
+    api.init_app(app)
+    app.handle_exception = handle_exception
+    app.handle_user_exception = handle_user_exception
     jwt = JWTManager(app)
 
-    api.add_resource(Readers, '/readers')
-    app.register_blueprint(readers_bp)
+    # add generic error handler before registering blueprint
+    app.register_error_handler(400, BadRequestError)
+    app.register_error_handler(404, ResourceNotFoundError)
+    app.register_error_handler(500, InternalServerError)
 
-    api.add_resource(Login, '/login')
+    app.register_blueprint(collections_bp)
+
     app.register_blueprint(login_bp)
     
     api.add_resource(Readings, '/readings')
@@ -62,6 +73,7 @@ def create_app(test_config=None):
 
     app.register_blueprint(pages_bp)
 
+    # app.register_blueprint(readers_bp)
     api.add_resource(Reader, '/reader')
     app.register_blueprint(reader_bp)
 
@@ -69,7 +81,6 @@ def create_app(test_config=None):
     def handle_invalid_usage(error):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
-
         return response
 
     return app
