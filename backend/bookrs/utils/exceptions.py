@@ -32,6 +32,11 @@ def SendEmailException():
   return InvalidUsage('Fail to send password reset email', status_code=500)
 
 
+# Collection related exceptions
+def CollectionDeleteException():
+  return InvalidUsage('Could not delete collection', status_code=500)
+
+
 # Generic Errors
 def BadRequestError():
   return InvalidUsage('Please check your request', status_code=400)

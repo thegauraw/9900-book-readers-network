@@ -5,6 +5,8 @@ from bookrs.model.collection import Collection, collection_schema, collections_s
 # from bookrs.model.reader import Reader
 from bookrs.model.readerModel import ReaderModel
 from bookrs.resources import api
+from bookrs.utils.common import SUCCESS
+from bookrs.utils.exceptions import CollectionDeleteException
 
 
 collections_bp = Blueprint('collections', __name__)
@@ -25,11 +27,7 @@ class CollectionMyList(Resource):
     current_user = get_jwt_identity()
     collections = Collection.query.filter_by(reader_id=current_user).all()
     collections_data_dump = collections_schema.dump(collections)
-    return make_response(jsonify({
-        'status': 'success',
-        'message': 'Collections listed successfully',
-        'data': collections_data_dump,
-    }), 200)
+    return SUCCESS(message='Collections listed successfully', payload=collections_data_dump)
 
   def post(self):
     """create my collection `POST /collections {'title': '', 'description': ''}` """
@@ -38,11 +36,7 @@ class CollectionMyList(Resource):
     collection = collection_schema.load(data)
     collection.save()
     collection_data_dump = collection_schema.dump(collection)
-    return make_response(jsonify({
-        'status': 'success',
-        'message': 'Collection created successfully',
-        'data': collection_data_dump,
-    }), 201)
+    return SUCCESS(message='Collection created successfully', status_code=201, payload=collection_data_dump)
 
 
 class CollectionMyId(Resource):
@@ -54,11 +48,7 @@ class CollectionMyId(Resource):
     # anyone can view the collection record
     collection = Collection.query.get_or_404(collection_id)
     collection_data_dump = collection_schema.dump(collection)
-    return make_response(jsonify({
-        'status': 'success',
-        'message': 'Collection returned successfully',
-        'data': collection_data_dump,
-    }), 200)
+    return SUCCESS(message='Collection returned successfully', payload=collection_data_dump)
 
   def put(self, collection_id):
     """update collection info `PUT /collections/<int:collection_id> {'title': '', 'description': ''}` """
@@ -69,11 +59,7 @@ class CollectionMyId(Resource):
     collection = collection_schema.load(data, instance=collection_obj)
     collection.update()
     collection_data_dump = collection_schema.dump(collection)
-    return make_response(jsonify({
-        'status': 'success',
-        'message': 'Collection updated successfully',
-        'data': collection_data_dump,
-    }), 200)
+    return SUCCESS(message='Collection updated successfully', payload=collection_data_dump)
 
   def delete(self, collection_id):
     """delete collection record `DELETE /collections/<int:collection_id>` """
@@ -81,15 +67,9 @@ class CollectionMyId(Resource):
     current_user = get_jwt_identity()
     collection = Collection.query.filter_by(reader_id=current_user, id=collection_id).first_or_404()
     if collection.delete():
-      return make_response(jsonify({
-          'status': 'success',
-          'message': 'Collection deleted successfully',
-      }), 200)
+      return SUCCESS(message='Collection deleted successfully')
     else:
-      return make_response(jsonify({
-          'status': 'error',
-          'message': 'Could not delete collection'
-      }), 500)
+      raise CollectionDeleteException
 
 
 class CollectionOthersList(Resource):
@@ -103,12 +83,7 @@ class CollectionOthersList(Resource):
     if reader is not None:
       collections = Collection.query.filter_by(reader_id=reader.id).all()
       collections_data_dump = collections_schema.dump(collections)
-
-    return make_response(jsonify({
-        'status': 'success',
-        'message': "Reader's collection listed successfully",
-        'data': collections_data_dump,
-    }), 200)
+    return SUCCESS(message="Reader's collection listed successfully", payload=collections_data_dump)
 
 
 api.add_resource(CollectionMyList, '/collections', endpoint='collections')
