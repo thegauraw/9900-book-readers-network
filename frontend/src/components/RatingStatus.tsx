@@ -36,7 +36,10 @@ const RatingStatus: FC<RatingStatusProps> = ({
         readOnly={!inEditing}
         value={ratingValue}
         onChange={(event, newRating) => {
-          if (setRatingValue) setRatingValue(newRating);
+          if (setRatingValue) {
+            newRating = Number(newRating);
+            setRatingValue(newRating);
+          }
         }}
       />
       <Typography component="legend" variant="subtitle2">
