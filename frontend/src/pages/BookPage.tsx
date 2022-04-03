@@ -2,6 +2,7 @@ import { FC, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import BookRatingReview from '../components/BookRatingReview';
+import BookRatingReviewStat from '../components/BookRatingReviewStat';
 import { Appctx } from '../utils/LocalContext';
 import { NotFoundPath } from '../config/paths';
 
@@ -21,6 +22,7 @@ const BookPage: FC = () => {
 
   return (
     <>
+      <BookRatingReviewStat />
       <BookRatingReview />
     </>
   );
