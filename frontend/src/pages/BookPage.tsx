@@ -24,24 +24,9 @@ const BookPage: FC = () => {
     //TODO: Check if the book exists in our database, if not, return 404 page.
   }, []);
 
-  useEffect(() => {
-    (async function () {
-      try {
-        setOwnedReadingByBookId({ isLoading: true, settlement: null });
-        const response = await getReadingByBookIdForOwner(bookId, token);
-        setOwnedReadingByBookId({ settlement: response, error: null });
-      } catch (error) {
-        setOwnedReadingByBookId({ error: error });
-      } finally {
-        setOwnedReadingByBookId({ isLoading: false });
-      }
-    })();
-  }, []);
   return (
     <>
-      {isLoading && <LoadingIndicator />}
-      {!isLoading && !isEmpty(error) && <Typography>{error}</Typography>}
-      {bookId && !isLoading && isEmpty(error) && <BookRatingReview />}
+      <BookRatingReview />
     </>
   );
 };

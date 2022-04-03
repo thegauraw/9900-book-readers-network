@@ -79,7 +79,6 @@ const RatingReviewEditBox: FC<RatingReviewEditBoxProps> = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        p: '16px 32px',
       }}
     >
       <RatingStatus
