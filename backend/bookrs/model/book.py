@@ -1,6 +1,10 @@
-from bookrs.model import BaseModel, db, ma
 from marshmallow import fields
 from marshmallow_sqlalchemy import auto_field
+from werkzeug.exceptions import NotFound
+
+from bookrs.model import BaseModel, db, ma
+from bookrs.utils.exceptions import BookNotFoundException
+
 
 class Book(BaseModel):
   __tablename__ = "books"
@@ -9,6 +13,13 @@ class Book(BaseModel):
   publisher = db.Column(db.String(120))
   publication_date = db.Column(db.Date)
   category = db.Column(db.String(80))
+
+  @classmethod
+  def get_by_id(cls, id):
+    try:
+      return cls.query.get_or_404(id)
+    except NotFound:
+      raise BookNotFoundException()
 
 
 class BookSchema(ma.SQLAlchemySchema):
