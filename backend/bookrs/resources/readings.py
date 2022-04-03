@@ -18,7 +18,16 @@ class ReadingsByBookId(Resource):
         try:
             Book.query.filter_by(id=book_id).first_or_404()
             readings = ReadingModel.query.filter_by(book_id=book_id).all()
-            return SUCCESS(payload=readings_schema.dump(readings))
+            readings = readings_schema.dump(readings)
+            
+            valid_readings = [p for p in readings if p["last_update_review_rating_at"] is not None]
+            valid_ratings = [p["rating"] for p in readings if p["rating"] is not None]
+            valid_reviews = [p["review"] for p in readings if p["review"] is not None]
+            result = {"readings": valid_readings}
+            result["countValidRatings"] = len(valid_ratings)
+            result["averageRatings"] = None if len(valid_ratings) == 0 else sum(valid_ratings)/len(valid_ratings)
+            result["countValidReviews"] = len(valid_reviews)
+            return SUCCESS(payload=result)
         except NotFound:
             raise BookNotFoundException()
         

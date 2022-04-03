@@ -13,8 +13,8 @@ export interface ReadingByBookIdFromOwnerResponse {
 }
 
 export interface ReadingsListByBookIdResponse {
-  username: string;
-  last_update_review_rating_at: string | null;
-  rating: number | null;
-  review: string | null;
+  averageRatings: number;
+  countValidRatings: number;
+  countValidReviews: number;
+  readings: ReadingByBookIdFromOwnerResponse[];
 }

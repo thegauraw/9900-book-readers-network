@@ -30,7 +30,7 @@ export const getReadingByBookIdForOwner = async (
 export const getReadingListByBookId = async (
   bookId: string | undefined,
   token: string
-): Promise<RT.ReadingsListByBookIdResponse[]> => {
+): Promise<RT.ReadingsListByBookIdResponse> => {
   try {
     const requestOptions = {
       method: 'GET',
@@ -42,7 +42,7 @@ export const getReadingListByBookId = async (
     };
     const response = await fetch(`${ReadingsURL}/${bookId}`, requestOptions);
     const data: SuccessResponse = await response.json();
-    return data.payload as RT.ReadingsListByBookIdResponse[];
+    return data.payload as RT.ReadingsListByBookIdResponse;
   } catch (error) {
     if ((error as ErrorResponse).msg) {
       return Promise.reject((error as ErrorResponse).msg);
