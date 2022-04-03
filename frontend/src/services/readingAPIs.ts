@@ -120,13 +120,18 @@ export const deleteReviewAndRating = async (
 ): Promise<string> => {
   try {
     const requestOptions = {
-      method: 'DELETE',
+      method: 'PUT',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
         accept: 'application/json',
       },
+
+      body: JSON.stringify({
+        last_update_review_rating_at: null,
+      }),
     };
+
     const response = await fetch(`${OwnedReadingsURL}/${bookId}`, requestOptions);
     const data: SuccessResponse = await response.json();
     return data.payload;
