@@ -14,6 +14,7 @@ from .resources.collections import collections_bp
 from .resources.books import books_bp
 from .resources.readings import Readings, ReadingsByBookId, readings_bp
 from .resources.owned_readings import OwnedReadingByBookId, owned_readings_bp
+from .resources.goals import goals_bp, Goals
 from bookrs.utils.common import InvalidUsage
 from bookrs.utils.exceptions import BadRequestError, InternalServerError, ResourceNotFoundError
 
@@ -78,6 +79,9 @@ def create_app(test_config=None):
     app.register_blueprint(owned_readings_bp)
 
     app.register_blueprint(pages_bp)
+
+    api.add_resource(Goals, '/reader')
+    app.register_blueprint(goals_bp)
 
     # app.register_blueprint(readers_bp)    
     api.add_resource(Reader, '/reader')
