@@ -1,7 +1,6 @@
 from flask import Blueprint, request
 from flask_restful import Resource
 from marshmallow import ValidationError
-from pyparsing import empty
 from bookrs.model.readingModel import ReadingModel, reading_schema
 from bookrs.utils.common import SUCCESS
 from flask_jwt_extended import get_jwt_identity, jwt_required
