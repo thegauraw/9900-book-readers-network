@@ -23,14 +23,20 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
         model = ReadingModel
         load_instance = True
         include_fk = True
-    
+        
     rating = fields.Float(validate=validate.Range(min=0, max=5))
     reader = fields.Nested('ReaderSchema', only=("username",))
             
     @pre_load
     def preprocess_validation(self, reading, many, **kwargs):
+        #User can update the rating to 0 and review to empty string, in this case, the review is existed with updated datetime
         if ('rating' in reading or 'review' in reading):
             reading['last_update_review_rating_at'] = get_str_datetime_now()
+        #When user want to delete the review and rating, set all related fields to None
+        if('last_update_review_rating_at' in reading and reading['last_update_review_rating_at'] is None):
+            reading['review'] = None
+            reading['rating'] = None
+            reading['last_update_review_rating_at'] = None
         if ('has_read' in reading):
             reading['last_update_read_at'] = get_str_datetime_now()
         return reading

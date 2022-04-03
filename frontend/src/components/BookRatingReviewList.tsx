@@ -36,8 +36,7 @@ const BookRatingReviewList: FC = () => {
       {!isLoading && !isEmpty(error) && <Typography>{error}</Typography>}
       {settlement &&
         settlement.map(({ rating, review, last_update_review_rating_at, username }) => {
-          console.log(review, rating, !!review, !isEmpty(rating));
-          if (review || rating)
+          if (review || rating || rating === 0)
             return (
               <Paper
                 sx={{
