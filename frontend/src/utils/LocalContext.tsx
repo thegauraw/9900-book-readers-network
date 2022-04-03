@@ -2,7 +2,10 @@ import React, { useState, useReducer, useEffect } from 'react';
 import { TransferState } from '../types/TransferState';
 import { CollectionListData } from '../types/ResponseTypes';
 import { setLocalStorage, getLocalStorage } from './useLocalStorage';
-import { ReadingByBookIdFromOwnerResponse } from '../types/ReadingTypes';
+import {
+  ReadingByBookIdFromOwnerResponse,
+  ReadingsListByBookIdResponse,
+} from '../types/ReadingTypes';
 export type ContextType = {
   logged: boolean;
   setLogged: Function;
@@ -12,6 +15,8 @@ export type ContextType = {
   setCollectionList: Function;
   ownedReadingByBookId: TransferState<ReadingByBookIdFromOwnerResponse>;
   setOwnedReadingByBookId: Function;
+  readingListByBookId: TransferState<ReadingsListByBookIdResponse[]>;
+  setReadingListByBookId: Function;
 };
 
 export const globalParas = {
@@ -23,6 +28,8 @@ export const globalParas = {
   setCollectionList: (f: Partial<TransferState<CollectionListData[]>>) => f,
   ownedReadingByBookId: { isLoading: false, settlement: null },
   setOwnedReadingByBookId: (f: Partial<TransferState<ReadingByBookIdFromOwnerResponse>>) => f,
+  readingListByBookId: { isLoading: false, settlement: null },
+  setReadingListByBookId: (f: Partial<TransferState<ReadingsListByBookIdResponse[]>>) => f,
 };
 
 export const Appctx = React.createContext<ContextType>(globalParas);
@@ -50,6 +57,14 @@ export const AppProvider = ({ children }: any) => {
     { isLoading: false, settlement: null }
   );
 
+  const [readingListByBookId, setReadingListByBookId] = useReducer(
+    (
+      fetchState: TransferState<ReadingsListByBookIdResponse[]>,
+      updates: Partial<TransferState<ReadingsListByBookIdResponse[]>>
+    ) => ({ ...fetchState, ...updates }),
+    { isLoading: false, settlement: null }
+  );
+
   useEffect(() => {
     setLocalStorage('logged', logged);
   }, [logged]);
@@ -69,6 +84,8 @@ export const AppProvider = ({ children }: any) => {
         setCollectionList,
         ownedReadingByBookId,
         setOwnedReadingByBookId,
+        readingListByBookId,
+        setReadingListByBookId,
       }}
     >
       {children}

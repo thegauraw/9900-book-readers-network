@@ -16,7 +16,6 @@ export const getReadingByBookIdForOwner = async (
       },
     };
     const response = await fetch(`${OwnedReadingsURL}/${bookId}`, requestOptions);
-    console.log(token, bookId, response);
     const data: SuccessResponse = await response.json();
     return data.payload as RT.ReadingByBookIdFromOwnerResponse;
   } catch (error) {
