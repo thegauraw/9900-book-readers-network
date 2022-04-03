@@ -42,18 +42,35 @@ def CollectionDeleteException():
 def CollectionUpdateException():
   return InvalidUsage('Could not update collection', status_code=500)
 
+def CollectionNotFoundException():
+  return InvalidUsage('Requested collection not found', status_code=404)
 
-def InvalidParameterException(error):
-  return InvalidUsage(error, status_code=400)
+
+
+# Books related exceptions
+def BookCollectException():
+  return InvalidUsage('Could not add book to the collection', status_code=500)
+
+def BookCreateException():
+  return InvalidUsage('Could not create book', status_code=500)
+
+def BookDropException():
+  return InvalidUsage('Could not remove book from the collection', status_code=500)
 
 def BookNotFoundException():
   return InvalidUsage('Requested book not found', status_code=404)
+
+
+
+def InvalidParameterException(error):
+  return InvalidUsage(error, status_code=400)
 
 def ReadingNotFoundException():
   return InvalidUsage('Requested reading not found', status_code=404)
 
 def OwnedReadingHasExistedException():
   return InvalidUsage('Requested reading has existed', status_code=400)
+
 
 # Generic Errors
 def BadRequestError():

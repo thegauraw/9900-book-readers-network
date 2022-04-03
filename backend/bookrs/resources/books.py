@@ -4,15 +4,11 @@ from flask_restful import Resource
 from bookrs.model.book import Book, book_schema, books_schema
 from bookrs.model.collection import Collection
 from bookrs.resources import api
+from bookrs.utils.common import SUCCESS
+from bookrs.utils.exceptions import BookCollectException, BookCreateException, BookDropException, BookNotFoundException, CollectionNotFoundException
+
 
 books_bp = Blueprint('books', __name__)
-
-@books_bp.app_errorhandler(404)
-def resource_not_found(err):
-  return make_response(jsonify({
-      'status': 'error',
-      'message': 'Book not found',
-  }), 404)
 
 
 class Books(Resource):
@@ -34,13 +30,11 @@ class Books(Resource):
     """
     data = request.get_json()
     book = book_schema.load(data)
-    book.save()
-    book_data_dump = book_schema.dump(book)
-    return make_response(jsonify({
-        'status': 'success',
-        'message': 'Book created successfully',
-        'data': book_data_dump,
-    }), 201)
+    if book.save():
+      book_data_dump = book_schema.dump(book)
+      return SUCCESS(message='Book created successfully', status_code=201, payload=book_data_dump)
+    else:
+      raise BookCreateException()
 
 
 class BookId(Resource):
@@ -50,13 +44,9 @@ class BookId(Resource):
     """view book info `GET /books/<int:book_id>` """
 
     # anyone can view the book record
-    book = Book.query.get_or_404(book_id)
+    book = Book.get_by_id(book_id)
     book_data_dump = book_schema.dump(book)
-    return make_response(jsonify({
-        'status': 'success',
-        'message': 'Book returned successfully',
-        'data': book_data_dump,
-    }), 200)
+    return SUCCESS(payload=book_data_dump)
 
 
 class CollectedBooks(Resource):
@@ -67,13 +57,10 @@ class CollectedBooks(Resource):
     List books in a collection
     `GET /collections/:collection_id/books`
     """
-    collection = Collection.query.get_or_404(collection_id)
+    collection = Collection.get_by_id(collection_id)
+
     books_data_dump = books_schema.dump(collection.books)
-    return make_response(jsonify({
-        'status': 'success',
-        'message': 'Books in the collection listed successfully',
-        'data': books_data_dump,
-    }), 200)
+    return SUCCESS(payload=books_data_dump)
 
   def post(self, collection_id):
     """
@@ -91,24 +78,25 @@ class CollectedBooks(Resource):
     """
     # check if the user owns the collection
     current_user = get_jwt_identity()
-    collection = Collection.query.filter_by(reader_id=current_user, id=collection_id).first_or_404()
+    collection = Collection.get_by_reader_and_id(reader_id=current_user, id=collection_id)
+
     data = request.get_json()
-    book = Book.query.filter_by(id = data.get('book_id')).first()
+    book = Book.query.get(data.get('book_id'))
+
+    # create book if it doesn't already exist in the system
     if book is None:
       book = book_schema.load(data)
-      book.save()
+      if not book.save():
+        raise BookCreateException()
 
     collection.books.append(book)
-    collection.update()
-    # TODO: add record to book_readings as well
-
-    # show list of books in the collection - just like get
-    books_data_dump = books_schema.dump(collection.books)
-    return make_response(jsonify({
-        'status': 'success',
-        'message': 'Book added to the collection successfully',
-        'data': books_data_dump,
-    }), 200)
+    if collection.update():
+      # TODO: add record to book_readings as well
+      # show list of books in the collection - just like get
+      books_data_dump = books_schema.dump(collection.books)
+      return SUCCESS(message='Book added to the collection successfully', payload=books_data_dump)
+    else:
+      raise BookCollectException()
 
 
 class CollectedBook(Resource):
@@ -121,22 +109,16 @@ class CollectedBook(Resource):
     """
     # check if the user owns the collection
     current_user = get_jwt_identity()
-    collection = Collection.query.filter_by(reader_id=current_user, id=collection_id).first_or_404()
-    book = Book.query.get_or_404(book_id)
+    collection = Collection.get_by_reader_and_id(reader_id=current_user, id=collection_id)
+
+    book = Book.get_by_id(book_id)
 
     if book in collection.books:
       collection.books.remove(book)
-      status = collection.update() # db-commit
-      if status:
-        return make_response(jsonify({
-            'status': 'success',
-            'message': 'Book removed from the collection successfully',
-        }), 200)
+      if collection.update(): # db-commit
+        return SUCCESS(message='Book removed from the collection successfully')
       else:
-        return make_response(jsonify({
-            'status': 'error',
-            'message': 'Could not remove book from the collection'
-        }), 500)
+        raise BookDropException()
     else:
       abort(404)
 
