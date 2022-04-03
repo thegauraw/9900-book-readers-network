@@ -36,6 +36,7 @@ class GoalSchema(ma.SQLAlchemySchema):
     book_num = fields.Int(required=True)
     start_time = fields.Date(required=True)
     end_time = fields.Date(required=True)
+    finish = fields.Bool(default=False)
 
 
 goal_schema = GoalSchema()

@@ -10,7 +10,20 @@ goals_bp = Blueprint('goals', __name__)
 class Goals(Resource):
 
     def get(self):
-        goals = GoalModel.query.all()
+        data = request.get_json()
+        userid = data.get('userid')
+        status = data.get('finish')
+
+        if not userid:
+            if status is None:
+                goals = GoalModel.query.all()
+            else:
+                goals = GoalModel.query.filter_by(finish=status)
+        else:
+            if status is None:
+                goals = GoalModel.query.filter_by(userid=userid)
+            else:
+                goals = GoalModel.query.filter_by(userid=userid, finish=status)
         return goals_schema.dump(goals)
 
     def post(self):
