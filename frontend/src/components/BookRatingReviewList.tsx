@@ -36,7 +36,7 @@ const BookRatingReviewList: FC = () => {
       {!isLoading && !isEmpty(error) && <Typography>{error}</Typography>}
       {settlement &&
         settlement.readings.map(({ rating, review, last_update_review_rating_at, username }) => {
-          if (review || rating || rating === 0)
+          if (last_update_review_rating_at !== null)
             return (
               <Paper
                 sx={{

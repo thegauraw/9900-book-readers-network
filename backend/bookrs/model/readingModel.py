@@ -24,7 +24,6 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
         
-    rating = fields.Float(validate=validate.Range(min=0, max=5))
     reader = fields.Nested('ReaderSchema', only=("username",))
             
     @pre_load
