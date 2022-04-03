@@ -24,8 +24,6 @@ const RatingReviewEditBox: FC<RatingReviewEditBoxProps> = ({
   const [reviewValue, setReviewValue] = useState<string | null>(review);
   const [inEditing, setInEditing] = useState<boolean>(false);
   const onSubmit = () => {
-    console.log(ratingValue, reviewValue, inEditing);
-    //handleSubmitData(data);
     setHasContent(true);
     setRatingValue(ratingValue);
     setReviewValue(reviewValue);

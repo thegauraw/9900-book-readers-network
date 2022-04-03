@@ -49,7 +49,7 @@ const BookRatingReviewOwned: FC = () => {
   const onDelete = useCallback(() => {
     setOwnedReadingByBookId({ isLoading: true });
     deleteReviewAndRating(token, bookId)
-      .then((data) => setOwnedReadingByBookId({ settlement: {} }))
+      .then((data) => setOwnedReadingByBookId({ settlement: data }))
       .catch((error) => {
         setOwnedReadingByBookId({ error: error });
       })
