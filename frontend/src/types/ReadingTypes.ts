@@ -9,6 +9,7 @@ export interface ReadingByBookIdFromOwnerResponse {
   last_update_review_rating_at: string | null;
   rating: number | null;
   review: string | null;
+  username: string;
 }
 
 export interface ReadingsListByBookIdResponse {

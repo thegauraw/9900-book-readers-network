@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Box, OutlinedInput } from '@mui/material';
+import { Paper, OutlinedInput } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import { RatingAndReviewForm } from '../types/ReadingTypes';
 import FoldableContent from './FoldableContent';
@@ -75,10 +75,11 @@ const RatingReviewEditBox: FC<RatingReviewEditBoxProps> = ({
   };
 
   return (
-    <Box
+    <Paper
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        p: 1,
       }}
     >
       <RatingStatus
@@ -100,7 +101,7 @@ const RatingReviewEditBox: FC<RatingReviewEditBoxProps> = ({
           />
         </>
       )}
-    </Box>
+    </Paper>
   );
 };
 
