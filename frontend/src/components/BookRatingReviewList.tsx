@@ -1,5 +1,5 @@
 import { FC, useEffect, useContext } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import FoldableContent from './FoldableContent';
 import LoadingIndicator from './LoadingIndicator';
@@ -10,7 +10,7 @@ import { getReadingListByBookId } from '../services/readingAPIs';
 const BookRatingReviewList: FC = () => {
   const context = useContext(Appctx);
   const { bookId } = useParams();
-  const { readingListByBookId, setReadingListByBookId, token } = context;
+  const { ownedReadingByBookId, readingListByBookId, setReadingListByBookId, token } = context;
   const { settlement, isLoading, error } = readingListByBookId;
   useEffect(() => {
     (async function () {
@@ -24,7 +24,7 @@ const BookRatingReviewList: FC = () => {
         setReadingListByBookId({ isLoading: false });
       }
     })();
-  }, []);
+  }, [ownedReadingByBookId]);
   return (
     <Box
       sx={{
@@ -35,21 +35,26 @@ const BookRatingReviewList: FC = () => {
       {isLoading && <LoadingIndicator />}
       {!isLoading && !isEmpty(error) && <Typography>{error}</Typography>}
       {settlement &&
-        settlement.map(({ rating, review, last_update_review_rating_at }) => {
-          if (!isEmpty(review) || !isEmpty(rating))
+        settlement.map(({ rating, review, last_update_review_rating_at, username }) => {
+          console.log(review, rating, !!review, !isEmpty(rating));
+          if (review || rating)
             return (
-              <Box
+              <Paper
                 sx={{
                   mb: 2,
+                  p: 1,
                 }}
+                key={username}
+                elevation={1}
               >
                 <RatingStatus
                   inEditing={false}
                   ratingValue={rating}
+                  username={username}
                   lastUpdatedAt={last_update_review_rating_at}
                 />
                 <FoldableContent content={review} />
-              </Box>
+              </Paper>
             );
           else return <></>;
         })}

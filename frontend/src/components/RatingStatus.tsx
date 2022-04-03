@@ -5,6 +5,7 @@ interface RatingStatusProps {
   inEditing: boolean;
   lastUpdatedAt: string | null;
   ratingValue: number | null;
+  username?: string;
   setRatingValue?: (value: number | null) => void;
   onStartReview?: () => void;
 }
@@ -12,11 +13,12 @@ const RatingStatus: FC<RatingStatusProps> = ({
   inEditing,
   lastUpdatedAt,
   ratingValue,
+  username,
   setRatingValue,
   onStartReview,
 }) => {
   const hasContent = !isEmpty(lastUpdatedAt);
-  const contentAligned = inEditing && !hasContent ? 'flex-start' : 'space-between';
+  const contentAligned = !inEditing && !hasContent ? 'flex-start' : 'space-between';
   return (
     <Box
       sx={{
@@ -41,7 +43,11 @@ const RatingStatus: FC<RatingStatusProps> = ({
         {inEditing ? (
           'In editing'
         ) : hasContent ? (
-          `Last updated at ${lastUpdatedAt}`
+          username ? (
+            `${username} posted it at ${lastUpdatedAt}`
+          ) : (
+            `Last updated at ${lastUpdatedAt}`
+          )
         ) : (
           <Button variant="contained" onClick={onStartReview}>
             Write a review

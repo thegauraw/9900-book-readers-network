@@ -16,7 +16,7 @@ const BookRatingReview: FC = () => {
         <Divider />
         <Box
           sx={{
-            m: 2,
+            my: 3,
           }}
         >
           <BookRatingReviewOwned />
@@ -25,7 +25,7 @@ const BookRatingReview: FC = () => {
         <Divider />
         <Box
           sx={{
-            m: 2,
+            my: 3,
           }}
         >
           <BookRatingReviewList />
