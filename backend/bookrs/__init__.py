@@ -7,7 +7,7 @@ from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager
 
 from .resources.pages import pages_bp
-# from .resources.readers import Readers, readers_bp
+from .resources.readers import Readers, readers_bp
 from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
 from .resources.collections import collections_bp
@@ -79,7 +79,8 @@ def create_app(test_config=None):
 
     app.register_blueprint(pages_bp)
 
-    # app.register_blueprint(readers_bp)    
+    app.register_blueprint(readers_bp)
+    
     api.add_resource(Reader, '/reader')
     app.register_blueprint(reader_bp)
 

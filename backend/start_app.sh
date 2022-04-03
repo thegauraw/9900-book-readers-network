@@ -14,4 +14,4 @@ export MAIL_PASSWORD='SG.eVqkXXTuRj2EGFBfjuHL9A.HmkDGg939msEJFTlqO_6R4q815LT9G41
 export MAIL_SENDER='daydayup9900@gmail.com'
 
 # start app
-flask run
+flask run -h localhost -p 3210
