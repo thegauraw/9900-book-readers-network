@@ -9,7 +9,6 @@ from bookrs.model import db, ma
 from bookrs.model.collection import Collection
 from bookrs.utils.exceptions import EmailRegisteredException, EmailFormatException, UsernameRegisteredException
 from .readingModel import ReadingModel
-
 class ReaderModel(db.Model):
     __tablename__ = 'readers'
     id = db.Column(db.Integer, primary_key=True)
@@ -18,7 +17,7 @@ class ReaderModel(db.Model):
     password_hash = db.Column(db.String(120), nullable=False)
     status = db.Column(db.Boolean)
     collections = db.relationship("Collection", backref="owner")
-    readings = relationship(ReadingModel, backref=backref('readers'))
+    readings = relationship(ReadingModel, backref=backref('reader'))
 
     def create(self):
         db.session.add(self)
