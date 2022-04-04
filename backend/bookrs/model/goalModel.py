@@ -13,11 +13,21 @@ class GoalModel(db.Model):
     userid = db.Column(db.String(80), db.ForeignKey("readers.id"), nullable=False)
     start_time = db.Column(db.Date, nullable=False)
     end_time = db.Column(db.Date, nullable=False)
-    book_num = db.Column(db.Integer, nullable=False)
+    goal_num = db.Column(db.Integer, nullable=False)
     finish = db.Column(db.Boolean, default=False)
+    finished_num = db.Column(db.Integer, default=0)
 
     def create(self):
         db.session.add(self)
+        db.session.commit()
+        return self
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return self
+
+    def update(self):
         db.session.commit()
         return self
 
@@ -33,10 +43,11 @@ class GoalSchema(ma.SQLAlchemySchema):
 
     id = auto_field() #fields.Number(dump_only=True)
     userid = fields.Int(required=True)
-    book_num = fields.Int(required=True)
+    goal_num = fields.Int(required=True)
     start_time = fields.Date(required=True)
     end_time = fields.Date(required=True)
     finish = fields.Bool(default=False)
+    finished_num = fields.Int(default=0)
 
 
 goal_schema = GoalSchema()
