@@ -3,6 +3,7 @@ import { Box, Typography, Divider, Pagination, Stack } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import FoldableContent from './FoldableContent';
 import LoadingIndicator from './LoadingIndicator';
+import SearchNotFound from './SearchNotFound';
 import { Appctx } from '../utils/LocalContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 const SearchResultFullList: FC = () => {
@@ -50,16 +51,18 @@ const SearchResultFullList: FC = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        mt: 4,
+        mt: 2,
+        px: 2,
       }}
     >
       {isLoading && <LoadingIndicator />}
-      {!isLoading && !isEmpty(error) && <Typography>{error}</Typography>}
+      {!isLoading && !isEmpty(error) && <SearchNotFound />}
       {showList()}
       {!isLoading && !isEmpty(settlement) && isEmpty(error) && (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={{ alignItems: 'center' }}>
           <Pagination
-            count={Math.ceil(Number(settlement?.totalItems) / 10)}
+            //Google does not serve more than 1000(100pages) results for any query.
+            count={Math.min(Math.ceil(Number(settlement?.totalItems) / 10), 100)}
             shape="rounded"
             onChange={handleChange}
             page={page}

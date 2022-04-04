@@ -51,7 +51,7 @@ const SearchBox: FC<SearchBoxProps> = ({ showFullResults }) => {
   };
 
   return (
-    <Paper sx={{ p: 2 }}>
+    <Paper sx={{ p: 2 }} elevation={0}>
       <Box
         sx={{
           display: 'flex',

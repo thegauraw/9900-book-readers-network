@@ -25,7 +25,7 @@ export const searchBooksApi = async (query: ST.SearchParams): Promise<any> => {
     const requestedURL = `${baseURL}${queryString}&startIndex=${startIndex}`;
     const response = await fetch(requestedURL, requestOptions);
     const data = await response.json();
-    if (!isEmpty(data.error)) {
+    if (!isEmpty(data.error) || isEmpty(data.items) || !data.totalItems) {
       return Promise.reject('No more results');
     }
     return data as ST.SearchSuccessResponse;
