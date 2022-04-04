@@ -1,5 +1,17 @@
 import { FC, useState, useContext } from 'react';
-import { Box, Grid, InputBase, InputAdornment, IconButton, Button } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  InputBase,
+  InputAdornment,
+  IconButton,
+  Button,
+  FormLabel,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  Paper,
+} from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import isEmpty from 'lodash/isEmpty';
@@ -15,7 +27,11 @@ const SearchBox: FC<SearchBoxProps> = ({ showFullResults }) => {
   const context = useContext(Appctx);
   let [searchParams, setSearchParams] = useSearchParams();
   const [input, setInput] = useState(searchParams.get('q') ?? '');
+  const [method, setMethod] = useState(searchParams.get('by') ?? 'all');
 
+  const handleChange = (event: any) => {
+    setMethod(event?.target?.value ?? '');
+  };
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
@@ -26,65 +42,80 @@ const SearchBox: FC<SearchBoxProps> = ({ showFullResults }) => {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key == 'Enter') {
-      if (!isEmpty(input)) setSearchParams({ q: input, by: 'all' });
+      if (!isEmpty(input)) setSearchParams({ q: input, by: method });
     }
   };
 
   const handleShowFullResultsSearch = () => {
-    if (!isEmpty(input)) setSearchParams({ q: input, by: 'all' });
+    if (!isEmpty(input)) setSearchParams({ q: input, by: method });
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-      }}
-    >
-      <InputBase
+    <Paper sx={{ p: 2 }}>
+      <Box
         sx={{
-          border: '1px solid',
-          borderRadius: 2,
-          width: '100%',
-          borderColor: 'primary.main',
-          backgroundColor: 'background.default',
-        }}
-        placeholder="Search books"
-        inputProps={{ 'aria-label': 'search books' }}
-        autoFocus={showFullResults}
-        value={input}
-        onChange={handleInput}
-        onKeyDown={handleKeyPress}
-        startAdornment={
-          <InputAdornment position="start">
-            <SearchIcon
-              sx={{
-                ml: 1,
-                color: 'primary.main',
-              }}
-            />
-          </InputAdornment>
-        }
-        endAdornment={
-          input ? (
-            <IconButton aria-label="clear" size="small" onClick={handleClear}>
-              <CancelIcon color="disabled" />
-            </IconButton>
-          ) : null
-        }
-      />
-      <Button
-        variant="contained"
-        onClick={handleShowFullResultsSearch}
-        sx={{
-          ml: 2,
-          px: 3,
-          py: 1,
+          display: 'flex',
+          flexDirection: 'row',
         }}
       >
-        Search
-      </Button>
-    </Box>
+        <InputBase
+          sx={{
+            border: '1px solid',
+            borderRadius: 2,
+            width: '100%',
+            borderColor: 'primary.main',
+            backgroundColor: 'background.default',
+          }}
+          placeholder="Search books"
+          inputProps={{ 'aria-label': 'search books' }}
+          autoFocus={showFullResults}
+          value={input}
+          onChange={handleInput}
+          onKeyDown={handleKeyPress}
+          startAdornment={
+            <InputAdornment position="start">
+              <SearchIcon
+                sx={{
+                  ml: 1,
+                  color: 'primary.main',
+                }}
+              />
+            </InputAdornment>
+          }
+          endAdornment={
+            input ? (
+              <IconButton aria-label="clear" size="small" onClick={handleClear}>
+                <CancelIcon color="disabled" />
+              </IconButton>
+            ) : null
+          }
+        />
+        <Button
+          variant="contained"
+          onClick={handleShowFullResultsSearch}
+          sx={{
+            ml: 2,
+            px: 3,
+            py: 1,
+          }}
+        >
+          Search
+        </Button>
+      </Box>
+      <FormControl sx={{ pt: 1, pl: 1 }}>
+        <RadioGroup
+          row
+          name="search-buttons-group"
+          sx={{ color: 'primary.secondary' }}
+          value={method}
+          onChange={handleChange}
+        >
+          <FormControlLabel value="all" control={<Radio size={'small'} />} label="all" />
+          <FormControlLabel value="books" control={<Radio size={'small'} />} label="title" />
+          <FormControlLabel value="authors" control={<Radio size={'small'} />} label="author" />
+        </RadioGroup>
+      </FormControl>
+    </Paper>
   );
 };
 
