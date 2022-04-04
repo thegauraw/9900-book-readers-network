@@ -39,7 +39,7 @@ export const updateReaderPassword = async (props: any): Promise<string> => {
       }),
     };
 
-    const response = await fetch(`${UserApiURL}&reset=true`, requestOptions);
+    const response = await fetch(`${UserApiURL}?reset=true`, requestOptions);
     const data = await response.json();
 
     console.log('status: ', response.status);
