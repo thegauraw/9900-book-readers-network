@@ -95,6 +95,7 @@ export const updateReaderProfile = async (props: any): Promise<string> => {
       body: JSON.stringify({
         gender: props.gender,
         age: props.age,
+        password: props.password,
       }),
     };
 

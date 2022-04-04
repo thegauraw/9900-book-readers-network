@@ -32,7 +32,10 @@ export default function ProfilePage() {
   const [username, setUsername] = React.useState('');
   const [gender, setGender] = React.useState('');
   const [age, setAge] = React.useState(18);
+  const [password, setPassword] = React.useState('');
+  const [passwordConfirm, setPasswordConfirm] = React.useState('');
   const [isEditing, setIsEditing] = React.useState(false);
+  const [isResetPassword, setIsResetPaasword] = React.useState(false);
 
   const context = React.useContext(Appctx);
   const { token } = context;
@@ -43,10 +46,12 @@ export default function ProfilePage() {
       gender: gender,
       age: age,
       token: token,
+      password: password,
     };
 
     updateReaderProfile(reqData).then((msg) => console.log(msg));
     setIsEditing(false);
+    setIsResetPaasword(false);
   };
 
   React.useEffect(() => {
@@ -159,6 +164,45 @@ export default function ProfilePage() {
                   onClick={() => setIsEditing(true)}
                 >
                   Edit Profile
+                </Button>
+              )}
+
+              {isResetPassword ? (
+                [
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />,
+                  <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={() => {
+                      if (password.length < 8 || password.length > 16)
+                        alert('Password length must be between 8-16 for security');
+                      handleSubmit();
+                    }}
+                  >
+                    Submit
+                  </Button>,
+                ]
+              ) : (
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={() => setIsResetPaasword(true)}
+                >
+                  Reset Password
                 </Button>
               )}
             </Grid>

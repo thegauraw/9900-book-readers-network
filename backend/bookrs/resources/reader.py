@@ -65,9 +65,8 @@ class Reader(Resource):
             reader_id = get_jwt_identity()[0]
             account = ReaderModel.query.filter_by(id=reader_id).first()
 
-        print(data)
         # update reader
-        if 'password' in data:
+        if 'password' in data and data.get('password'):
           account.password_hash = generate_password_hash(data.get('password'), method='sha256')
         if 'gender' in data:
           account.gender = data.get('gender')
