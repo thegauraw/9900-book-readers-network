@@ -1,12 +1,11 @@
-from flask import Blueprint, request, make_response, jsonify
+from flask import Blueprint, request
 from flask_restful import Resource
 
-# from bookrs.model.reader import Reader, readers_schema, reader_schema, reader_creating_schema
-from bookrs.model.readerModel import ReaderModel, readers_schema, reader_schema, reader_creating_schema
+from bookrs.model.readerModel import ReaderModel, readers_schema, reader_creating_schema
 from bookrs.resources import api
 from bookrs.utils.exceptions import NullRegisterFieldException, CollectionCreateException
 from bookrs.utils.common import SUCCESS
-from bookrs.model.collection import Collection, collection_schema
+from bookrs.model.collection import collection_schema
 
 readers_bp = Blueprint('readers', __name__)
 
