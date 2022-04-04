@@ -14,7 +14,7 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { fetchUser } from '../services/callableFunctions';
+import { resetReaderPassword } from '../services/ReaderAPIs';
 import { AuthenticationPaths, NavMenuList } from '../config/paths';
 
 function ForgottenPassword() {
@@ -28,7 +28,7 @@ function ForgottenPassword() {
     const email = data.get('email');
 
     if (email !== undefined) {
-      fetchUser({ email: email }).then((msg) => setMessage(msg));
+      resetReaderPassword({ email: email }).then((msg) => setMessage(msg));
     }
   };
 
