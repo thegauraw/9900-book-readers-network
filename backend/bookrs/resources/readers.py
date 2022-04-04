@@ -26,8 +26,8 @@ class Readers(Resource):
 
         collection_dict = dict()
         collection_dict['reader_id'] = result.get('id')
-        collection_dict['title'] = ""
-        collection_dict['description'] = ""
+        collection_dict['title'] = "main"
+        collection_dict['description'] = "main collection"
 
         """Create default collection""" 
         collection = collection_schema.load(collection_dict)
