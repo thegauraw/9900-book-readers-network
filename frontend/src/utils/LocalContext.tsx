@@ -6,6 +6,7 @@ import {
   ReadingByBookIdFromOwnerResponse,
   ReadingsListByBookIdResponse,
 } from '../types/ReadingTypes';
+import { SearchSuccessResponse } from '../types/SearchTypes';
 export type ContextType = {
   logged: boolean;
   setLogged: Function;
@@ -17,6 +18,8 @@ export type ContextType = {
   setOwnedReadingByBookId: Function;
   readingListByBookId: TransferState<ReadingsListByBookIdResponse>;
   setReadingListByBookId: Function;
+  searchResultList: TransferState<SearchSuccessResponse>;
+  setSearchResultList: Function;
 };
 
 export const globalParas = {
@@ -30,6 +33,8 @@ export const globalParas = {
   setOwnedReadingByBookId: (f: Partial<TransferState<ReadingByBookIdFromOwnerResponse>>) => f,
   readingListByBookId: { isLoading: false, settlement: null },
   setReadingListByBookId: (f: Partial<TransferState<ReadingsListByBookIdResponse>>) => f,
+  searchResultList: { isLoading: false, settlement: null },
+  setSearchResultList: (f: Partial<TransferState<SearchSuccessResponse>>) => f,
 };
 
 export const Appctx = React.createContext<ContextType>(globalParas);
@@ -65,6 +70,14 @@ export const AppProvider = ({ children }: any) => {
     { isLoading: false, settlement: null }
   );
 
+  const [searchResultList, setSearchResultList] = useReducer(
+    (
+      fetchState: TransferState<SearchSuccessResponse>,
+      updates: Partial<TransferState<SearchSuccessResponse>>
+    ) => ({ ...fetchState, ...updates }),
+    { isLoading: false, settlement: null }
+  );
+
   useEffect(() => {
     setLocalStorage('logged', logged);
   }, [logged]);
@@ -86,6 +99,8 @@ export const AppProvider = ({ children }: any) => {
         setOwnedReadingByBookId,
         readingListByBookId,
         setReadingListByBookId,
+        searchResultList,
+        setSearchResultList,
       }}
     >
       {children}
