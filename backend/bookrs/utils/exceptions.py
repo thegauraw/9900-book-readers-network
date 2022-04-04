@@ -10,10 +10,10 @@ def EmailFormatException():
 def UsernameRegisteredException():
   return InvalidUsage('This username has been registered!', status_code=409)
 
-def NullRegisterFiledsException():
+def NullRegisterFieldException():
   return InvalidUsage('Username, Email or Password are not allowed to be empty!', status_code=403)
 
-def NullLoginFildsException():
+def NullLoginFieldException():
   return InvalidUsage('Email or Password are not allowed to be empty!', status_code=403)
 
 def InvalidEmailException():

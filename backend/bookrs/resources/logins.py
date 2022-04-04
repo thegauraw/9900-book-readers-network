@@ -7,7 +7,7 @@ from flask_restful import Resource
 # from bookrs.model.reader import Reader
 from bookrs.model.readerModel import ReaderModel
 from bookrs.resources import api
-from bookrs.utils.exceptions import NullLoginFildsException, InvalidEmailException, InvalidPasswordException, InvalidEmailorPasswordException
+from bookrs.utils.exceptions import NullLoginFieldException, InvalidEmailException, InvalidPasswordException, InvalidEmailorPasswordException
 
 
 login_bp = Blueprint('login', __name__)
@@ -17,7 +17,7 @@ class Login(Resource):
         auth = request.get_json()
 
         if not auth:
-          raise NullLoginFildsException()
+          raise NullLoginFieldException()
         
         if not auth.get('email'):
           raise InvalidEmailException()
