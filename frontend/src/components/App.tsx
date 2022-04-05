@@ -40,7 +40,7 @@ const App: React.FC = () => {
               path={AuthenticationPaths.ResetPasswordSuccess}
               element={<ResetPasswordSuccessPage />}
             />
-            <Route path={bookPath}>
+            <Route path={bookPath} />
             <Route path={NavMenuList.Profiles} element={<ProfilePage />} />
             <Route path="/books">
               <Route path=":bookId" element={<BookPage />} />
