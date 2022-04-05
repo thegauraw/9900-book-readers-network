@@ -60,11 +60,18 @@ const BookDetails: React.FC<BookDetailsProps> = ({
             </Typography>
           ))}
         </Box>
-        {categories.map((category) => (
-          <Typography gutterBottom variant="subtitle1" component="div">
-            <Chip label={category} variant="outlined" size="small" />
-          </Typography>
-        ))}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          {categories.map((category) => (
+            <Typography gutterBottom variant="subtitle1" component="div">
+              <Chip label={category} variant="outlined" size="small" />
+            </Typography>
+          ))}
+        </Box>
         <Typography component="legend" variant="subtitle2">
           {`Published ${publishedDate} by ${publisher}`}
         </Typography>
