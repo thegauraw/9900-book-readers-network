@@ -63,7 +63,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'column',
           }}
         >
           {categories?.map((category) => (
