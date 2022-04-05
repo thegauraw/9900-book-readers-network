@@ -4,6 +4,8 @@ from flask_restful import Resource
 from bookrs.model.goalModel import GoalModel, goal_schema, goals_schema
 from bookrs.resources import api
 
+import datetime
+
 
 goals_bp = Blueprint('goals', __name__)
 
@@ -57,9 +59,9 @@ class Goals(Resource):
         if data.get("goal_num"):
             goal.goal_num = data.get("goal_num")
         if data.get("start_time"):
-            goal.start_time = data.get("start_time")
+            goal.start_time = datetime.datetime.strptime(data.get("start_time"), '%Y-%m-%d')
         if data.get("end_time"):
-            goal.end_time = data.get("end_time")
+            goal.end_time = datetime.datetime.strptime(data.get("end_time"), '%Y-%m-%d')
         goal.update()
         return make_response(jsonify({"goal": goal_schema.dump(goal)}), 201)
 
