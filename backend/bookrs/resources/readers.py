@@ -1,3 +1,5 @@
+import copy
+
 from flask import Blueprint, request
 from flask_restful import Resource
 
@@ -41,4 +43,4 @@ class Readers(Resource):
         return SUCCESS(payload=result, status_code=201)
 
 
-api.add_resource(Readers, '/readers', endpoint='reader')
+api.add_resource(Readers, '/readers')

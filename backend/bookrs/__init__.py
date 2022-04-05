@@ -80,9 +80,7 @@ def create_app(test_config=None):
     app.register_blueprint(pages_bp)
 
     app.register_blueprint(readers_bp)  
-
-
-    api.add_resource(Reader, '/reader')
+    
     app.register_blueprint(reader_bp)
 
     @app.errorhandler(InvalidUsage)

@@ -19,7 +19,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
-import { fectchUpdateUser } from '../services/callableFunctions';
+import { updateReaderPassword } from '../services/ReaderAPIs';
 import { AuthenticationPaths, NavMenuList } from '../config/paths';
 
 function PasswordResetPage() {
@@ -47,7 +47,7 @@ function PasswordResetPage() {
         password: password,
         token: token,
       };
-      fectchUpdateUser(reqPara).then((msg) => {
+      updateReaderPassword(reqPara).then((msg) => {
         setPasswordMsg(msg);
         msg !== '' && setError('block');
         msg === 'success' && navigate(AuthenticationPaths.SignIn);
@@ -66,7 +66,6 @@ function PasswordResetPage() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,

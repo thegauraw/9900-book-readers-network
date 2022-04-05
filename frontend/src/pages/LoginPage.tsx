@@ -19,7 +19,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
-import { fetchLogin } from '../services/callableFunctions';
+import { LoginAPI } from '../services/authAPIs';
 import { AuthenticationPaths, NavMenuList } from '../config/paths';
 
 function SignIn() {
@@ -45,7 +45,7 @@ function SignIn() {
       setLogged: setLogged,
     };
 
-    fetchLogin(reqPara).then((msg) => setMessage(msg));
+    LoginAPI(reqPara).then((msg) => setMessage(msg));
     console.log('get token: ', token);
     console.log('logged status: ', logged);
   };
@@ -62,7 +62,6 @@ function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,

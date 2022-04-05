@@ -14,9 +14,9 @@ import Tooltip from '@mui/material/Tooltip';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
-import { NavMenuList } from '../config/paths';
-import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+import { Link as RouterLink, LinkProps as RouterLinkProps, useNavigate } from 'react-router-dom';
 
+import { AuthenticationPaths, NavMenuList } from '../config/paths';
 import { Appctx } from '../utils/LocalContext';
 
 interface ListItemLinkProps {
@@ -39,9 +39,11 @@ export default function AccountMenu() {
   const { logged, setLogged, setToken } = context;
   console.log('logged: ', logged);
 
+  let navigate = useNavigate();
   const handlerLogout = () => {
     setToken('xxx');
     setLogged(false);
+    navigate(AuthenticationPaths.SignIn);
   };
 
   function ListItemLink(props: ListItemLinkProps) {
