@@ -7,13 +7,20 @@ import {
   Container,
   CssBaseline,
   Checkbox,
+  FormControl,
   FormControlLabel,
+  FormLabel,
   Grid,
+  InputLabel,
   Link,
   TextField,
   Typography,
   ListItem,
+  MenuItem,
   Paper,
+  Radio,
+  RadioGroup,
+  Select,
   OutlinedInput,
 } from '@mui/material';
 import { deepOrange, deepPurple, blue } from '@mui/material/colors';
@@ -37,6 +44,8 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isResetPassword, setIsResetPaasword] = React.useState(false);
 
+  let ageRange = [...Array(80)].map((k, i) => i + 10);
+
   const context = React.useContext(Appctx);
   const { token } = context;
 
@@ -52,6 +61,10 @@ export default function ProfilePage() {
     updateReaderProfile(reqData).then((msg) => console.log(msg));
     setIsEditing(false);
     setIsResetPaasword(false);
+  };
+
+  const handlerAge = (num: string) => {
+    return <MenuItem value={num}>num</MenuItem>;
   };
 
   React.useEffect(() => {
@@ -104,14 +117,18 @@ export default function ProfilePage() {
                   <>{gender}</>
                 ) : (
                   <>
-                    <OutlinedInput
-                      id="gender"
-                      disabled={!isEditing}
-                      defaultValue={gender}
-                      fullWidth={false}
-                      multiline
-                      onChange={(e) => setGender(e.target.value)}
-                    />
+                    <FormControl>
+                      <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        onChange={(e) => setGender(e.target.value)}
+                        defaultValue="Female"
+                      >
+                        <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                        <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                      </RadioGroup>
+                    </FormControl>
                   </>
                 )}
               </Grid>
@@ -123,17 +140,24 @@ export default function ProfilePage() {
                   <>{age}</>
                 ) : (
                   <>
-                    <OutlinedInput
-                      id="age"
-                      disabled={!isEditing}
-                      defaultValue={age}
-                      fullWidth={false}
-                      multiline
-                      onChange={(e) => {
-                        console.log('current age: ', e.target.value);
-                        setAge(Number(e.target.value));
-                      }}
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={age}
+                        label="Age"
+                        onChange={(e) => setAge(Number(e.target.value))}
+                      >
+                        {ageRange.map((num, index) => {
+                          return (
+                            <MenuItem value={num} key={index}>
+                              {num}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
                   </>
                 )}
               </Grid>
@@ -204,7 +228,7 @@ export default function ProfilePage() {
                   sx={{ mt: 3, mb: 2 }}
                   onClick={() => setIsResetPaasword(true)}
                 >
-                  Reset Password
+                  Update Password
                 </Button>
               )}
             </Grid>
