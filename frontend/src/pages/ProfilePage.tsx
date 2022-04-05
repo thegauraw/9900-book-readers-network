@@ -50,6 +50,7 @@ export default function ProfilePage() {
   const { token } = context;
 
   console.log('editing profile: ', isEditing);
+  
   const handleSubmit = () => {
     const reqData = {
       gender: gender,
@@ -61,10 +62,6 @@ export default function ProfilePage() {
     updateReaderProfile(reqData).then((msg) => console.log(msg));
     setIsEditing(false);
     setIsResetPaasword(false);
-  };
-
-  const handlerAge = (num: string) => {
-    return <MenuItem value={num}>num</MenuItem>;
   };
 
   React.useEffect(() => {
@@ -120,8 +117,8 @@ export default function ProfilePage() {
                     <FormControl>
                       <RadioGroup
                         row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
+                        aria-labelledby="gender-label"
+                        name="gender-group"
                         onChange={(e) => setGender(e.target.value)}
                         defaultValue="Female"
                       >
@@ -141,10 +138,10 @@ export default function ProfilePage() {
                 ) : (
                   <>
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                      <InputLabel id="age">Age</InputLabel>
                       <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId="age"
+                        id="age"
                         value={age}
                         label="Age"
                         onChange={(e) => setAge(Number(e.target.value))}
