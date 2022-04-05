@@ -54,7 +54,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
           >
             by
           </Typography>
-          {authors.map((author) => (
+          {authors?.map((author) => (
             <Typography gutterBottom variant="subtitle2" component="div">
               {author}
             </Typography>
@@ -66,7 +66,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
             flexDirection: 'row',
           }}
         >
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <Typography gutterBottom variant="subtitle1" component="div">
               <Chip label={category} variant="outlined" size="small" />
             </Typography>
