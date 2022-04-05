@@ -188,7 +188,9 @@ export default function ProfilePage() {
                     onClick={() => {
                       if (password.length < 8 || password.length > 16)
                         alert('Password length must be between 8-16 for security');
-                      handleSubmit();
+                      else {
+                        handleSubmit();
+                      }
                     }}
                   >
                     Submit
