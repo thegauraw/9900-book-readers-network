@@ -15,7 +15,7 @@ class OwnedReadingByBookId(Resource):
     def get(self, book_id):
         try:
             current_user = get_jwt_identity()
-            Book.query.filter_by(id=book_id).first_or_404()
+            #Book.query.filter_by(id=book_id).first_or_404()
             
             #The reading record can be not found at the beginning
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
@@ -27,7 +27,7 @@ class OwnedReadingByBookId(Resource):
         
     def post(self, book_id):
         try:
-            Book.query.filter_by(id=book_id).first_or_404()
+            #Book.query.filter_by(id=book_id).first_or_404()
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
             #Limit: one user can only create a reading for a book
@@ -46,7 +46,7 @@ class OwnedReadingByBookId(Resource):
         
     def put(self, book_id):
         try:
-            Book.query.filter_by(id=book_id).first_or_404()
+            #Book.query.filter_by(id=book_id).first_or_404()
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
             data = request.get_json()
@@ -69,7 +69,7 @@ class OwnedReadingByBookId(Resource):
 
     def delete(self, book_id):
         try:
-            Book.query.filter_by(id=book_id).first_or_404()
+            #Book.query.filter_by(id=book_id).first_or_404()
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first_or_404()
             result = reading_schema.dump(db_result.delete())
@@ -77,4 +77,4 @@ class OwnedReadingByBookId(Resource):
         except NotFound:
             raise ReadingNotFoundException()
       
-api.add_resource(OwnedReadingByBookId, '/owned_readings/<int:book_id>')
+api.add_resource(OwnedReadingByBookId, '/owned_readings/<string:book_id>')

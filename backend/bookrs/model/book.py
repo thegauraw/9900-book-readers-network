@@ -13,7 +13,7 @@ class Book(BaseModel):
   publisher = db.Column(db.String(120))
   publication_date = db.Column(db.Date)
   category = db.Column(db.String(80))
-  readings = relationship(ReadingModel, backref=backref('book'))
+  #readings = relationship(ReadingModel, backref=backref('book'))
 
 
   @classmethod
