@@ -16,7 +16,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import { Link as RouterLink, LinkProps as RouterLinkProps, useNavigate } from 'react-router-dom';
 
-import { NavMenuList } from '../config/paths';
+import { AuthenticationPaths } from '../config/paths';
 import { Appctx } from '../utils/LocalContext';
 
 interface ListItemLinkProps {
@@ -43,7 +43,7 @@ export default function AccountMenu() {
   const handlerLogout = () => {
     setToken('xxx');
     setLogged(false);
-    navigate(NavMenuList.Home);
+    navigate(AuthenticationPaths.SignIn);
   };
 
   function ListItemLink(props: ListItemLinkProps) {
