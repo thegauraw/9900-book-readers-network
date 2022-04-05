@@ -14,7 +14,7 @@ const BookRatingReviewStat: FC = () => {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        m: 4,
+        padding: '16px 0 0 20px',
       }}
     >
       {isLoading && <LoadingIndicator />}

@@ -16,7 +16,7 @@ class Readings(Resource):
 class ReadingsByBookId(Resource):
     def get(self, book_id):
         try:
-            Book.query.filter_by(id=book_id).first_or_404()
+            #Book.query.filter_by(volumeId=volumeId).first_or_404()
             readings = ReadingModel.query.filter_by(book_id=book_id).all()
             readings = readings_schema.dump(readings)
             
@@ -32,4 +32,4 @@ class ReadingsByBookId(Resource):
             raise BookNotFoundException()
         
 api.add_resource(Readings, '/readings')
-api.add_resource(ReadingsByBookId, '/readings/<int:book_id>')
+api.add_resource(ReadingsByBookId, '/readings/<string:book_id>')

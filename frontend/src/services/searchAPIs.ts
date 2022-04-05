@@ -33,3 +33,24 @@ export const searchBooksApi = async (query: ST.SearchParams): Promise<any> => {
     return Promise.reject('Internal Error');
   }
 };
+
+export const getBookDetailsApi = async (volumeId: string): Promise<any> => {
+  try {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    };
+    const requestedURL = `${baseURL}/${volumeId}`;
+    const response = await fetch(requestedURL, requestOptions);
+    const data = await response.json();
+    if (!isEmpty(data.error) || isEmpty(data) || !data.id) {
+      return Promise.reject('Not found');
+    }
+    return data as ST.SearchSuccessItemResponse;
+  } catch (error) {
+    return Promise.reject('Internal Error');
+  }
+};

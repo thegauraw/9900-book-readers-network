@@ -48,6 +48,10 @@ const theme = createTheme({
       fontSize: '0.95rem',
       fontWeight: 500,
     },
+    h5: {
+      fontSize: '0.9rem',
+      fontWeight: 500,
+    },
     subtitle1: {
       fontSize: '0.85rem',
       fontWeight: 500,

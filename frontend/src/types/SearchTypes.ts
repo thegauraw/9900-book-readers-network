@@ -16,6 +16,7 @@ export interface SearchSuccessItemResponse {
   volumeInfo: {
     title: string;
     authors: string[];
+    categories: string[];
     publisher: string;
     publishedDate: string;
     description: string;
