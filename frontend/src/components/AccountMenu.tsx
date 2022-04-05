@@ -16,7 +16,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import { Link as RouterLink, LinkProps as RouterLinkProps, useNavigate } from 'react-router-dom';
 
-import { AuthenticationPaths } from '../config/paths';
+import { AuthenticationPaths, NavMenuList } from '../config/paths';
 import { Appctx } from '../utils/LocalContext';
 
 interface ListItemLinkProps {
