@@ -2,7 +2,7 @@ import { getMyCollectionsURL } from './callableURLs';
 import { CollectionListData } from '../types/collectionTypes';
 import { ErrorResponse, SuccessResponse } from '../types/ServerResponseTypes';
 
-export const fetchCollectionsData = async (
+export const fetchCollectionListData = async (
   token: string
   ): Promise<CollectionListData[]> => {
   try {
