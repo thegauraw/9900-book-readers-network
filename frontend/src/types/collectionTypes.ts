@@ -1,4 +1,4 @@
-export interface MyCollectionsData {
+export interface CollectionListData {
   id: string;
   title: string;
   description: string;

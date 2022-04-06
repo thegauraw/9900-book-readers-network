@@ -1,10 +1,10 @@
 import { getMyCollectionsURL } from './callableURLs';
-import { MyCollectionsData } from '../types/collectionTypes';
+import { CollectionListData } from '../types/collectionTypes';
 import { ErrorResponse, SuccessResponse } from '../types/ServerResponseTypes';
 
-export const fetchMyCollectionsData = async (
+export const fetchCollectionsData = async (
   token: string
-  ): Promise<MyCollectionsData[]> => {
+  ): Promise<CollectionListData[]> => {
   try {
     const requestOptions = {
       method: 'GET',
@@ -16,7 +16,7 @@ export const fetchMyCollectionsData = async (
     }
     const response = await fetch(getMyCollectionsURL, requestOptions);
     const data: SuccessResponse = await response.json();
-    return data.payload as MyCollectionsData[];
+    return data.payload as CollectionListData[];
   } catch (err) {
     if ((err as ErrorResponse).msg) {
       return Promise.reject((err as ErrorResponse).msg);

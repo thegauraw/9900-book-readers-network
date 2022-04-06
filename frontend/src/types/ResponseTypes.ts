@@ -12,10 +12,3 @@ export interface RegisterDataType {
   setToken: Function;
   setLogged: Function;
 }
-
-export interface CollectionListData {
-  id: string;
-  name: string;
-  bookNumber: number;
-  recentBookCovers: string[];
-}

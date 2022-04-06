@@ -1,18 +1,16 @@
 import * as React from 'react';
-import { Box, Card, CardContent, CardMedia, Button, Typography } from '@mui/material';
+import { Box, Card, CardContent, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 interface CollectionCoverProps {
-  bookCovers: string[];
-  collectionName: string;
-  totalCaption: string;
+  collectionTitle: string;
+  collectionDescription: string;
   buttonName: string;
   buttonPath: string;
 }
 
 const CollectionCover: React.FC<CollectionCoverProps> = ({
-  bookCovers,
-  collectionName,
-  totalCaption,
+  collectionTitle,
+  collectionDescription,
   buttonName,
   buttonPath,
 }) => {
@@ -20,13 +18,7 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', py: 5 }}>
-        {bookCovers.map((bookCoverPath) => (
-          <CardMedia
-            component="img"
-            sx={{ mx: 1, width: '76px', height: '114px' }}
-            image={bookCoverPath}
-          />
-        ))}
+        {collectionDescription}
       </CardContent>
       <Box
         sx={{
@@ -40,10 +32,7 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
       >
         <Box>
           <Typography gutterBottom variant="h4" component="div">
-            {collectionName}
-          </Typography>
-          <Typography gutterBottom variant="subtitle1" component="div">
-            {totalCaption}
+            {collectionTitle}
           </Typography>
         </Box>
         <Button
