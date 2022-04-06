@@ -14,13 +14,14 @@ class Readings(Resource):
         return SUCCESS(payload=readings_schema.dump(readings))
     
 class ReadingsByBookId(Resource):
-    def get(self, book_id):
+    def get(self, volume_id):
         try:
             #Book.query.filter_by(volumeId=volumeId).first_or_404()
-            readings = ReadingModel.query.filter_by(book_id=book_id).all()
+            readings = ReadingModel.query.filter_by(volume_id=volume_id).all()
             readings = readings_schema.dump(readings)
             
             valid_readings = [p for p in readings if p["last_update_review_rating_at"] is not None]
+            #TODO: delete the stats after finishing search apis
             valid_ratings = [p["rating"] for p in readings if p["rating"] is not None]
             valid_reviews = [p["review"] for p in readings if p["review"] is not None]
             result = {"readings": valid_readings}
@@ -32,4 +33,4 @@ class ReadingsByBookId(Resource):
             raise BookNotFoundException()
         
 api.add_resource(Readings, '/readings')
-api.add_resource(ReadingsByBookId, '/readings/<string:book_id>')
+api.add_resource(ReadingsByBookId, '/readings/<string:volume_id>')
