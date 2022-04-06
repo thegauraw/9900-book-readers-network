@@ -18,3 +18,4 @@ export const AuthenticationPaths = {
 };
 
 export const NotFoundPath = '/404';
+export const bookPath = '/books';

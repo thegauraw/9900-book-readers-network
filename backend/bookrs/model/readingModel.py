@@ -5,7 +5,7 @@ class ReadingModel(BaseModel):
     __tablename__ = 'readings'
     
     #TODO: Update it to foreign key after books table ready.
-    book_id = db.Column(db.Integer, db.ForeignKey("books.id"), nullable=False)
+    book_id = db.Column(db.String, nullable=False)#db.Column(db.Integer, db.ForeignKey("books.id"), nullable=False)
     reader_id = db.Column(db.Integer, db.ForeignKey("readers.id"), nullable=False)
     
     rating = db.Column(db.Float(precision=2), default=None)

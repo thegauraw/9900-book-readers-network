@@ -6,6 +6,7 @@ import {
   ReadingByBookIdFromOwnerResponse,
   ReadingsListByBookIdResponse,
 } from '../types/ReadingTypes';
+import { SearchSuccessResponse, SearchSuccessItemResponse } from '../types/SearchTypes';
 
 export type ContextType = {
   logged: boolean;
@@ -18,6 +19,10 @@ export type ContextType = {
   setOwnedReadingByBookId: Function;
   readingListByBookId: TransferState<ReadingsListByBookIdResponse>;
   setReadingListByBookId: Function;
+  searchResultList: TransferState<SearchSuccessResponse>;
+  setSearchResultList: Function;
+  bookDetails: TransferState<SearchSuccessItemResponse>;
+  setBookDetails: Function;
 };
 
 export const globalParas = {
@@ -31,6 +36,10 @@ export const globalParas = {
   setOwnedReadingByBookId: (f: Partial<TransferState<ReadingByBookIdFromOwnerResponse>>) => f,
   readingListByBookId: { isLoading: false, settlement: null },
   setReadingListByBookId: (f: Partial<TransferState<ReadingsListByBookIdResponse>>) => f,
+  searchResultList: { isLoading: false, settlement: null },
+  setSearchResultList: (f: Partial<TransferState<SearchSuccessResponse>>) => f,
+  bookDetails: { isLoading: false, settlement: null },
+  setBookDetails: (f: Partial<TransferState<SearchSuccessItemResponse>>) => f,
 };
 
 export const Appctx = React.createContext<ContextType>(globalParas);
@@ -66,6 +75,22 @@ export const AppProvider = ({ children }: any) => {
     { isLoading: false, settlement: null }
   );
 
+  const [searchResultList, setSearchResultList] = useReducer(
+    (
+      fetchState: TransferState<SearchSuccessResponse>,
+      updates: Partial<TransferState<SearchSuccessResponse>>
+    ) => ({ ...fetchState, ...updates }),
+    { isLoading: false, settlement: null }
+  );
+
+  const [bookDetails, setBookDetails] = useReducer(
+    (
+      fetchState: TransferState<SearchSuccessItemResponse>,
+      updates: Partial<TransferState<SearchSuccessItemResponse>>
+    ) => ({ ...fetchState, ...updates }),
+    { isLoading: false, settlement: null }
+  );
+
   useEffect(() => {
     setLocalStorage('logged', logged);
   }, [logged]);
@@ -87,6 +112,10 @@ export const AppProvider = ({ children }: any) => {
         setOwnedReadingByBookId,
         readingListByBookId,
         setReadingListByBookId,
+        searchResultList,
+        setSearchResultList,
+        bookDetails,
+        setBookDetails,
       }}
     >
       {children}
