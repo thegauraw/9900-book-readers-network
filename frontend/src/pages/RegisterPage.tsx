@@ -17,7 +17,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
 import { AuthenticationPaths } from '../config/paths';
-import { fetchRegister } from '../services/callableFunctions';
+import { RegisterAPI } from '../services/authAPIs';
 
 const RegisterPage: React.FC = () => {
   const context = React.useContext(Appctx);
@@ -48,7 +48,7 @@ const RegisterPage: React.FC = () => {
     };
 
     if (password.length >= 8 && password.length <= 16 && password === confirm_password)
-      fetchRegister(reqPara).then((msg) => msg !== undefined && setMessage(msg));
+      RegisterAPI(reqPara).then((msg) => msg !== undefined && setMessage(msg));
   };
 
   console.log('Comming to Sign-Up page');

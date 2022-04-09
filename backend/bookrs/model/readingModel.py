@@ -1,12 +1,11 @@
 from marshmallow import fields, post_dump, pre_load, validate
 from bookrs.model import BaseModel, db, ma
 from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format
-
 class ReadingModel(BaseModel):
     __tablename__ = 'readings'
     
     #TODO: Update it to foreign key after books table ready.
-    book_id = db.Column(db.Integer, nullable=True)
+    book_id = db.Column(db.String, nullable=False)#db.Column(db.Integer, db.ForeignKey("books.id"), nullable=False)
     reader_id = db.Column(db.Integer, db.ForeignKey("readers.id"), nullable=False)
     
     rating = db.Column(db.Float(precision=2), default=None)
@@ -24,14 +23,19 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
         model = ReadingModel
         load_instance = True
         include_fk = True
-    
-    rating = fields.Float(validate=validate.Range(min=0, max=5))
-   
+        
+    reader = fields.Nested('ReaderSchema', only=("username",))
             
     @pre_load
     def preprocess_validation(self, reading, many, **kwargs):
+        #User can update the rating to 0 and review to empty string, in this case, the review is existed with updated datetime
         if ('rating' in reading or 'review' in reading):
             reading['last_update_review_rating_at'] = get_str_datetime_now()
+        #When user want to delete the review and rating, set all related fields to None
+        if('last_update_review_rating_at' in reading and reading['last_update_review_rating_at'] is None):
+            reading['review'] = None
+            reading['rating'] = None
+            reading['last_update_review_rating_at'] = None
         if ('has_read' in reading):
             reading['last_update_read_at'] = get_str_datetime_now()
         return reading
@@ -41,6 +45,8 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
             reading['last_update_review_rating_at'] = get_response_datetime_format(reading['last_update_review_rating_at'])
         if (reading and reading['last_update_read_at'] is not None):
             reading['last_update_read_at'] = get_response_datetime_format(reading['last_update_read_at'])
+        reading['username'] = reading['reader']['username']
+        del reading['reader']
         return reading
     
         

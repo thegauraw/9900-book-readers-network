@@ -16,7 +16,6 @@ export const getReadingByBookIdForOwner = async (
       },
     };
     const response = await fetch(`${OwnedReadingsURL}/${bookId}`, requestOptions);
-    console.log(token, bookId, response);
     const data: SuccessResponse = await response.json();
     return data.payload as RT.ReadingByBookIdFromOwnerResponse;
   } catch (error) {
@@ -31,7 +30,7 @@ export const getReadingByBookIdForOwner = async (
 export const getReadingListByBookId = async (
   bookId: string | undefined,
   token: string
-): Promise<RT.ReadingsListByBookIdResponse[]> => {
+): Promise<RT.ReadingsListByBookIdResponse> => {
   try {
     const requestOptions = {
       method: 'GET',
@@ -43,7 +42,7 @@ export const getReadingListByBookId = async (
     };
     const response = await fetch(`${ReadingsURL}/${bookId}`, requestOptions);
     const data: SuccessResponse = await response.json();
-    return data.payload as RT.ReadingsListByBookIdResponse[];
+    return data.payload as RT.ReadingsListByBookIdResponse;
   } catch (error) {
     if ((error as ErrorResponse).msg) {
       return Promise.reject((error as ErrorResponse).msg);
@@ -121,13 +120,18 @@ export const deleteReviewAndRating = async (
 ): Promise<string> => {
   try {
     const requestOptions = {
-      method: 'DELETE',
+      method: 'PUT',
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
         accept: 'application/json',
       },
+
+      body: JSON.stringify({
+        last_update_review_rating_at: null,
+      }),
     };
+
     const response = await fetch(`${OwnedReadingsURL}/${bookId}`, requestOptions);
     const data: SuccessResponse = await response.json();
     return data.payload;

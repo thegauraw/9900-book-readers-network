@@ -10,10 +10,10 @@ def EmailFormatException():
 def UsernameRegisteredException():
   return InvalidUsage('This username has been registered!', status_code=409)
 
-def NullRegisterFiledsException():
+def NullRegisterFieldException():
   return InvalidUsage('Username, Email or Password are not allowed to be empty!', status_code=403)
 
-def NullLoginFildsException():
+def NullLoginFieldException():
   return InvalidUsage('Email or Password are not allowed to be empty!', status_code=403)
 
 def InvalidEmailException():
@@ -63,7 +63,7 @@ def BookNotFoundException():
 
 
 def InvalidParameterException(error):
-  return InvalidUsage(error, status_code=400)
+  return InvalidUsage(error.__str__(), status_code=400).to_json() 
 
 def ReadingNotFoundException():
   return InvalidUsage('Requested reading not found', status_code=404)
@@ -73,13 +73,13 @@ def OwnedReadingHasExistedException():
 
 
 # Generic Errors
-def BadRequestError():
-  return InvalidUsage('Please check your request', status_code=400)
+def BadRequestError(error):
+  return InvalidUsage(error.__str__(), status_code=400).to_json() 
 
-def ResourceNotFoundError():
-  return InvalidUsage('Requested resource not found', status_code=404)
+def ResourceNotFoundError(error):
+  return InvalidUsage(error.__str__(), status_code=404).to_json()
 
-def InternalServerError():
-  return InvalidUsage('Requested operation could not be performed', status_code=500)
+def InternalServerError(error):
+  return InvalidUsage(error.__str__(), status_code=500).to_json()
 
 

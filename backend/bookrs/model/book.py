@@ -4,8 +4,8 @@ from werkzeug.exceptions import NotFound
 
 from bookrs.model import BaseModel, db, ma
 from bookrs.utils.exceptions import BookNotFoundException
-
-
+from sqlalchemy.orm import relationship, backref
+from .readingModel import ReadingModel
 class Book(BaseModel):
   __tablename__ = "books"
   title = db.Column(db.String(120), nullable=False)
@@ -13,6 +13,8 @@ class Book(BaseModel):
   publisher = db.Column(db.String(120))
   publication_date = db.Column(db.Date)
   category = db.Column(db.String(80))
+  #readings = relationship(ReadingModel, backref=backref('book'))
+
 
   @classmethod
   def get_by_id(cls, id):

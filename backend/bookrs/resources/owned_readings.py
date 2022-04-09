@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_restful import Resource
 from marshmallow import ValidationError
 from bookrs.model.readingModel import ReadingModel, reading_schema
+from bookrs.model.book import Book
 from bookrs.utils.common import SUCCESS
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from bookrs.utils.exceptions import InvalidParameterException, BookNotFoundException, ReadingNotFoundException, OwnedReadingHasExistedException
@@ -14,8 +15,7 @@ class OwnedReadingByBookId(Resource):
     def get(self, book_id):
         try:
             current_user = get_jwt_identity()
-            #TODO: Check the book is existed before. If the book not found, raise 404.
-            #db_result = BookModel.query.filter_by(book_id=book_id).first_or_404()
+            #Book.query.filter_by(id=book_id).first_or_404()
             
             #The reading record can be not found at the beginning
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
@@ -27,8 +27,7 @@ class OwnedReadingByBookId(Resource):
         
     def post(self, book_id):
         try:
-            #TODO: Check the book is existed before. If the book not found, raise 404.
-            #db_result = BookModel.query.filter_by(book_id=book_id).first_or_404()
+            #Book.query.filter_by(id=book_id).first_or_404()
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
             #Limit: one user can only create a reading for a book
@@ -47,8 +46,7 @@ class OwnedReadingByBookId(Resource):
         
     def put(self, book_id):
         try:
-            #TODO: Check the book is existed before. If the book not found, raise 404.
-            #db_result = BookModel.query.filter_by(book_id=book_id).first_or_404()
+            #Book.query.filter_by(id=book_id).first_or_404()
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first()
             data = request.get_json()
@@ -71,6 +69,7 @@ class OwnedReadingByBookId(Resource):
 
     def delete(self, book_id):
         try:
+            #Book.query.filter_by(id=book_id).first_or_404()
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, book_id=book_id).first_or_404()
             result = reading_schema.dump(db_result.delete())
@@ -78,4 +77,4 @@ class OwnedReadingByBookId(Resource):
         except NotFound:
             raise ReadingNotFoundException()
       
-api.add_resource(OwnedReadingByBookId, '/owned_readings/<int:book_id>')
+api.add_resource(OwnedReadingByBookId, '/owned_readings/<string:book_id>')

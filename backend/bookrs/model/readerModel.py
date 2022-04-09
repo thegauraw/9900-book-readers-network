@@ -1,3 +1,4 @@
+from enum import unique
 import re
 
 from marshmallow import fields, pre_load
@@ -17,18 +18,22 @@ class ReaderModel(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
     status = db.Column(db.Boolean)
+    gender = db.Column(db.String(5))
+    age = db.Column(db.Integer)
     collections = db.relationship("Collection", backref="owner")
-    readings = relationship(ReadingModel, backref=backref('readers'))
+    readings = relationship(ReadingModel, backref=backref('reader'))
 
     def create(self):
         db.session.add(self)
         db.session.commit()
         return self
 
-    def __init__(self, username, email, password_hash):
+    def __init__(self, username, email, password_hash, gender="Male", age=18):
         self.username = username
         self.email = email
         self.password_hash = password_hash
+        self.gender = gender
+        self.age = age
 
         self.check_username(username)
         self.check_email(email)
@@ -55,7 +60,7 @@ class ReaderModel(db.Model):
 
 class ReaderSchema(ma.Schema):
     class Meta:
-        fields = ("id", "username", "email", "status")
+        fields = ("id", "username", "email", "status", "gender", "age")
         model = ReaderModel
 
 reader_schema = ReaderSchema()
@@ -71,6 +76,8 @@ class ReaderCreatingSchema(ma.SQLAlchemySchema):
     username = fields.Str(required = True)
     email = fields.Str(required = True)
     password_hash = fields.Str(load_only = True)
+    gender = fields.Str()
+    age = fields.Integer()
 
     @pre_load
     def process_password(self, user, many, **kwargs):

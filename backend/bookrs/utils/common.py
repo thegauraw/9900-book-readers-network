@@ -18,6 +18,12 @@ class InvalidUsage(Exception):
 
     return resp
 
+  def to_json(self):
+    resp = dict(self.payload or ())
+    resp['msg'] = self.message
+
+    return make_response(jsonify(resp), self.status_code)
+
 class SuccessUsage(object):
   def __init__(self):
       pass

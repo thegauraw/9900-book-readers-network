@@ -1,47 +1,67 @@
 import { FC, useContext, useEffect } from 'react';
-import { Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Typography, Box } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import BookRatingReview from '../components/BookRatingReview';
-import LoadingIndicator from '../components/LoadingIndicator';
+import BookRatingReviewStat from '../components/BookRatingReviewStat';
 import { Appctx } from '../utils/LocalContext';
-import { getReadingByBookIdForOwner } from '../services/readingAPIs';
 import { NotFoundPath } from '../config/paths';
-
+import { getBookDetailsApi } from '../services/searchAPIs';
+import LoadingIndicator from '../components/LoadingIndicator';
+import BookDetails from '../components/BookDetails';
 const BookPage: FC = () => {
   const context = useContext(Appctx);
   let navigate = useNavigate();
   const { bookId } = useParams();
-  const { ownedReadingByBookId, setOwnedReadingByBookId, token } = context;
-  const { settlement, isLoading, error } = ownedReadingByBookId;
-  //TODO: Add the book detail
-  //TODO: Add "Mark it as read" button
+  const { bookDetails, setBookDetails } = context;
+  const { settlement, isLoading, error } = bookDetails;
 
   useEffect(() => {
     if (isEmpty(bookId)) {
       navigate(NotFoundPath);
+    } else {
+      (async function () {
+        if (bookId) {
+          try {
+            setBookDetails({ isLoading: true, settlement: null });
+            const response = await getBookDetailsApi(bookId);
+            setBookDetails({ settlement: response, error: null });
+          } catch (error) {
+            console.log('error page', error);
+            setBookDetails({ error: error });
+          } finally {
+            setBookDetails({ isLoading: false });
+          }
+        }
+      })();
     }
-    //TODO: Check if the book exists in our database, if not, return 404 page.
   }, []);
 
-  useEffect(() => {
-    (async function () {
-      try {
-        setOwnedReadingByBookId({ isLoading: true, settlement: null });
-        const response = await getReadingByBookIdForOwner(bookId, token);
-        setOwnedReadingByBookId({ settlement: response, error: null });
-      } catch (error) {
-        setOwnedReadingByBookId({ error: error });
-      } finally {
-        setOwnedReadingByBookId({ isLoading: false });
-      }
-    })();
-  }, []);
   return (
     <>
       {isLoading && <LoadingIndicator />}
       {!isLoading && !isEmpty(error) && <Typography>{error}</Typography>}
-      {bookId && !isLoading && isEmpty(error) && <BookRatingReview />}
+      {!isLoading && !isEmpty(settlement) && isEmpty(error) && settlement && (
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <BookRatingReviewStat />
+            <BookDetails
+              title={settlement.volumeInfo.title}
+              authors={settlement.volumeInfo.authors}
+              bookCoverImg={settlement.volumeInfo.imageLinks?.smallThumbnail}
+              categories={settlement.volumeInfo.categories}
+              publisher={settlement.volumeInfo.publisher}
+              publishedDate={settlement.volumeInfo.publishedDate}
+            />
+          </Box>
+          <BookRatingReview />
+        </>
+      )}
     </>
   );
 };
