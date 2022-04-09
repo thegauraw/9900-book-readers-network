@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Box, Card, CardContent, Button, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-interface CollectionCoverProps {
+interface CollectionsCoverProps {
   collectionTitle: string;
   collectionDescription: string;
   buttonName: string;
   buttonPath: string;
 }
 
-const CollectionCover: React.FC<CollectionCoverProps> = ({
+const CollectionsCover: React.FC<CollectionsCoverProps> = ({
   collectionTitle,
   collectionDescription,
   buttonName,
@@ -48,4 +48,4 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
   );
 };
 
-export default CollectionCover;
+export default CollectionsCover;

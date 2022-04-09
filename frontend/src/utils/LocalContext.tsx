@@ -1,12 +1,13 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import { TransferState } from '../types/TransferState';
-import { CollectionListData } from '../types/ResponseTypes';
+import { CollectionListData } from '../types/collectionTypes';
 import { setLocalStorage, getLocalStorage } from './useLocalStorage';
 import {
   ReadingByBookIdFromOwnerResponse,
   ReadingsListByBookIdResponse,
 } from '../types/ReadingTypes';
 import { SearchSuccessResponse, SearchSuccessItemResponse } from '../types/SearchTypes';
+
 export type ContextType = {
   logged: boolean;
   setLogged: Function;

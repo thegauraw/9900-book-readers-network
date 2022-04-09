@@ -5,7 +5,7 @@ import Header from './Header';
 import { globalParas, AppProvider } from '../utils/LocalContext';
 import HomePage from '../pages/HomePage';
 import RegisterPage from '../pages/RegisterPage';
-import CollectionPage from '../pages/CollectionPage';
+import CollectionListPage from '../pages/CollectionListPage';
 import LoginPage from '../pages/LoginPage';
 import ForgottenPassword from '../pages/ForgottenPasswordPage';
 import PasswordResetPage from '../pages/PasswordResetPage';
@@ -31,7 +31,7 @@ const App: React.FC = () => {
           <Header></Header>
           <Routes>
             <Route path={NavMenuList.Home} element={<HomePage />} />
-            <Route path={NavMenuList.Collections} element={<CollectionPage />} />
+            <Route path={NavMenuList.MyCollections} element={<CollectionListPage />} />
             <Route path={AuthenticationPaths.SignUp} element={<RegisterPage />} />
             <Route path={AuthenticationPaths.SignIn} element={<LoginPage />} />
             <Route path={AuthenticationPaths.ForgottenPassword} element={<ForgottenPassword />} />

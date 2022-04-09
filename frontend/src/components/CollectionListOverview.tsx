@@ -3,19 +3,19 @@ import { Typography } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import CollectionCover from './CollectionCover';
 import LoadingIndicator from './LoadingIndicator';
-import { fetchCollectionListData } from '../services/callableFunctions';
+import { fetchCollectionListData } from '../services/collectionAPIs';
 import { Appctx } from '../utils/LocalContext';
 import { NavMenuList } from '../config/paths';
 const CollectionOverview: FC = () => {
   const context = useContext(Appctx);
-  const { collectionList, setCollectionList } = context;
+  const { collectionList, setCollectionList, token } = context;
   const { settlement, isLoading } = collectionList;
 
   useEffect(() => {
     (async function () {
       try {
         setCollectionList({ isLoading: true, settlement: null });
-        const response = await fetchCollectionListData();
+        const response = await fetchCollectionListData(token);
         setCollectionList({ settlement: response });
       } catch (error) {
         setCollectionList({ settlement: error });
@@ -33,11 +33,10 @@ const CollectionOverview: FC = () => {
       )}
       {settlement && !(settlement instanceof Error) && !isEmpty(settlement[0]) && !isLoading && (
         <CollectionCover
-          bookCovers={settlement[0].recentBookCovers.slice(0, 3)}
-          collectionName={settlement[0].name}
-          totalCaption={`${settlement.length} Collections`}
+          collectionTitle={settlement[0].title}
+          collectionDescription={settlement[0].description}
           buttonName={'All Collections'}
-          buttonPath={NavMenuList.Collections}
+          buttonPath={NavMenuList.MyCollections}
         />
       )}
     </>

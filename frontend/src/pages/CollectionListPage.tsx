@@ -3,20 +3,21 @@ import { Typography, Grid, Box } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import CollectionCover from '../components/CollectionCover';
 import LoadingIndicator from '../components/LoadingIndicator';
-import { fetchCollectionListData } from '../services/callableFunctions';
+import { fetchCollectionListData } from '../services/collectionAPIs';
 import { Appctx } from '../utils/LocalContext';
 import { NavMenuList } from '../config/paths';
-import { CollectionListData } from '../types/ResponseTypes';
-const CollectionPage: FC = () => {
+import { CollectionListData } from '../types/collectionTypes';
+
+const CollectionListPage: FC = () => {
   const context = useContext(Appctx);
-  const { collectionList, setCollectionList } = context;
+  const { collectionList, setCollectionList, token } = context;
   const { settlement, isLoading } = collectionList;
 
   useEffect(() => {
     (async function () {
       try {
         setCollectionList({ isLoading: true, settlement: null });
-        const response = await fetchCollectionListData();
+        const response = await fetchCollectionListData(token);
         setCollectionList({ settlement: response });
       } catch (error) {
         setCollectionList({ settlement: error });
@@ -26,15 +27,14 @@ const CollectionPage: FC = () => {
     })();
   }, []);
 
-  const collectionListCard = (collectionList: CollectionListData[]) => {
-    return collectionList.map((collection) => (
+  const collectionCards = (myCollections: CollectionListData[]) => {
+    return myCollections.map((collection) => (
       <Grid item xs={12} sm={6} lg={4}>
         <CollectionCover
-          bookCovers={collection.recentBookCovers.slice(0, 3)}
-          collectionName={collection.name}
-          totalCaption={`${collection.bookNumber} Books`}
+          collectionTitle={collection.title}
+          collectionDescription={collection.description}
           buttonName={'Details'}
-          buttonPath={`${NavMenuList.Collections}?id=${collection.id}`}
+          buttonPath={`${NavMenuList.MyCollections}?id=${collection.id}`}
         />
       </Grid>
     ));
@@ -48,11 +48,11 @@ const CollectionPage: FC = () => {
       )}
       {settlement && !(settlement instanceof Error) && !isEmpty(settlement[0]) && !isLoading && (
         <Grid container spacing={2}>
-          {collectionListCard(settlement)}
+          {collectionCards(settlement)}
         </Grid>
       )}
     </Box>
   );
 };
 
-export default CollectionPage;
+export default CollectionListPage;
