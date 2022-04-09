@@ -31,7 +31,9 @@ class OwnedReadingByBookId(Resource):
             book = BookModel.query.filter_by(volume_id=volume_id).first()
             if not book:
                 #Store title and image to book_details table for overview of collections and goals
-                new_book = {"volume_id": volume_id, "title": data['title'], "book_image_url": data['book_image_url']}
+                book_title = data['title'] if ('title' in data) else None
+                book_image_url = data['book_image_url'] if ('book_image_url' in data) else None
+                new_book = {"volume_id": volume_id, "title": book_title, "book_image_url": book_image_url}
                 book = book_details_schema.load(new_book)
                 book.save()    
             

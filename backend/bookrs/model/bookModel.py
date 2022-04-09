@@ -7,12 +7,6 @@ class BookModel(BaseModel):
     __tablename__ = 'book_details'
     id = db.Column(db.Integer(), primary_key=True)
     volume_id = db.Column(db.String(20), unique=True)
-    average_rating = db.Column(db.Float(precision=2), default=None)
-    count_has_read = db.Column(db.Integer, default=None)
-    count_valid_ratings = db.Column(db.Integer, default=None)
-    count_valid_reviews = db.Column(db.Integer, default=None)
-    last_read_at = db.Column(db.DateTime(timezone=True), default=None)
-    last_collected_at = db.Column(db.DateTime(timezone=True), default=None)
     title = db.Column(db.String(), default=None)
     book_image_url = db.Column(db.String(), default=None)
     readings = relationship(ReadingModel, backref=backref('readings'))
@@ -36,9 +30,6 @@ class BookDetailsSchema(ma.SQLAlchemyAutoSchema):
         book["count_has_read"] = len(has_read)
         book['count_valid_ratings'] = len(valid_ratings)
         book["count_valid_reviews"] = len(valid_reviews)
-        #TODO for book recommendation
-        #book["last_read_at"]
-        #book["last_collected_at"]
         del book["readings"]
         return book
     
