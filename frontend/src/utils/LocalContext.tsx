@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import { TransferState } from '../types/TransferState';
-import { CollectionListData } from '../types/collectionTypes';
+import { CollectionData } from '../types/collectionTypes';
 import { setLocalStorage, getLocalStorage } from './useLocalStorage';
 import {
   ReadingByBookIdFromOwnerResponse,
@@ -13,7 +13,9 @@ export type ContextType = {
   setLogged: Function;
   token: string;
   setToken: Function;
-  collectionList: TransferState<CollectionListData[]>;
+  collection: TransferState<CollectionData>;
+  setCollection: Function;
+  collectionList: TransferState<CollectionData[]>;
   setCollectionList: Function;
   ownedReadingByBookId: TransferState<ReadingByBookIdFromOwnerResponse>;
   setOwnedReadingByBookId: Function;
@@ -30,8 +32,10 @@ export const globalParas = {
   setLogged: (logged: any) => {},
   token: 'xxx',
   setToken: (token: any) => {},
+  collection: { isLoading: false, settlement: null },
+  setCollection: (f: Partial<TransferState<CollectionData>>) => f,
   collectionList: { isLoading: false, settlement: null },
-  setCollectionList: (f: Partial<TransferState<CollectionListData[]>>) => f,
+  setCollectionList: (f: Partial<TransferState<CollectionData[]>>) => f,
   ownedReadingByBookId: { isLoading: false, settlement: null },
   setOwnedReadingByBookId: (f: Partial<TransferState<ReadingByBookIdFromOwnerResponse>>) => f,
   readingListByBookId: { isLoading: false, settlement: null },
@@ -51,10 +55,18 @@ export const AppProvider = ({ children }: any) => {
   const [logged, setLogged] = useState(() => getLocalStorage('logged', false));
   const [token, setToken] = useState(() => getLocalStorage('token', ''));
 
+  const [collection, setCollection] = useReducer(
+    (
+      fetchState: TransferState<CollectionData>,
+      updates: Partial<TransferState<CollectionData>>
+    ) => ({ ...fetchState, ...updates }),
+    { isLoading: false, settlement: null }
+  );
+
   const [collectionList, setCollectionList] = useReducer(
     (
-      fetchState: TransferState<CollectionListData[]>,
-      updates: Partial<TransferState<CollectionListData[]>>
+      fetchState: TransferState<CollectionData[]>,
+      updates: Partial<TransferState<CollectionData[]>>
     ) => ({ ...fetchState, ...updates }),
     { isLoading: false, settlement: null }
   );
@@ -106,6 +118,8 @@ export const AppProvider = ({ children }: any) => {
         setLogged,
         token,
         setToken,
+        collection,
+        setCollection,
         collectionList,
         setCollectionList,
         ownedReadingByBookId,
