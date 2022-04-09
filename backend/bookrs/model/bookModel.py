@@ -13,6 +13,8 @@ class BookModel(BaseModel):
     count_valid_reviews = db.Column(db.Integer, default=None)
     last_read_at = db.Column(db.DateTime(timezone=True), default=None)
     last_collected_at = db.Column(db.DateTime(timezone=True), default=None)
+    title = db.Column(db.String(), default=None)
+    book_image_url = db.Column(db.String(), default=None)
     readings = relationship(ReadingModel, backref=backref('readings'))
     
 
@@ -26,7 +28,6 @@ class BookDetailsSchema(ma.SQLAlchemyAutoSchema):
     
     @post_dump
     def process_statistics(self, book, many, **kwargs):
-        print(book)
         readings_arr = book["readings"]
         has_read = [p["has_read"] for p in readings_arr if p["has_read"] == True]
         valid_ratings = [p["rating"] for p in readings_arr if p["rating"] is not None]

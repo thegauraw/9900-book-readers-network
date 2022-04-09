@@ -31,7 +31,6 @@ class SearchBookDetail(Resource):
       # https://www.googleapis.com/books/v1/volumes/volume_id
       # add the google result (authors, title, categories, image, etc.) to details  
       book = BookModel.query.filter_by(volume_id=volume_id).first()
-      print(book, "book")
       book_data_dump = book_details_schema.dump(book)
       response = {"book_details": book_data_dump, "recommended_books":[]}
       return SUCCESS(payload=response)

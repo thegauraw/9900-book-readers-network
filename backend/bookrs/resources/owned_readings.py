@@ -25,17 +25,23 @@ class OwnedReadingByBookId(Resource):
     # Put is the only way to interact with readings
     def put(self, volume_id):
         try:
+            data = request.get_json()
+            
             #Create a book record when there is any user reading data stored in our system
             book = BookModel.query.filter_by(volume_id=volume_id).first()
             if not book:
-                book = book_details_schema.load({"volume_id": volume_id})
+                #Store title and image to book_details table for overview of collections and goals
+                new_book = {"volume_id": volume_id, "title": data['title'], "book_image_url": data['book_image_url']}
+                book = book_details_schema.load(new_book)
                 book.save()    
             
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, volume_id=volume_id).first()
-            data = request.get_json()
             data['reader_id'] = current_user
             data['volume_id'] = volume_id
+            if('book_image_url' in data): del data['book_image_url']
+            if('title' in data): del data['title']
+            
             if db_result:
                 reading = reading_schema.load(data, instance=db_result)
                 result = reading_schema.dump(reading.update())
