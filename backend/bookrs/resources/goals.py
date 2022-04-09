@@ -26,6 +26,7 @@ class Goals(Resource):
 
         first_month = datetime.strptime((first_goal.get("month") + "-01"), '%Y-%m-%d')
         now_month = datetime.strptime(datetime.now().strftime("%Y-%m") + "-01", '%Y-%m-%d')
+        # now_month = first_month + relativedelta(months=12)
         for i in range(1000):
             current_month = first_month + relativedelta(months=i)
             month_str = datetime.strftime(current_month, '%Y-%m')
@@ -36,16 +37,20 @@ class Goals(Resource):
             books = ReadingModel.query.filter(and_(
                 extract('year', ReadingModel.last_update_read_at) == current_month.year,
                 extract('month', ReadingModel.last_update_read_at) == current_month.month),
-                ReadingModel.reader_id == current_user, ReadingModel.has_read == True,).all()
+                ReadingModel.reader_id == current_user, ReadingModel.has_read == True
+                ).order_by(desc("last_update_read_at")).all()
             read_num = len(readings_schema.dump(books))
             if read_num >= goal_num:
                 finish = True
+                finish_date = (readings_schema.dump(books)[0]).get("last_update_read_at")
             else:
                 finish = False
+                finish_date = None
             goal = {"month": month_str,
                     "goal_num": goal_num,
                     "read_num": read_num,
-                    "finish": finish}
+                    "finish": finish,
+                    "finish_date": finish_date}
             goals_list.append(goal)
             if current_month == now_month:
                 break
