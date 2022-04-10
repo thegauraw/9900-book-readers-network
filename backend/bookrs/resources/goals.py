@@ -62,7 +62,10 @@ class Goals(Resource):
         data = request.get_json()
         current_user = get_jwt_identity()
         data["userid"] = current_user
-        data["month"] = datetime.strftime(datetime.strptime(data.get("month"), '%Y-%m-%d'), '%Y-%m')
+        if data.get("month"):
+            data["month"] = datetime.strftime(datetime.strptime(data.get("month"), '%Y-%m-%d'), '%Y-%m')
+        else:
+            data["month"] = datetime.now().strftime("%Y-%m")
 
         goal = goal_schema.load(data)
         result = goal_schema.dump(goal.create())
@@ -85,8 +88,11 @@ class Goals(Resource):
     def put(self):
         data = request.get_json()
         current_user = get_jwt_identity()
-        date = datetime.strptime(data.get("month"), '%Y-%m-%d')
-        month = datetime.strftime(date, '%Y-%m')
+        if data.get("month"):
+            date = datetime.strptime(data.get("month"), '%Y-%m-%d')
+            month = datetime.strftime(date, '%Y-%m')
+        else:
+            month = datetime.now().strftime("%Y-%m")
 
         goal = GoalModel.query.filter_by(userid=current_user).order_by(desc("month")).first()
         if goal.month == month:  # existing goal data for this month
