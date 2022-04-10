@@ -94,8 +94,8 @@ class Goals(Resource):
         else:
             month = datetime.now().strftime("%Y-%m")
 
-        goal = GoalModel.query.filter_by(userid=current_user).order_by(desc("month")).first()
-        if goal.month == month:  # existing goal data for this month
+        goal = GoalModel.query.filter_by(userid=current_user, month=month).first()
+        if goal:  # existing goal data for this month
             goal.goal_num = data.get("goal_num")
             goal.update()
             result = goal_schema.dump(goal)
