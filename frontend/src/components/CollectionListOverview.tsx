@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect } from 'react';
+import { FC, useContext, useEffect, useCallback } from 'react';
 import { Typography } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import CollectionCover from './CollectionCover';
@@ -11,19 +11,21 @@ const CollectionOverview: FC = () => {
   const { collectionList, setCollectionList, token } = context;
   const { settlement, isLoading } = collectionList;
 
+  const fetchMyCollections = useCallback(async function () {
+    try {
+      setCollectionList({ isLoading: true, settlement: null });
+      const response = await fetchCollectionListData(token);
+      setCollectionList({ settlement: response });
+    } catch (error) {
+      setCollectionList({ settlement: error });
+    } finally {
+      setCollectionList({ isLoading: false });
+    }
+  }, [fetchCollectionListData]);
+
   useEffect(() => {
-    (async function () {
-      try {
-        setCollectionList({ isLoading: true, settlement: null });
-        const response = await fetchCollectionListData(token);
-        setCollectionList({ settlement: response });
-      } catch (error) {
-        setCollectionList({ settlement: error });
-      } finally {
-        setCollectionList({ isLoading: false });
-      }
-    })();
-  }, []);
+    fetchMyCollections();
+  }, [fetchMyCollections]);
 
   return (
     <>
@@ -33,10 +35,10 @@ const CollectionOverview: FC = () => {
       )}
       {settlement && !(settlement instanceof Error) && !isEmpty(settlement[0]) && !isLoading && (
         <CollectionCover
-          collectionTitle={settlement[0].title}
-          collectionDescription={settlement[0].description}
+          collection={settlement[0]}
           buttonName={'All Collections'}
           buttonPath={NavMenuList.MyCollections}
+          dataLoader={fetchMyCollections}
         />
       )}
     </>

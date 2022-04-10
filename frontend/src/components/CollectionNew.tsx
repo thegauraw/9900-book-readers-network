@@ -79,7 +79,7 @@ const CollectionNew: React.FC<CollectionNewProps> = ({dataLoader}) => {
         aria-describedby="modal-new-collection"
       >
         <Box sx={style.modal}>
-          <CollectionForm title="" description="" submitHandler={handleSubmitData} closeHandler={handleClose} />
+          <CollectionForm title="" description="" submitHandler={handleSubmitData} closeHandler={handleClose} mode="add" />
         </Box>
       </Modal>
     </Grid>

@@ -11,6 +11,7 @@ import { CollectionFormData } from '../types/collectionTypes';
 interface CollectionFormProps {
   title: string | null;
   description: string | null;
+  mode: string;
   submitHandler: ({ title, description }: CollectionFormData) => void | null;
   closeHandler: () => void | null;
 }
@@ -24,7 +25,7 @@ const style = {
   }
 };
 
-const CollectionForm: React.FC<CollectionFormProps> = ({ title, description, submitHandler, closeHandler }) => {
+const CollectionForm: React.FC<CollectionFormProps> = ({ title, description, mode, submitHandler, closeHandler }) => {
   const [titleValue, setTitleValue] = React.useState(title);
   const [descriptionValue, setDescriptionValue] = React.useState(description);
 
@@ -39,7 +40,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ title, description, sub
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add New Collection
+            {mode === 'edit' ? `Edit Collection: '${title}'` : "Add New Collection" }
           </Typography>
         </Grid>
 
@@ -68,16 +69,25 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ title, description, sub
             }}
             multiline
             rows={6}
-            defaultValue=""
           />
         </Grid>
 
         <Grid item xs={12}>
           <Box sx={style.actionButtons}>
-            <Button variant="contained" color="success" onClick={handleSubmit} sx={style.spacedButton}>
-              Create
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleSubmit}
+              sx={style.spacedButton}
+            >
+            {mode === 'edit' ? "Update" : "Create"}
             </Button>
-            <Button variant="outlined" color="secondary" onClick={closeHandler} sx={style.spacedButton}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={closeHandler}
+              sx={style.spacedButton}
+            >
               Cancel
             </Button>
           </Box>
