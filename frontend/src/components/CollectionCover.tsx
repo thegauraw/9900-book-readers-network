@@ -3,6 +3,8 @@ import { Box, Card, CardContent, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CollectionData } from '../types/collectionTypes';
 import CollectionEdit from '../components/CollectionEdit';
+import CollectionDelete from '../components/CollectionDelete';
+
 
 interface CollectionCoverProps {
   collection: CollectionData;
@@ -39,6 +41,7 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
           </Typography>
         </Box>
         <CollectionEdit collectionId={collection.id} dataLoader={dataLoader} />
+        <CollectionDelete collectionId={collection.id} dataLoader={dataLoader} />
         <Button
           size="medium"
           color="secondary"

@@ -65,7 +65,6 @@ export const getCollectionById = async (
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        // 'Content-Type': 'application/json',
         accept: 'application/json',
       },
     };
@@ -111,3 +110,27 @@ export const updateCollection = async (
   }
 };
 
+
+export const deleteCollection = async (
+  collectionId: string | undefined,
+  token: string,
+  ): Promise<string> => {
+  try {
+    const requestOptions = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: 'application/json',
+      },
+    };
+    const response = await fetch(`${MyCollectionsURL}/${collectionId}`, requestOptions);
+    const data: SuccessResponse = await response.json();
+    return data.payload;
+  } catch (err) {
+    if ((err as ErrorResponse).msg) {
+      return Promise.reject((err as ErrorResponse).msg);
+    } else {
+      return Promise.reject('Internal Error');
+    }
+  }
+};
