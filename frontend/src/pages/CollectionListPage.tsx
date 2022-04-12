@@ -32,12 +32,12 @@ const CollectionListPage: FC = () => {
 
   const collectionCards = (myCollections: CollectionData[]) => {
     return myCollections.map((collection) => (
-      <Grid item xs={12} sm={6} lg={4}>
+      <Grid item key={collection.id} xs={12} sm={6} lg={4}>
         <CollectionCover
-          collectionTitle={collection.title}
-          collectionDescription={collection.description}
+          collection={collection}
           buttonName={'Details'}
           buttonPath={`${NavMenuList.MyCollections}?id=${collection.id}`}
+          dataLoader={fetchMyCollections}
         />
       </Grid>
     ));
