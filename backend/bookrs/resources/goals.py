@@ -10,6 +10,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from sqlalchemy import desc, and_, extract
+from bookrs.utils.common import SUCCESS
 
 goals_bp = Blueprint('goals', __name__)
 
@@ -22,40 +23,42 @@ class Goals(Resource):
 
         first_data = GoalModel.query.filter_by(userid=current_user).order_by("month").first()
         first_goal = goal_schema.dump(first_data)
-        goal_num = first_goal.get("goal_num")
+        
+        if(first_goal):
+            goal_num = first_goal.get("goal_num")
+            first_month = datetime.strptime((first_goal.get("month") + "-01"), '%Y-%m-%d')
+            now_month = datetime.strptime(datetime.now().strftime("%Y-%m") + "-01", '%Y-%m-%d')
+            # now_month = first_month + relativedelta(months=12)
+            for i in range(1000):
+                current_month = first_month + relativedelta(months=i)
+                month_str = datetime.strftime(current_month, '%Y-%m')
+                data = GoalModel.query.filter_by(userid=current_user, month=month_str).first()
+                if goal_schema.dump(data):    # have changed
+                    goal_num = goal_schema.dump(data).get("goal_num")
 
-        first_month = datetime.strptime((first_goal.get("month") + "-01"), '%Y-%m-%d')
-        now_month = datetime.strptime(datetime.now().strftime("%Y-%m") + "-01", '%Y-%m-%d')
-        # now_month = first_month + relativedelta(months=12)
-        for i in range(1000):
-            current_month = first_month + relativedelta(months=i)
-            month_str = datetime.strftime(current_month, '%Y-%m')
-            data = GoalModel.query.filter_by(userid=current_user, month=month_str).first()
-            if goal_schema.dump(data):    # have changed
-                goal_num = goal_schema.dump(data).get("goal_num")
-
-            books = ReadingModel.query.filter(and_(
+                books = ReadingModel.query.filter(and_(
                 extract('year', ReadingModel.last_update_read_at) == current_month.year,
                 extract('month', ReadingModel.last_update_read_at) == current_month.month),
                 ReadingModel.reader_id == current_user, ReadingModel.has_read == True
                 ).order_by(desc("last_update_read_at")).all()
-            read_num = len(readings_schema.dump(books))
-            if read_num >= goal_num:
-                finish = True
-                finish_date = (readings_schema.dump(books)[0]).get("last_update_read_at")
-            else:
-                finish = False
-                finish_date = None
-            goal = {"month": month_str,
+                read_num = len(readings_schema.dump(books))
+                if read_num >= goal_num:
+                    finish = True
+                    finish_date = (readings_schema.dump(books)[0]).get("last_update_read_at")
+                else:
+                    finish = False
+                    finish_date = None
+                goal = {"month": month_str,
                     "goal_num": goal_num,
                     "read_num": read_num,
                     "finish": finish,
                     "finish_date": finish_date}
-            goals_list.append(goal)
-            if current_month == now_month:
-                break
-
-        return goals_list
+                goals_list.append(goal)
+                if current_month == now_month:
+                    break
+            return SUCCESS(payload=goals_list)
+        else:
+            return SUCCESS(payload=[])
 
     # add goal
     def post(self):
@@ -69,7 +72,7 @@ class Goals(Resource):
 
         goal = goal_schema.load(data)
         result = goal_schema.dump(goal.create())
-        return make_response(jsonify({"goal": result}), 201)
+        return SUCCESS(payload=result, status_code=201)
 
     # delete goal
     """def delete(self):
@@ -110,7 +113,7 @@ class Goals(Resource):
             goal.start_time = datetime.strptime(data.get("start_time"), '%Y-%m-%d')
         if data.get("end_time"):
             goal.end_time = datetime.strptime(data.get("end_time"), '%Y-%m-%d')"""
-        return make_response(jsonify({"goal": result}), 201)
+        return SUCCESS(payload=result)
 
 
 api.add_resource(Goals, '/goals', endpoint='goals')
