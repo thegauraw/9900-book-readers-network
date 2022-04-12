@@ -3,9 +3,8 @@ from bookrs.model import BaseModel, db, ma
 from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format, get_str_date_now
 class ReadingModel(BaseModel):
     __tablename__ = 'readings'
-    
-    #TODO: Update it to foreign key after books table ready.
-    book_id = db.Column(db.String, nullable=False)#db.Column(db.Integer, db.ForeignKey("books.id"), nullable=False)
+    id = db.Column(db.Integer(), primary_key=True)
+    volume_id = db.Column(db.String(20), db.ForeignKey("book_details.volume_id"), nullable=False)
     reader_id = db.Column(db.Integer, db.ForeignKey("readers.id"), nullable=False)
     
     rating = db.Column(db.Float(precision=2), default=None)
@@ -15,7 +14,7 @@ class ReadingModel(BaseModel):
     last_update_read_at = db.Column(db.Date, nullable=True)
     
     def __repr__(self):
-         return f'<Reading {self.id} for book {self.book_id} by {self.reader_id} { "has read" if self.has_read else "unread" }>'
+         return f'<Reading {self.id} for book {self.volume_id} by {self.reader_id} { "has read" if self.has_read else "unread" }>'
 
 
 class ReadingSchema(ma.SQLAlchemyAutoSchema):
