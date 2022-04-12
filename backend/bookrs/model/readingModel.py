@@ -1,6 +1,6 @@
 from marshmallow import fields, post_dump, pre_load, validate
 from bookrs.model import BaseModel, db, ma
-from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format
+from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format, get_str_date_now
 class ReadingModel(BaseModel):
     __tablename__ = 'readings'
     
@@ -12,7 +12,7 @@ class ReadingModel(BaseModel):
     review = db.Column(db.Text, default=None)
     last_update_review_rating_at = db.Column(db.DateTime(timezone=True), nullable=True)
     has_read = db.Column(db.Boolean, default=False)
-    last_update_read_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    last_update_read_at = db.Column(db.Date, nullable=True)
     
     def __repr__(self):
          return f'<Reading {self.id} for book {self.book_id} by {self.reader_id} { "has read" if self.has_read else "unread" }>'
@@ -37,14 +37,15 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
             reading['rating'] = None
             reading['last_update_review_rating_at'] = None
         if ('has_read' in reading):
-            reading['last_update_read_at'] = get_str_datetime_now()
+            if reading['has_read'] == True and 'last_update_read_at' not in reading:
+                reading['last_update_read_at'] = get_str_date_now()
+            if reading['has_read'] == False:
+                reading['last_update_read_at'] = None
         return reading
     @post_dump
     def process_datetime_format(self, reading, many, **kwargs):
         if (reading and reading['last_update_review_rating_at'] is not None):
             reading['last_update_review_rating_at'] = get_response_datetime_format(reading['last_update_review_rating_at'])
-        if (reading and reading['last_update_read_at'] is not None):
-            reading['last_update_read_at'] = get_response_datetime_format(reading['last_update_read_at'])
         reading['username'] = reading['reader']['username']
         del reading['reader']
         return reading
