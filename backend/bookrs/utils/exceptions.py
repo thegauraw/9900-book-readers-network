@@ -82,6 +82,6 @@ def OwnedReadingHasExistedException():
   return InvalidUsage('Requested reading has existed', status_code=400)
 
 # Search api related exceptions
-def ReadingNotFoundException():
+def InvalidSearchException():
   return InvalidUsage('Invalid search request', status_code=400)
 

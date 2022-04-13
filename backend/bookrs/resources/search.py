@@ -6,7 +6,7 @@ from flask_restful import Resource
 from bookrs.model.bookModel import book_details_schema, BookModel
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
-from bookrs.utils.exceptions import InternalServerError, ReadingNotFoundException
+from bookrs.utils.exceptions import InternalServerError, InvalidSearchException
 
 search_bp = Blueprint('search', __name__)
 
@@ -29,12 +29,12 @@ class SearchForBooks(Resource):
       # search books with google api
       url = f'https://www.googleapis.com/books/v1/volumes?q={query_string}&startIndex={startIndex}'
       resp = requests.get(url)
-      
+
       if resp.status_code == 200:
         data = json.loads(resp.text)
         return SUCCESS(payload=data)
       else:
-        ReadingNotFoundException()
+        InvalidSearchException()
     except:
       raise InternalServerError()
 
@@ -42,12 +42,20 @@ class SearchForBooks(Resource):
 class SearchBookDetail(Resource):
   def get(self, volume_id):
     try:
-      # https://www.googleapis.com/books/v1/volumes/volume_id
-      # add the google result (authors, title, categories, image, etc.) to details  
-      book = BookModel.query.filter_by(volume_id=volume_id).first()
-      book_data_dump = book_details_schema.dump(book)
-      response = {"book_details": book_data_dump, "recommended_books":[]}
-      return SUCCESS(payload=response)
+
+      # search book detail with google api
+      # add the google result (authors, title, categories, image, etc.) to details
+      url = f'https://www.googleapis.com/books/v1/volumes/{volume_id}'
+      resp = requests.get(url)
+
+      # book = BookModel.query.filter_by(volume_id=volume_id).first()
+      # book_data_dump = book_details_schema.dump(book)
+      # response = {"book_details": book_data_dump, "recommended_books":[]}
+      if resp.status_code == 200:
+        data = json.loads(resp.text)
+        return SUCCESS(payload=data)
+      else:
+        InvalidSearchException()
     except:
       raise InternalServerError()
 
