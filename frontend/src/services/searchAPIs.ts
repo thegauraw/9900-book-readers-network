@@ -1,5 +1,6 @@
 import * as ST from '../types/SearchTypes';
 import isEmpty from 'lodash/isEmpty';
+import { searchBooksURL } from './callableURLs';
 const baseURL = 'https://www.googleapis.com/books/v1/volumes';
 
 export const searchBooksApi = async (query: ST.SearchParams): Promise<any> => {
@@ -22,13 +23,16 @@ export const searchBooksApi = async (query: ST.SearchParams): Promise<any> => {
     const page = query.p ? Number(query.p) - 1 : 0;
     const maxResults = 10;
     const startIndex = page * maxResults;
-    const requestedURL = `${baseURL}${queryString}&startIndex=${startIndex}`;
+    const requestedURL = `${searchBooksURL}${queryString}&startIndex=${startIndex}`;
     const response = await fetch(requestedURL, requestOptions);
+
+    if (response.status !== 200) return Promise.reject('No more results');
+
     const data = await response.json();
-    if (!isEmpty(data.error) || isEmpty(data.items) || !data.totalItems) {
-      return Promise.reject('No more results');
-    }
-    return data as ST.SearchSuccessResponse;
+
+    console.log('search book data: ', data);
+
+    return data.payload as ST.SearchSuccessResponse;
   } catch (error) {
     return Promise.reject('Internal Error');
   }
