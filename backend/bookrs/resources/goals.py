@@ -4,6 +4,7 @@ from flask_restful import Resource
 from bookrs.model.goalModel import GoalModel, goal_schema, goals_schema
 from bookrs.resources import api
 from bookrs.model.readingModel import ReadingModel, reading_schema, readings_schema
+from bookrs.model.bookModel import BookModel, book_details_schema
 
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from datetime import datetime
@@ -14,8 +15,10 @@ from bookrs.utils.common import SUCCESS
 
 goals_bp = Blueprint('goals', __name__)
 
+
 class Goals(Resource):
     decorators = [jwt_required()]
+
     # get the data of goals
     def get(self):
         goals_list = []
@@ -24,7 +27,7 @@ class Goals(Resource):
         first_data = GoalModel.query.filter_by(userid=current_user).order_by("month").first()
         first_goal = goal_schema.dump(first_data)
         
-        if(first_goal):
+        if first_goal:
             goal_num = first_goal.get("goal_num")
             first_month = datetime.strptime((first_goal.get("month") + "-01"), '%Y-%m-%d')
             now_month = datetime.strptime(datetime.now().strftime("%Y-%m") + "-01", '%Y-%m-%d')
@@ -37,22 +40,34 @@ class Goals(Resource):
                     goal_num = goal_schema.dump(data).get("goal_num")
 
                 books = ReadingModel.query.filter(and_(
-                extract('year', ReadingModel.last_update_read_at) == current_month.year,
-                extract('month', ReadingModel.last_update_read_at) == current_month.month),
-                ReadingModel.reader_id == current_user, ReadingModel.has_read == True
+                    extract('year', ReadingModel.last_update_read_at) == current_month.year,
+                    extract('month', ReadingModel.last_update_read_at) == current_month.month),
+                    ReadingModel.reader_id == current_user, ReadingModel.has_read == True
                 ).order_by(desc("last_update_read_at")).all()
-                read_num = len(readings_schema.dump(books))
+                books_list = readings_schema.dump(books)
+                read_num = len(books_list)
                 if read_num >= goal_num:
                     finish = True
-                    finish_date = (readings_schema.dump(books)[0]).get("last_update_read_at")
+                    finish_date = (books_list[-goal_num]).get("last_update_read_at")
                 else:
                     finish = False
                     finish_date = None
+                book_list = []
+                for book in books_list:
+                    if book.get("volume_id"):
+                        book_data = BookModel.query.filter_by(volume_id=book.get("volume_id")).first()
+                        if book_data:
+                            book_info = book_details_schema.dump(book_data)
+                            book_detail = {"volume_id": book_info.get("volume_id"),
+                                           "title": book_info.get("title"),
+                                           "book_image_url": book_info.get("book_image_url")}
+                            book_list.append(book_detail)
                 goal = {"month": month_str,
-                    "goal_num": goal_num,
-                    "read_num": read_num,
-                    "finish": finish,
-                    "finish_date": finish_date}
+                        "goal_num": goal_num,
+                        "read_num": read_num,
+                        "finish": finish,
+                        "finish_date": finish_date,
+                        "book_list": book_list.copy()}
                 goals_list.append(goal)
                 if current_month == now_month:
                     break
