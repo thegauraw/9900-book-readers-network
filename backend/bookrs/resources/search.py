@@ -32,9 +32,11 @@ class SearchForBooks(Resource):
 
       if resp.status_code == 200:
         data = json.loads(resp.text)
-        return SUCCESS(payload=data)
-      else:
-        InvalidSearchException()
+        print(f"data.get('totalItems'): {data.get('totalItems')}")
+        if int(data.get('totalItems')) > 0:
+          return SUCCESS(payload=data)
+
+      raise InvalidSearchException()
     except:
       raise InternalServerError()
 
@@ -55,7 +57,7 @@ class SearchBookDetail(Resource):
         data = json.loads(resp.text)
         return SUCCESS(payload=data)
       else:
-        InvalidSearchException()
+        raise InvalidSearchException()
     except:
       raise InternalServerError()
 

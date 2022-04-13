@@ -1,4 +1,3 @@
-from enum import unique
 import re
 
 from marshmallow import fields, pre_load
