@@ -1,13 +1,13 @@
 from flask import Blueprint, request
 from flask_restful import Resource
-from marshmallow import ValidationError
 from bookrs.model.readingModel import ReadingModel, reading_schema
 from bookrs.model.bookModel import BookModel, book_details_schema
 from bookrs.utils.common import SUCCESS
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from bookrs.utils.exceptions import InvalidParameterException, BookNotFoundException, InternalServerError
+from bookrs.utils.exceptions import InternalServerError
 from werkzeug.exceptions import NotFound
 from bookrs.resources import api
+from bookrs.utils.get_book_details_from_google import get_book_details_from_google
 
 owned_readings_bp = Blueprint('owned_readings', __name__)
 class OwnedReadingByBookId(Resource):
@@ -19,8 +19,8 @@ class OwnedReadingByBookId(Resource):
             if(db_result):
                 db_result = reading_schema.dump(db_result)
             return SUCCESS(payload=db_result)
-        except NotFound:
-            raise BookNotFoundException()
+        except Exception as e:
+            raise InternalServerError(e)
         
     # Put is the only way to interact with readings
     def put(self, volume_id):
@@ -30,19 +30,14 @@ class OwnedReadingByBookId(Resource):
             #Create a book record when there is any user reading data stored in our system
             book = BookModel.query.filter_by(volume_id=volume_id).first()
             if not book:
-                #Store title and image to book_details table for overview of collections and goals
-                book_title = data['title'] if ('title' in data) else None
-                book_image_url = data['book_image_url'] if ('book_image_url' in data) else None
-                new_book = {"volume_id": volume_id, "title": book_title, "book_image_url": book_image_url}
-                book = book_details_schema.load(new_book)
-                book.save()    
+                book_data = get_book_details_from_google(volume_id)
+                book = book_details_schema.load(book_data)
+                result = book_details_schema.dump(book.save())  
             
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, volume_id=volume_id).first()
             data['reader_id'] = current_user
             data['volume_id'] = volume_id
-            if('book_image_url' in data): del data['book_image_url']
-            if('title' in data): del data['title']
             
             if db_result:
                 reading = reading_schema.load(data, instance=db_result)
@@ -52,8 +47,8 @@ class OwnedReadingByBookId(Resource):
                 reading = reading_schema.load(data)
                 result = reading_schema.dump(reading.save())
                 return SUCCESS(payload=result, status_code=201)
-        except NotFound:
-            raise BookNotFoundException()
+        except Exception as e:
+            raise InternalServerError(e)
         
 
       
