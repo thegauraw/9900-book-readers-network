@@ -6,3 +6,4 @@ export const RegisterApiURL = `${BASE_URL}/readers`;
 export const UserApiURL = `${BASE_URL}/reader`;
 export const ReadingsURL = `${BASE_URL}/readings`;
 export const OwnedReadingsURL = `${BASE_URL}/owned_readings`;
+export const GoalsURL = `${BASE_URL}/goals`;
