@@ -9,8 +9,13 @@ class BookModel(BaseModel):
     volume_id = db.Column(db.String(20), unique=True)
     title = db.Column(db.String(), default=None)
     book_image_url = db.Column(db.String(), default=None)
+    average_rating = db.Column(db.Float(precision="10,1"), default=None)
+    authors = db.Column(db.String(50), default=None)
+    smallThumbnail = db.Column(db.String(100), default=None)
+    categories = db.Column(db.String(50), default=None)
+    publisher = db.Column(db.String(20), default=None)
+    publishedDate = db.Column(db.String(20), default=None)
     readings = relationship(ReadingModel, backref=backref('readings'))
-    
 
 class BookDetailsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
