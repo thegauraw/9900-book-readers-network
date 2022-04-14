@@ -1,41 +1,67 @@
+import json
+import requests
+
 from flask import Blueprint, request
 from flask_restful import Resource
 from bookrs.model.bookModel import book_details_schema, BookModel
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
-from bookrs.utils.exceptions import InternalServerError
+from bookrs.utils.exceptions import InternalServerError, InvalidSearchException
 
 search_bp = Blueprint('search', __name__)
 
 
 class SearchForBooks(Resource):
   def get(self):
-    
-    data = request.get_json()
-    if data:
-      query_string = data['q']
-      search_method = data['by']
-      page = data['p']
-      rating = data['rating'] #for advanced filter
-    
+
+    query_string = request.args.get('q') if request.args.get('q') else None
+    # search_method = request.args.get('by') if request.args.get('by') else None
+    # page = request.args.get('p') if request.args.get('p') else None
+    startIndex = request.args.get('startIndex') if request.args.get('startIndex') else 0
+    rating = request.args.get('rating') if request.args.get('rating') else None #for advanced filter
+
     #Search for google book api
-    ## For each result, add book detail to the response
-    ## book = BookModel.query.filter_by(volume_id=volume_id).first()
-    ## book_data_dump = book_details_schema.dump(book)
-    return SUCCESS(payload=[])
+    # For each result, add book detail to the response
+    # book = BookModel.query.filter_by(volume_id=volume_id).first()
+    # book_data_dump = book_details_schema.dump(book)
+
+    try:
+      # search books with google api
+      url = f'https://www.googleapis.com/books/v1/volumes?q={query_string}&startIndex={startIndex}'
+      resp = requests.get(url)
+
+      if resp.status_code == 200:
+        data = json.loads(resp.text)
+        print(f"data.get('totalItems'): {data.get('totalItems')}")
+        #Google book api may return 200 with 0 totalItems / no items / empty items[]
+        if int(data.get('totalItems')) > 0 and data.get('items') and len(data.get('items')) > 0:
+          return SUCCESS(payload=data)
+
+      raise InvalidSearchException()
+    except Exception as e:
+      raise InternalServerError(e)
+
 
 
 class SearchBookDetail(Resource):
   def get(self, volume_id):
     try:
-      # https://www.googleapis.com/books/v1/volumes/volume_id
-      # add the google result (authors, title, categories, image, etc.) to details  
-      book = BookModel.query.filter_by(volume_id=volume_id).first()
-      book_data_dump = book_details_schema.dump(book)
-      response = {"book_details": book_data_dump, "recommended_books":[]}
-      return SUCCESS(payload=response)
-    except:
-      raise InternalServerError()
+
+      # search book detail with google api
+      # add the google result (authors, title, categories, image, etc.) to details
+      url = f'https://www.googleapis.com/books/v1/volumes/{volume_id}'
+      resp = requests.get(url)
+
+      # book = BookModel.query.filter_by(volume_id=volume_id).first()
+      # book_data_dump = book_details_schema.dump(book)
+      # response = {"book_details": book_data_dump, "recommended_books":[]}
+      if resp.status_code == 200:
+        data = json.loads(resp.text)
+        return SUCCESS(payload=data)
+      else:
+        raise InvalidSearchException()
+    except Exception as e:
+      raise InternalServerError(e)
 
 
 api.add_resource(SearchForBooks, '/search')

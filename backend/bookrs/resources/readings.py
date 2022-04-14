@@ -1,7 +1,6 @@
 from flask import Blueprint
 from flask_restful import Resource
 from bookrs.model.readingModel import ReadingModel, readings_schema
-from bookrs.model.book import Book
 from bookrs.utils.common import SUCCESS
 from bookrs.utils.exceptions import BookNotFoundException
 from werkzeug.exceptions import NotFound

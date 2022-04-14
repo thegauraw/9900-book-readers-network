@@ -1,6 +1,5 @@
 import * as ST from '../types/SearchTypes';
-import isEmpty from 'lodash/isEmpty';
-const baseURL = 'https://www.googleapis.com/books/v1/volumes';
+import { searchBooksURL } from './callableURLs';
 
 export const searchBooksApi = async (query: ST.SearchParams): Promise<any> => {
   try {
@@ -22,13 +21,16 @@ export const searchBooksApi = async (query: ST.SearchParams): Promise<any> => {
     const page = query.p ? Number(query.p) - 1 : 0;
     const maxResults = 10;
     const startIndex = page * maxResults;
-    const requestedURL = `${baseURL}${queryString}&startIndex=${startIndex}`;
+    const requestedURL = `${searchBooksURL}${queryString}&startIndex=${startIndex}`;
     const response = await fetch(requestedURL, requestOptions);
+
+    if (response.status !== 200) return Promise.reject('No more results');
+
     const data = await response.json();
-    if (!isEmpty(data.error) || isEmpty(data.items) || !data.totalItems) {
-      return Promise.reject('No more results');
-    }
-    return data as ST.SearchSuccessResponse;
+
+    console.log('search book data: ', data);
+
+    return data.payload as ST.SearchSuccessResponse;
   } catch (error) {
     return Promise.reject('Internal Error');
   }
@@ -43,13 +45,13 @@ export const getBookDetailsApi = async (volumeId: string): Promise<any> => {
         accept: 'application/json',
       },
     };
-    const requestedURL = `${baseURL}/${volumeId}`;
+    const requestedURL = `${searchBooksURL}/${volumeId}`;
+    console.log('requestedURL: ', requestedURL);
     const response = await fetch(requestedURL, requestOptions);
     const data = await response.json();
-    if (!isEmpty(data.error) || isEmpty(data) || !data.id) {
-      return Promise.reject('Not found');
-    }
-    return data as ST.SearchSuccessItemResponse;
+    if (response.status !== 200) return Promise.reject('Not found');
+
+    return data.payload as ST.SearchSuccessItemResponse;
   } catch (error) {
     return Promise.reject('Internal Error');
   }

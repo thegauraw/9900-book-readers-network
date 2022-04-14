@@ -6,7 +6,7 @@ default_tz = pytz.timezone('Australia/Sydney')
 def get_str_datetime_now():
     return str(datetime.now(default_tz))
 
-def get_str_date_now(input):
+def get_str_date_now():
     server_format = '%Y-%m-%d'
     return str(datetime.now(default_tz).strftime(server_format))
 
