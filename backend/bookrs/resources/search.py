@@ -38,8 +38,9 @@ class SearchForBooks(Resource):
           return SUCCESS(payload=data)
 
       raise InvalidSearchException()
-    except:
-      raise InternalServerError()
+    except Exception as e:
+      raise InternalServerError(e)
+
 
 
 class SearchBookDetail(Resource):
@@ -59,8 +60,8 @@ class SearchBookDetail(Resource):
         return SUCCESS(payload=data)
       else:
         raise InvalidSearchException()
-    except:
-      raise InternalServerError()
+    except Exception as e:
+      raise InternalServerError(e)
 
 
 api.add_resource(SearchForBooks, '/search')
