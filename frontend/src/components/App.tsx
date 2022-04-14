@@ -13,6 +13,7 @@ import ResetPasswordSuccessPage from '../pages/PasswordResetSuccessPage';
 import BookPage from '../pages/BookPage';
 import SearchPage from '../pages/SearchPage';
 import ProfilePage from '../pages/ProfilePage';
+import GoalPage from '../pages/GoalPage';
 import Copyright from './Copyright';
 import { NavMenuList, AuthenticationPaths, bookPath } from '../config/paths';
 import { Box } from '@mui/material';
@@ -46,6 +47,7 @@ const App: React.FC = () => {
               <Route path=":bookId" element={<BookPage />} />
             </Route>
             <Route path={NavMenuList.Explore} element={<SearchPage />} />
+            <Route path={NavMenuList.Goals} element={<GoalPage />} />
           </Routes>
           <Copyright />
         </Router>

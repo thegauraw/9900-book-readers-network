@@ -3,6 +3,7 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { Box, Grid, Paper } from '@mui/material';
 import CollectionListOverview from '../components/CollectionListOverview';
+import GoalOverview from '../components/GoalOverview';
 const useStyles = makeStyles((theme: Theme) => ({
   mainContainer: {
     display: 'flex',
@@ -31,7 +32,9 @@ const HomePage: React.FC = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6} lg={4}>
-          <Paper className={classes.componentPaper}>Goal</Paper>
+          <Paper className={classes.componentPaper}>
+            <GoalOverview />
+          </Paper>
         </Grid>
         <Grid item xs={12} sm={12} lg={4}>
           <Paper className={classes.componentPaper}>Events</Paper>
