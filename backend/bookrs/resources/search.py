@@ -33,7 +33,8 @@ class SearchForBooks(Resource):
       if resp.status_code == 200:
         data = json.loads(resp.text)
         print(f"data.get('totalItems'): {data.get('totalItems')}")
-        if int(data.get('totalItems')) > 0:
+        #Google book api may return 200 with 0 totalItems / no items / empty items[]
+        if int(data.get('totalItems')) > 0 and data.get('items') and len(data.get('items')) > 0:
           return SUCCESS(payload=data)
 
       raise InvalidSearchException()
