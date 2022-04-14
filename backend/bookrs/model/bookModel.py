@@ -22,17 +22,23 @@ class BookDetailsSchema(ma.SQLAlchemyAutoSchema):
     
     @post_dump
     def process_statistics(self, book, many, **kwargs):
-        readings_arr = book["readings"]
-        has_read = [p["has_read"] for p in readings_arr if p["has_read"] == True]
-        valid_ratings = [p["rating"] for p in readings_arr if p["rating"] is not None]
-        valid_reviews = [p["review"] for p in readings_arr if p["review"] is not None]
-        book["average_rating"] = None if len(valid_ratings) == 0 else sum(valid_ratings)/len(valid_ratings)
-        book["count_has_read"] = len(has_read)
-        book['count_valid_ratings'] = len(valid_ratings)
-        book["count_valid_reviews"] = len(valid_reviews)
-        del book["readings"]
+        if 'readings' in book:
+            readings_arr = book["readings"]
+            has_read = [p["has_read"] for p in readings_arr if p["has_read"] == True]
+            valid_ratings = [p["rating"] for p in readings_arr if p["rating"] is not None]
+            valid_reviews = [p["review"] for p in readings_arr if p["review"] is not None]
+            book["average_rating"] = None if len(valid_ratings) == 0 else sum(valid_ratings)/len(valid_ratings)
+            book["count_has_read"] = len(has_read)
+            book['count_valid_ratings'] = len(valid_ratings)
+            book["count_valid_reviews"] = len(valid_reviews)
+            del book["readings"]
         return book
     
         
 book_details_schema = BookDetailsSchema()
 books_details_schema = BookDetailsSchema(many=True)
+
+collectedbooks = db.Table('collected_books',
+                          db.Column('collection_id', db.Integer, db.ForeignKey('collections.id'), primary_key=True),
+                          db.Column('book_id', db.Integer, db.ForeignKey('book_details.id'), primary_key=True)
+)
