@@ -3,6 +3,7 @@ import { Typography, Box } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import GoalItem from '../components/GoalItem';
 import LoadingIndicator from '../components/LoadingIndicator';
+import GoalAddedButton from '../components/GoalAddedButton';
 import { Appctx } from '../utils/LocalContext';
 import { getMonthlyGoalStatus } from '../services/goalAPIs';
 const GoalPage: FC = () => {
@@ -25,18 +26,22 @@ const GoalPage: FC = () => {
   }, []);
 
   return (
-    <Box sx={{ minHeight: '80vh', display: 'flex', p: 2, width: '100%' }}>
+    <Box sx={{ display: 'flex', p: 2, width: '100%' }}>
       {isLoading && <LoadingIndicator />}
       {!isLoading && error && !isEmpty(error) && <Typography>{error}</Typography>}
       {!isLoading &&
         settlement &&
         isEmpty(error) &&
-        settlement.map((goal, index) => {
-          if (index === 0)
-            return <GoalItem isOverview={false} isCurrent={true} goal={goal} key={goal.month} />;
-          else
-            return <GoalItem isOverview={false} isCurrent={false} goal={goal} key={goal.month} />;
-        })}
+        (settlement.length > 0 ? (
+          settlement.map((goal, index) => {
+            if (index === 0)
+              return <GoalItem isOverview={false} isCurrent={true} goal={goal} key={goal.month} />;
+            else
+              return <GoalItem isOverview={false} isCurrent={false} goal={goal} key={goal.month} />;
+          })
+        ) : (
+          <GoalAddedButton />
+        ))}
     </Box>
   );
 };

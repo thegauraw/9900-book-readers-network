@@ -95,7 +95,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
           <CardMedia
             component="img"
             sx={{ mx: 1, width: '76px', height: '114px' }}
-            image={bookCoverImg ?? noCoverImg}
+            image={bookCoverImg || noCoverImg}
           />
         </CardContent>
         {bookDetails()}

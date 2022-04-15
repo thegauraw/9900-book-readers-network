@@ -16,14 +16,17 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({ bookList, isOverview, d
 
   const bookOverview = (book: BookThumbnail) => {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+      <Box
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}
+        key={book.volume_id}
+      >
         <CardMedia
           component="img"
           sx={{ mx: 1, ...bookImageSizes.medium }}
-          image={book.smallThumbnail ?? noCoverImg}
+          image={book.smallThumbnail || noCoverImg}
         />
         <Typography variant="subtitle1" component="div">
-          {book.title ?? book.volume_id}
+          {book.title || book.volume_id}
         </Typography>
       </Box>
     );
@@ -40,9 +43,7 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({ bookList, isOverview, d
           overflow: 'hidden',
         }}
       >
-        {bookList.map((book) => (
-          <>{bookOverview(book)}</>
-        ))}
+        {bookList.map((book) => bookOverview(book))}
         {typeof detailPath === 'string' && detailPath && (
           <Button sx={{ ...bookImageSizes.small }} onClick={() => navigate(detailPath)}>
             <MoreHorizIcon />
