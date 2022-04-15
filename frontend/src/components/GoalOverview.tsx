@@ -2,10 +2,10 @@ import { FC, useContext, useEffect } from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import GoalItem from './GoalItem';
+import GoalAddedButton from './GoalAddedButton';
 import LoadingIndicator from './LoadingIndicator';
 import { Appctx } from '../utils/LocalContext';
 import { NavMenuList } from '../config/paths';
-import { MonthlyGoalStatus } from '../types/GoalTypes';
 import { getMonthlyGoalStatus } from '../services/goalAPIs';
 import { useNavigate } from 'react-router-dom';
 const GoalOverview: FC = () => {
@@ -38,6 +38,7 @@ const GoalOverview: FC = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
+          mt: 'auto',
         }}
       >
         <Typography variant="h4" component="div">
@@ -59,17 +60,21 @@ const GoalOverview: FC = () => {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
       {isLoading && <LoadingIndicator />}
       {!isLoading && error && !isEmpty(error) && <Typography>{error}</Typography>}
-      {!isLoading && settlement && isEmpty(error) && settlement.length > 0 && (
+      {!isLoading && settlement && isEmpty(error) && (
         <>
-          <GoalItem
-            isOverview={true}
-            isCurrent={true}
-            goal={settlement[0]}
-            key={settlement[0].month}
-          />
+          {settlement.length > 0 ? (
+            <GoalItem
+              isOverview={true}
+              isCurrent={true}
+              goal={settlement[0]}
+              key={settlement[0].month}
+            />
+          ) : (
+            <GoalAddedButton />
+          )}
           {goalHeader()}
         </>
       )}
