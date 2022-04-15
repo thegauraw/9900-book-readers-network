@@ -1,3 +1,5 @@
+import copy
+
 from marshmallow import fields, post_dump, pre_load, validate
 from bookrs.model import BaseModel, db, ma
 from sqlalchemy.orm import relationship, backref
@@ -24,6 +26,18 @@ class BookDetailsSchema(ma.SQLAlchemyAutoSchema):
     
     readings = fields.List(fields.Nested(ReadingSchema(exclude=("volume_id",))))
     
+    @pre_load
+    def preprocess_aveRating(self, book, **kwargs):
+        book = copy.deepcopy(book)
+        if 'readings' in book:
+            readings_arr = book["readings"]
+            valid_ratings = [p["rating"] for p in readings_arr if p["rating"] is not None]
+            book["average_rating"] = 0. if len(valid_ratings) == 0 else sum(valid_ratings)/len(valid_ratings)
+
+            del book["readings"]
+
+        return book
+
     @post_dump
     def process_statistics(self, book, many, **kwargs):
         if 'readings' in book:
