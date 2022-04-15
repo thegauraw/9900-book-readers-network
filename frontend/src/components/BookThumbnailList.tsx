@@ -23,10 +23,10 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({ bookList, isOverview, d
         <CardMedia
           component="img"
           sx={{ mx: 1, ...bookImageSizes.medium }}
-          image={book.smallThumbnail ?? noCoverImg}
+          image={book.smallThumbnail || noCoverImg}
         />
         <Typography variant="subtitle1" component="div">
-          {book.title ?? book.volume_id}
+          {book.title || book.volume_id}
         </Typography>
       </Box>
     );
