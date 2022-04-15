@@ -18,6 +18,7 @@ export const searchBooksApi = async (query: ST.SearchParams): Promise<any> => {
     } else if (query.by === ST.SearchMethods.books) {
       queryString += `+intitle:${query.q}`;
     }
+    if (query.min) queryString += `&minRating=${Number(query.min)}`;
     const page = query.p ? Number(query.p) - 1 : 0;
     const maxResults = 10;
     const startIndex = page * maxResults;
