@@ -48,7 +48,7 @@ class Goals(Resource):
                 read_num = len(books_list)
                 if read_num >= goal_num:
                     finish = True
-                    finish_date = (books_list[-goal_num]).get("last_update_read_at")
+                    finish_date = (books_list[-goal_num]).get("last_update_read_at") if goal_num > 0 else datetime.strftime(current_month, '%Y-%m-%d')
                 else:
                     finish = False
                     finish_date = None
