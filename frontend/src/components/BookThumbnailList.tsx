@@ -5,6 +5,7 @@ import { BookThumbnail } from '../types/BookTypes';
 import { bookImageSizes } from '../config/constants';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import noCoverImg from '../assets/no_cover_thumb.gif';
+import { bookPath } from '../config/paths';
 interface BookThumbnailListProps {
   bookList: BookThumbnail[];
   isOverview: boolean;
@@ -28,8 +29,9 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
       >
         <CardMedia
           component="img"
-          sx={{ mx: 1, ...bookImageSize }}
+          sx={{ mx: 1, ...bookImageSize, cursor: 'pointer' }}
           image={book.smallThumbnail || noCoverImg}
+          onClick={() => navigate(`${bookPath}/${book.volume_id}`)}
         />
         {!isOverview && (
           <Typography variant="subtitle2" component="div">
