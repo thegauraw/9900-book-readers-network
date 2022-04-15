@@ -15,11 +15,15 @@ search_bp = Blueprint('search', __name__)
 class SearchForBooks(Resource):
 
   def get(self):
+    """
+      search and filter books `GET /search?q=<string: q>&startIndex=<int: startIndex>&minRating=<float: minRating>`
+    """
+
     query_string = request.args.get('q') if request.args.get('q') else None
     # search_method = request.args.get('by') if request.args.get('by') else None
     # page = request.args.get('p') if request.args.get('p') else None
     startIndex = request.args.get('startIndex') if request.args.get('startIndex') else 0
-    minRating = float(request.args.get('minRating')) if request.args.get('rating') else 0.0 #for advanced filter
+    minRating = float(request.args.get('minRating')) if request.args.get('minRating') else 0.0 #for advanced filter
 
     # Search for google book api
     # For each result, add book detail to the response
