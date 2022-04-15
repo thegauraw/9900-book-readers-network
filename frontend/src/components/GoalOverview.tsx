@@ -62,7 +62,7 @@ const GoalOverview: FC = () => {
     <Box sx={{ width: '100%' }}>
       {isLoading && <LoadingIndicator />}
       {!isLoading && error && !isEmpty(error) && <Typography>{error}</Typography>}
-      {!isLoading && settlement && isEmpty(error) && (
+      {!isLoading && settlement && isEmpty(error) && settlement.length > 0 && (
         <>
           <GoalItem
             isOverview={true}
