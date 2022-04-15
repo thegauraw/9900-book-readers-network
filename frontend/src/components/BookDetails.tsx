@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Box, CardContent, CardMedia, Typography, Chip } from '@mui/material';
+import MarkReadButton from './MarkReadButton';
 import noCoverImg from '../assets/no_cover_thumb.gif';
 interface BookDetailsProps {
   bookCoverImg: string | undefined;
@@ -18,15 +19,16 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   publisher,
   publishedDate,
 }) => {
-  return (
-    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
-      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-        <CardMedia
-          component="img"
-          sx={{ mx: 1, width: '76px', height: '114px' }}
-          image={bookCoverImg ?? noCoverImg}
-        />
-      </CardContent>
+  const bookActions = () => {
+    return (
+      <Box sx={{ px: 4 }}>
+        <MarkReadButton />
+      </Box>
+    );
+  };
+
+  const bookDetails = () => {
+    return (
       <Box
         sx={{
           display: 'flex',
@@ -76,6 +78,29 @@ const BookDetails: React.FC<BookDetailsProps> = ({
           {`Published ${publishedDate} by ${publisher}`}
         </Typography>
       </Box>
+    );
+  };
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+      }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <CardContent>
+          <CardMedia
+            component="img"
+            sx={{ mx: 1, width: '76px', height: '114px' }}
+            image={bookCoverImg ?? noCoverImg}
+          />
+        </CardContent>
+        {bookDetails()}
+      </Box>
+      {bookActions()}
     </Box>
   );
 };
