@@ -1,6 +1,7 @@
 import { ReadingsURL, OwnedReadingsURL } from './callableURLs';
 import * as RT from '../types/ReadingTypes';
 import { ErrorResponse, SuccessResponse } from '../types/ServerResponseTypes';
+import { format } from 'date-fns';
 
 export const getReadingByBookIdForOwner = async (
   bookId: string | undefined,
@@ -87,9 +88,15 @@ export const setReviewAndRating = async (
 export const setReadingStatus = async (
   hasRead: boolean,
   token: string,
-  bookId: string | undefined
+  bookId: string | undefined,
+  readAt?: Date
 ): Promise<string> => {
   try {
+    let payload = { has_read: hasRead };
+    if (readAt) {
+      const readDateString = format(readAt, 'yyyy-MM-dd');
+      payload = Object.assign({ ...payload, last_update_read_at: readDateString });
+    }
     const requestOptions = {
       method: 'PUT',
       headers: {
@@ -98,10 +105,9 @@ export const setReadingStatus = async (
         accept: 'application/json',
       },
 
-      body: JSON.stringify({
-        has_read: hasRead,
-      }),
+      body: JSON.stringify(payload),
     };
+
     const response = await fetch(`${OwnedReadingsURL}/${bookId}`, requestOptions);
     const data: SuccessResponse = await response.json();
     return data.payload;
