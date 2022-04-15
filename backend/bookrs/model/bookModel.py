@@ -8,11 +8,11 @@ class BookModel(BaseModel):
     id = db.Column(db.Integer(), primary_key=True)
     volume_id = db.Column(db.String(20), unique=True)
     title = db.Column(db.String(), default=None)
-    average_rating = db.Column(db.Float(precision="10,1"), default=None)
+    average_rating = db.Column(db.Float(precision="10,1"), default=0.)
     authors = db.Column(db.String(), default=None)
     smallThumbnail = db.Column(db.String(), default=None)
     categories = db.Column(db.String(), default=None)
-    publisher = db.Column(db.String(20), default=None)
+    publisher = db.Column(db.String(), default=None)
     publishedDate = db.Column(db.String(20), default=None)
     readings = relationship(ReadingModel, backref=backref('readings'))
 

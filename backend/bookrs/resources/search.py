@@ -77,6 +77,7 @@ def retriveBooks(minRating=0., book_data=None):
   volume_id_list = []
   for book in books:
     data = copy.deepcopy(book_data)
+    data['id'] = book.volume_id
     if book.title:
       data['volumeInfo']['title'] = book.title
     if book.authors:
