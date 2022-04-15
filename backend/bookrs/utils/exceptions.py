@@ -85,3 +85,7 @@ def OwnedReadingHasExistedException():
 def InvalidSearchException():
   return InvalidUsage('Invalid search request', status_code=400)
 
+
+# Achievement related exceptions
+def AchievementListException():
+  return InvalidUsage('Fail to list achievements', status_code=500)

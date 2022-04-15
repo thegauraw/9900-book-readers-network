@@ -20,13 +20,16 @@ class ReadingModel(BaseModel):
     def __repr__(self):
         return f'<Reading {self.id} for book {self.volume_id} by {self.reader_id} { "has read" if self.has_read else "unread" }>'
 
-    # @staticmethod
-    # def on_insert(reader_id):
-    #     readings = db.query().filter_by(reader_id=reader_id).all()
-    #     read_list = [1 for r in readings if r['has_read'] is True]
-    #     if len(read_list) == 1:
-    #         AchievementModel.
+    @staticmethod
+    def on_insert(mapper, connection, target):
+        print(f'target: {target.reader_id}')
+        # readings = self.query.filter_by(reader_id=reader_id).all()
+        # read_list = [1 for r in readings if r['has_read'] is True]
+        # print(f'read_list: {read_list}')
+        # # if len(read_list) == 1:
+        #     AchievementModel.
 
+event.listen(ReadingModel, 'after_insert', ReadingModel.on_insert)
 
 class ReadingSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

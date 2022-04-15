@@ -13,6 +13,7 @@ from .resources.logins import Login, login_bp
 from .resources.collections import collections_bp
 from .resources.books import books_bp
 from .resources.search import search_bp
+from .resources.achievements import achievements_bp
 from .resources.readings import Readings, ReadingsByBookId, readings_bp
 from .resources.owned_readings import OwnedReadingByBookId, owned_readings_bp
 from .resources.goals import goals_bp, Goals
@@ -88,6 +89,8 @@ def create_app(test_config=None):
     app.register_blueprint(reader_bp)
     
     app.register_blueprint(search_bp)
+
+    app.register_blueprint(achievements_bp)
 
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):

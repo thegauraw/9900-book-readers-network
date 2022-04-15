@@ -21,8 +21,8 @@ class ReaderModel(db.Model):
     gender = db.Column(db.String(5))
     age = db.Column(db.Integer)
     collections = db.relationship("Collection", backref="owner")
-    readings = relationship(ReadingModel, backref=backref('reader'))
-    achievement = relationship(AchievementModel, backref=backref('achievement'))
+    readings = db.relationship(ReadingModel, backref='reader')
+    achievements = db.relationship(AchievementModel, backref='reader')
 
     def create(self):
         db.session.add(self)
