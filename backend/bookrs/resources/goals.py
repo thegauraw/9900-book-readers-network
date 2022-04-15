@@ -60,7 +60,7 @@ class Goals(Resource):
                             book_info = book_details_schema.dump(book_data)
                             book_detail = {"volume_id": book_info.get("volume_id"),
                                            "title": book_info.get("title"),
-                                           "book_image_url": book_info.get("book_image_url")}
+                                           "smallThumbnail": book_info.get("smallThumbnail")}
                             book_list.append(book_detail)
                 goal = {"month": month_str,
                         "goal_num": goal_num,

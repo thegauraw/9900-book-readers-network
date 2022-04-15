@@ -1,7 +1,7 @@
 export interface BookOverview {
   volume_id: string;
   title: string;
-  book_image_url: string | null;
+  smallThumbnail: string | null;
 }
 
 export interface MonthlyGoalStatus {

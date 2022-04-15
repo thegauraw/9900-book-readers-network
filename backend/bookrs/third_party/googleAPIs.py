@@ -18,7 +18,7 @@ def get_book_details_from_google(volume_id):
       book['volume_id'] = volume_id
       book['title'] = data['volumeInfo']['title']
       book['authors'] = json.dumps(data['volumeInfo']['authors'])
-      book['book_image_url'] = data['volumeInfo']['imageLinks']['smallThumbnail']
+      book['smallThumbnail'] = data['volumeInfo']['imageLinks']['smallThumbnail']
       book['publishedDate'] = data['volumeInfo']['publishedDate']
       book['publisher'] = data['volumeInfo']['publisher']
       book['categories'] = json.dumps(data['volumeInfo']['categories'])
