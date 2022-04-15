@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { Box, Typography, Divider } from '@mui/material';
 import BookThumbnailList from './BookThumbnailList';
+import RecommendationModeSelect from './RecommendationModeSelect';
 import { BookThumbnail } from '../types/BookTypes';
 import { RecommendationModes } from '../types/SearchTypes';
 import { getRecommendations } from '../services/searchAPIs';
@@ -11,12 +12,17 @@ const RecommendationList: FC = () => {
   const [bookList, setBookList] = useState<BookThumbnail[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [value, setValue] = useState(RecommendationModes.author);
+
+  const handleChange = (selectedValue: RecommendationModes) => {
+    setValue(selectedValue);
+  };
 
   useEffect(() => {
     (async function () {
       try {
         setIsLoading(true);
-        const response = await getRecommendations(RecommendationModes.book);
+        const response = await getRecommendations(value);
         setBookList(response);
       } catch (error) {
         setError(error as string);
@@ -34,7 +40,17 @@ const RecommendationList: FC = () => {
         m: 4,
       }}
     >
-      <Typography variant="subtitle1">BOOKS FOR YOU</Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant="subtitle1">BOOKS FOR YOU</Typography>
+        <RecommendationModeSelect value={value} handleChange={handleChange} />
+      </Box>
       <Divider />
       {isLoading && <LoadingIndicator />}
       {!isLoading && error && !isEmpty(error) && <Typography>{error}</Typography>}
