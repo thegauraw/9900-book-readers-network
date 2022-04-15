@@ -6,30 +6,45 @@ import LoadingIndicator from './LoadingIndicator';
 import SearchNotFound from './SearchNotFound';
 import { Appctx } from '../utils/LocalContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import SearchFilter from './SearchFilter';
 const SearchResultFullList: FC = () => {
   const context = useContext(Appctx);
   const { searchResultList } = context;
   const { settlement, isLoading, error } = searchResultList;
   let [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(Number(searchParams.get('p')));
+  const [page, setPage] = useState(Number(searchParams.get('p')) || 1);
 
   let navigate = useNavigate();
 
   const handleChange = (event: any, value: number) => {
     setPage(value);
-    const newParams = { q: '', by: 'all', p: '1' };
-    if (searchParams.has('q') && searchParams.has('by')) {
-      newParams['q'] = searchParams.get('q') ?? '';
-      newParams['by'] = searchParams.get('by') ?? '';
-      if (searchParams.has('p')) {
-        newParams['p'] = String(value);
-      }
-      setSearchParams(newParams);
-    }
+    const newParams = {
+      q: searchParams.get('q') ?? '',
+      by: searchParams.get('by') ?? 'all',
+      p: String(value) ?? '1',
+      min: searchParams.get('min') ?? '0',
+    };
+    setSearchParams(newParams);
   };
 
   const onClick = (id: string | undefined) => {
     if (id) navigate(`/books/${id}`);
+  };
+
+  const listHeader = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="subtitle1">{Number(settlement?.totalItems)} books found</Typography>
+        <SearchFilter />
+      </Box>
+    );
   };
 
   const showList = () => {
@@ -41,11 +56,10 @@ const SearchResultFullList: FC = () => {
             overflowY: 'scroll',
           }}
         >
-          <Typography variant="subtitle1">{Number(settlement?.totalItems)} books found</Typography>
-          <Divider />
+          {listHeader()}
           {settlement?.items.map((item) => (
             <Box
-              id={item.id}
+              key={item.id}
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -66,6 +80,7 @@ const SearchResultFullList: FC = () => {
                 sx={{
                   width: '20%',
                   p: 1,
+                  ml: 'auto',
                 }}
                 onClick={() => onClick(item.id)}
               >

@@ -9,6 +9,7 @@ import { NotFoundPath } from '../config/paths';
 import { getBookDetailsApi } from '../services/searchAPIs';
 import LoadingIndicator from '../components/LoadingIndicator';
 import BookDetails from '../components/BookDetails';
+import MarkReadButton from '../components/MarkReadButton';
 const BookPage: FC = () => {
   const context = useContext(Appctx);
   let navigate = useNavigate();
@@ -37,6 +38,23 @@ const BookPage: FC = () => {
     }
   }, []);
 
+  const bookActions = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignSelf: 'center',
+          alignItems: 'center',
+          px: 6,
+        }}
+      >
+        <BookRatingReviewStat />
+        <MarkReadButton />
+      </Box>
+    );
+  };
+
   return (
     <>
       {isLoading && <LoadingIndicator />}
@@ -46,10 +64,12 @@ const BookPage: FC = () => {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
             }}
           >
-            <BookRatingReviewStat />
             <BookDetails
               title={settlement.volumeInfo.title}
               authors={settlement.volumeInfo.authors}
@@ -58,6 +78,7 @@ const BookPage: FC = () => {
               publisher={settlement.volumeInfo.publisher}
               publishedDate={settlement.volumeInfo.publishedDate}
             />
+            {bookActions()}
           </Box>
           <BookRatingReview />
         </>

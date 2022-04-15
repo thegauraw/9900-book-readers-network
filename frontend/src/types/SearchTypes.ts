@@ -8,6 +8,7 @@ export interface SearchParams {
   q?: string | null;
   by?: SearchMethods | null;
   p?: string | null;
+  min?: string | null;
 }
 
 export interface SearchSuccessItemResponse {

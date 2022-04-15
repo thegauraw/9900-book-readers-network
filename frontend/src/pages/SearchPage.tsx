@@ -19,6 +19,7 @@ const SearchPage: FC = () => {
           q: query,
           by: searchParams.get('by') as SearchMethods,
           p: searchParams.get('p'),
+          min: searchParams.get('min'),
         };
         try {
           setSearchResultList({ isLoading: true, settlement: null });
@@ -32,7 +33,12 @@ const SearchPage: FC = () => {
         }
       }
     })();
-  }, [searchParams.get('q'), searchParams.get('p'), searchParams.get('by')]);
+  }, [
+    searchParams.get('q'),
+    searchParams.get('p'),
+    searchParams.get('by'),
+    searchParams.get('min'),
+  ]);
 
   const searchBoxOnly = () => (
     <Grid
