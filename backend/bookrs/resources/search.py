@@ -77,6 +77,7 @@ def retriveBooks(minRating=0., book_data=None):
   volume_id_list = []
   for book in books:
     data = copy.deepcopy(book_data)
+    data['id'] = book.volume_id
     if book.title:
       data['volumeInfo']['title'] = book.title
     if book.authors:
@@ -84,11 +85,11 @@ def retriveBooks(minRating=0., book_data=None):
     if book.smallThumbnail:
       data['volumeInfo']['imageLinks']['smallThumbnail'] = book.smallThumbnail
     if book.categories:
-      data['volumeInfo']['title'] = json.loads(book.categories)
+      data['volumeInfo']['categories'] = json.loads(book.categories)
     if book.publisher:
-      data['volumeInfo']['title'] = book.publisher
+      data['volumeInfo']['publisher'] = book.publisher
     if book.publishedDate:
-      data['volumeInfo']['title'] = book.publishedDate
+      data['volumeInfo']['publishedDate'] = book.publishedDate
     if book.average_rating:
       data['average_rating'] = book.average_rating
     else:

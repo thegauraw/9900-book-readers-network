@@ -8,7 +8,7 @@ def ResourceNotFoundError(error):
   return InvalidUsage(error.__str__(), status_code=404).to_json()
 
 def InternalServerError(error):
-  return InvalidUsage(error.__str__(), status_code=500).to_json()
+  return InvalidUsage(str(error), status_code=500).to_json()
 
 
 # Reader authentication related exceptions

@@ -1,3 +1,5 @@
+import copy
+
 from marshmallow import fields, post_dump, pre_load, validate
 from bookrs.model import BaseModel, db, ma
 from sqlalchemy.orm import relationship, backref
@@ -8,12 +10,11 @@ class BookModel(BaseModel):
     id = db.Column(db.Integer(), primary_key=True)
     volume_id = db.Column(db.String(20), unique=True)
     title = db.Column(db.String(), default=None)
-    book_image_url = db.Column(db.String(), default=None)
-    average_rating = db.Column(db.Float(precision="10,1"), default=None)
-    authors = db.Column(db.String(50), default=None)
-    smallThumbnail = db.Column(db.String(100), default=None)
-    categories = db.Column(db.String(50), default=None)
-    publisher = db.Column(db.String(20), default=None)
+    average_rating = db.Column(db.Float(precision="10,1"), default=0.)
+    authors = db.Column(db.String(), default=None)
+    smallThumbnail = db.Column(db.String(), default=None)
+    categories = db.Column(db.String(), default=None)
+    publisher = db.Column(db.String(), default=None)
     publishedDate = db.Column(db.String(20), default=None)
     readings = relationship(ReadingModel, backref=backref('readings'))
 
@@ -25,6 +26,18 @@ class BookDetailsSchema(ma.SQLAlchemyAutoSchema):
     
     readings = fields.List(fields.Nested(ReadingSchema(exclude=("volume_id",))))
     
+    @pre_load
+    def preprocess_aveRating(self, book, **kwargs):
+        book = copy.deepcopy(book)
+        if 'readings' in book:
+            readings_arr = book["readings"]
+            valid_ratings = [p["rating"] for p in readings_arr if p["rating"] is not None]
+            book["average_rating"] = 0. if len(valid_ratings) == 0 else sum(valid_ratings)/len(valid_ratings)
+
+            del book["readings"]
+
+        return book
+
     @post_dump
     def process_statistics(self, book, many, **kwargs):
         if 'readings' in book:

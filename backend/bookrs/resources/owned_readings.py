@@ -4,10 +4,10 @@ from bookrs.model.readingModel import ReadingModel, reading_schema
 from bookrs.model.bookModel import BookModel, book_details_schema
 from bookrs.utils.common import SUCCESS
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from bookrs.utils.exceptions import InternalServerError
-from werkzeug.exceptions import NotFound
+from bookrs.utils.exceptions import BookCreateException
 from bookrs.resources import api
-from bookrs.utils.get_book_details_from_google import get_book_details_from_google
+from bookrs.third_party.googleAPIs import get_book_details_from_google
+
 
 owned_readings_bp = Blueprint('owned_readings', __name__)
 class OwnedReadingByBookId(Resource):
@@ -20,7 +20,7 @@ class OwnedReadingByBookId(Resource):
                 db_result = reading_schema.dump(db_result)
             return SUCCESS(payload=db_result)
         except Exception as e:
-            raise InternalServerError(e)
+            raise e
         
     # Put is the only way to interact with readings
     def put(self, volume_id):
@@ -29,10 +29,14 @@ class OwnedReadingByBookId(Resource):
             
             #Create a book record when there is any user reading data stored in our system
             book = BookModel.query.filter_by(volume_id=volume_id).first()
+            result = None
             if not book:
                 book_data = get_book_details_from_google(volume_id)
                 book = book_details_schema.load(book_data)
-                result = book_details_schema.dump(book.save())  
+                if book.save():
+                    result = book_details_schema.dump(book)
+                else:
+                    raise BookCreateException()
             
             current_user = get_jwt_identity()
             db_result = ReadingModel.query.filter_by(reader_id=current_user, volume_id=volume_id).first()
@@ -48,7 +52,7 @@ class OwnedReadingByBookId(Resource):
                 result = reading_schema.dump(reading.save())
                 return SUCCESS(payload=result, status_code=201)
         except Exception as e:
-            raise InternalServerError(e)
+            raise e
         
 
       
