@@ -45,7 +45,7 @@ const SearchResultFullList: FC = () => {
           <Divider />
           {settlement?.items.map((item) => (
             <Box
-              id={item.id}
+              key={item.id}
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -66,6 +66,7 @@ const SearchResultFullList: FC = () => {
                 sx={{
                   width: '20%',
                   p: 1,
+                  ml: 'auto',
                 }}
                 onClick={() => onClick(item.id)}
               >

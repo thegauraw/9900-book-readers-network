@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Box, CardContent, CardMedia, Typography, Chip } from '@mui/material';
-import MarkReadButton from './MarkReadButton';
 import noCoverImg from '../assets/no_cover_thumb.gif';
 interface BookDetailsProps {
   bookCoverImg: string | undefined;
@@ -19,14 +18,6 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   publisher,
   publishedDate,
 }) => {
-  const bookActions = () => {
-    return (
-      <Box sx={{ px: 4 }}>
-        <MarkReadButton />
-      </Box>
-    );
-  };
-
   const bookDetails = () => {
     return (
       <Box
@@ -57,7 +48,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
             by
           </Typography>
           {authors?.map((author) => (
-            <Typography gutterBottom variant="subtitle2" component="div">
+            <Typography gutterBottom variant="subtitle2" component="div" key={author + title}>
               {author}
             </Typography>
           ))}
@@ -69,7 +60,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
           }}
         >
           {categories?.map((category) => (
-            <Typography gutterBottom variant="subtitle1" component="div">
+            <Typography gutterBottom variant="subtitle1" component="div" key={category + title}>
               <Chip label={category} variant="outlined" size="small" />
             </Typography>
           ))}
@@ -83,7 +74,6 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   return (
     <Box
       sx={{
-        width: '100%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -100,7 +90,6 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         </CardContent>
         {bookDetails()}
       </Box>
-      {bookActions()}
     </Box>
   );
 };
