@@ -6,7 +6,7 @@ from bookrs.model.collection import Collection
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
 from bookrs.utils.exceptions import BookCollectException, BookCreateException, BookDropException
-from bookrs.utils.get_book_details_from_google import get_book_details_from_google
+from bookrs.third_party.googleAPIs import get_book_details_from_google
 
 books_bp = Blueprint('books', __name__)
 
