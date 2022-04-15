@@ -38,7 +38,7 @@ const SearchResultFullList: FC = () => {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-end',
         }}
       >
         <Typography variant="subtitle1">{Number(settlement?.totalItems)} books found</Typography>
@@ -50,45 +50,47 @@ const SearchResultFullList: FC = () => {
   const showList = () => {
     if (!isLoading && !isEmpty(settlement) && isEmpty(error)) {
       return (
-        <Box
-          sx={{
-            height: '66vh',
-            overflowY: 'scroll',
-          }}
-        >
+        <>
           {listHeader()}
-          {settlement?.items.map((item) => (
-            <Box
-              key={item.id}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                border: '1px solid',
-                borderColor: 'primary.main',
-              }}
-            >
-              <BookDetails
-                title={item.volumeInfo.title}
-                authors={item.volumeInfo.authors}
-                bookCoverImg={item.volumeInfo.imageLinks?.smallThumbnail}
-                categories={item.volumeInfo.categories}
-                publisher={item.volumeInfo.publisher}
-                publishedDate={item.volumeInfo.publishedDate}
-              />
-              <Button
-                variant="text"
+          <Box
+            sx={{
+              height: '56vh',
+              overflowY: 'scroll',
+            }}
+          >
+            {settlement?.items.map((item) => (
+              <Box
+                key={item.id}
                 sx={{
-                  width: '20%',
-                  p: 1,
-                  ml: 'auto',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  border: '1px solid',
+                  borderColor: 'primary.main',
                 }}
-                onClick={() => onClick(item.id)}
               >
-                View Details
-              </Button>
-            </Box>
-          ))}
-        </Box>
+                <BookDetails
+                  title={item.volumeInfo.title}
+                  authors={item.volumeInfo.authors}
+                  bookCoverImg={item.volumeInfo.imageLinks?.smallThumbnail}
+                  categories={item.volumeInfo.categories}
+                  publisher={item.volumeInfo.publisher}
+                  publishedDate={item.volumeInfo.publishedDate}
+                />
+                <Button
+                  variant="text"
+                  sx={{
+                    width: '20%',
+                    p: 1,
+                    ml: 'auto',
+                  }}
+                  onClick={() => onClick(item.id)}
+                >
+                  View Details
+                </Button>
+              </Box>
+            ))}
+          </Box>
+        </>
       );
     } else return <></>;
   };
