@@ -7,7 +7,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from bookrs.utils.exceptions import BookCreateException
 from bookrs.resources import api
 from bookrs.third_party.googleAPIs import get_book_details_from_google
-from bookrs.services.monitor import monitor_readings
+from bookrs.services.monitors import monitor_readings
 
 
 owned_readings_bp = Blueprint('owned_readings', __name__)
