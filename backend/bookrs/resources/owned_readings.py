@@ -26,7 +26,6 @@ class OwnedReadingByBookId(Resource):
     # Put is the only way to interact with readings
     def put(self, volume_id):
         try:
-            # import pdb; pdb.set_trace()
             data = request.get_json()
             
             #Create a book record when there is any user reading data stored in our system

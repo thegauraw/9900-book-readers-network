@@ -5,9 +5,9 @@ from marshmallow_sqlalchemy import auto_field
 class AchievementModel(BaseModel):
   __tablename__ = 'achievements'
   id = db.Column(db.Integer, primary_key=True)
-  reader_id = db.Column(db.Integer, db.ForeignKey("readers.id"), nullable=False)
   image = db.Column(db.String(20), unique=True)
   description = db.Column(db.String())
+  reader_id = db.Column(db.Integer, db.ForeignKey("readers.id"), nullable=False)
 
 
 class AchievementSchema(ma.SQLAlchemyAutoSchema):
