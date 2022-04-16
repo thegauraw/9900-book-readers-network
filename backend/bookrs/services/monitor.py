@@ -16,18 +16,18 @@ def monitor_readings(reader_id):
   register_badges(len(has_reads), reader_id, 'read')
 
 def register_badges(n, reader_id, badge_mode):
-    ids = badges_def['seq']
+  ids = badges_def['seq']
 
-    badges_images = [f'{badge_mode}_{i}' for i in ids if n >= i]
+  badges_images = [f'{badge_mode}_{i}' for i in ids if n >= i]
 
-    for image in badges_images:
-      data = AchievementModel.query.filter_by(image=image).first()
-      if not data:
-        data = dict()
-        data['image'] = image
-        data['description'] = image
-        data['reader_id'] = reader_id
-        achievement_data = achievement_schema.loads(json.dumps(data))
-        
-        if not achievement_data.save():
-          raise BadgeRegisterException()
+  for image in badges_images:
+    data = AchievementModel.query.filter_by(image=image).first()
+    if not data:
+      data = dict()
+      data['image'] = image
+      data['description'] = image
+      data['reader_id'] = reader_id
+      achievement_data = achievement_schema.loads(json.dumps(data))
+
+      if not achievement_data.save():
+        raise BadgeRegisterException()
