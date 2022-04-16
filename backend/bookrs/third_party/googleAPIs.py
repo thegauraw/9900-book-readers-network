@@ -60,3 +60,28 @@ def seach_book_detail_from_google(volume_id):
     raise InvalidSearchException()
   except Exception as e:
     raise e
+
+
+def seach_books_from_google_with_filter_mode(query, mode, startIndex, maxResults):
+  """Search book detail with google api"""
+  try:
+    url = None
+    if mode == 'title':
+      url = f'https://www.googleapis.com/books/v1/volumes?q=+intitle:{query}&startIndex={startIndex}&maxResults={maxResults}'
+    elif mode == 'author':
+      url = f'https://www.googleapis.com/books/v1/volumes?q=+inauthor:{query}&startIndex={startIndex}&maxResults={maxResults}'
+    elif mode == 'category':
+      url = f'https://www.googleapis.com/books/v1/volumes?q=+subject:{query}&startIndex={startIndex}&maxResults={maxResults}'
+    elif mode == 'publisher':
+      url = f'https://www.googleapis.com/books/v1/volumes?q=+inpublisher:{query}&startIndex={startIndex}&maxResults={maxResults}'
+
+    resp = requests.get(url)
+
+    if resp.status_code == 200:
+      data = json.loads(resp.text)
+
+      return data
+
+    raise InvalidSearchException()
+  except Exception as e:
+    raise e
