@@ -40,8 +40,6 @@ class OwnedReadingByBookId(Resource):
                     raise BookCreateException()
             
             current_user = get_jwt_identity()
-            print(f'current_user: {current_user}')
-            print(f'data: {data}')
             db_result = ReadingModel.query.filter_by(reader_id=current_user, volume_id=volume_id).first()
             data['reader_id'] = current_user
             data['volume_id'] = volume_id
