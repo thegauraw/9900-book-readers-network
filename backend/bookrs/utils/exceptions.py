@@ -89,3 +89,6 @@ def InvalidSearchException():
 # Achievement related exceptions
 def AchievementListException():
   return InvalidUsage('Fail to list achievements', status_code=500)
+
+def BadgeRegisterException():
+  return InvalidUsage('Fail to register badges', status_code=500)
