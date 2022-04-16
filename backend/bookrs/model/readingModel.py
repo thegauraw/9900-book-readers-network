@@ -1,6 +1,8 @@
 from marshmallow import fields, post_dump, pre_load, validate
+
 from bookrs.model import BaseModel, db, ma
 from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format, get_str_date_now
+
 class ReadingModel(BaseModel):
     __tablename__ = 'readings'
     id = db.Column(db.Integer(), primary_key=True)
@@ -14,7 +16,7 @@ class ReadingModel(BaseModel):
     last_update_read_at = db.Column(db.Date, nullable=True)
     
     def __repr__(self):
-         return f'<Reading {self.id} for book {self.volume_id} by {self.reader_id} { "has read" if self.has_read else "unread" }>'
+        return f'<Reading {self.id} for book {self.volume_id} by {self.reader_id} { "has read" if self.has_read else "unread" }>'
 
 
 class ReadingSchema(ma.SQLAlchemyAutoSchema):
@@ -41,6 +43,7 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
             if reading['has_read'] == False:
                 reading['last_update_read_at'] = None
         return reading
+
     @post_dump
     def process_datetime_format(self, reading, many, **kwargs):
         if (reading and reading['last_update_review_rating_at'] is not None):
@@ -49,6 +52,6 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
         del reading['reader']
         return reading
     
-        
+
 reading_schema = ReadingSchema()
 readings_schema = ReadingSchema(many=True)

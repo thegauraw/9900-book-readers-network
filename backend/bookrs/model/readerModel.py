@@ -9,6 +9,7 @@ from bookrs.model import db, ma
 from bookrs.model.collection import Collection
 from bookrs.utils.exceptions import EmailRegisteredException, EmailFormatException, UsernameRegisteredException
 from .readingModel import ReadingModel
+from .achievementModel import AchievementModel
 
 class ReaderModel(db.Model):
     __tablename__ = 'readers'
@@ -20,7 +21,8 @@ class ReaderModel(db.Model):
     gender = db.Column(db.String(5))
     age = db.Column(db.Integer)
     collections = db.relationship("Collection", backref="owner")
-    readings = relationship(ReadingModel, backref=backref('reader'))
+    readings = db.relationship(ReadingModel, backref='reader')
+    achievements = db.relationship(AchievementModel, backref='reader')
 
     def create(self):
         db.session.add(self)
