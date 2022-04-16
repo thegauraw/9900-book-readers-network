@@ -57,5 +57,5 @@ class OwnedReadingByBookId(Resource):
         except Exception as e:
             raise e
 
-      
+
 api.add_resource(OwnedReadingByBookId, '/owned_readings/<string:volume_id>')

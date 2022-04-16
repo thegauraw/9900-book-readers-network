@@ -16,7 +16,7 @@ class Reader(Resource):
     def get(self):
       """
         endpoint for reader: /reader
-        endpoint for password reset: /reader?email=apolloliuhx@gmail.com&reset=true
+        endpoint for password reset: /reader?email=<string:email>e
 
       """
       account = None

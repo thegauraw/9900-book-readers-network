@@ -24,7 +24,7 @@ def get_book_details_from_google(volume_id):
       book['average_rating'] = 0.0
 
       return book
-        
+
   except:
     raise BookCreateException()
 

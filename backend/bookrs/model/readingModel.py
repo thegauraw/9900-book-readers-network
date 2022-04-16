@@ -1,4 +1,6 @@
 from marshmallow import fields, post_dump, pre_load, validate
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy import func
 
 from bookrs.model import BaseModel, db, ma
 from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format, get_str_date_now
@@ -14,7 +16,44 @@ class ReadingModel(BaseModel):
     last_update_review_rating_at = db.Column(db.DateTime(timezone=True), nullable=True)
     has_read = db.Column(db.Boolean, default=False)
     last_update_read_at = db.Column(db.Date, nullable=True)
-    
+
+    def save(self):
+        """Save an instance of the model from the database."""
+        try:
+
+            reading_data = [{item.volume_id: item.average} for item in ReadingModel.query.with_entities(func.avg(ReadingModel.rating).label('average'), ReadingModel.volume_id).filter_by(volume_id=self.volume_id)]
+            
+            # update book average_rating
+            from .bookModel import BookModel
+            book_data = BookModel.query.filter_by(volume_id=self.volume_id).first()
+            book_data.average_rating = reading_data[0][self.volume_id]
+
+            db.session.add(self)
+            db.session.commit()
+            return self
+        except IntegrityError:
+            db.session.rollback()
+            return False
+        except SQLAlchemyError:
+            db.session.rollback()
+        return False
+
+    def update(self):
+        """Update an instance of the model from the database."""
+        try:
+            reading_data = [{item.volume_id: item.average} for item in ReadingModel.query.with_entities(func.avg(ReadingModel.rating).label('average'), ReadingModel.volume_id).filter_by(volume_id=self.volume_id)]
+            
+            # update book average_rating
+            from .bookModel import BookModel
+            book_data = BookModel.query.filter_by(volume_id=self.volume_id).first()
+            book_data.average_rating = reading_data[0][self.volume_id]
+       
+            db.session.commit()
+            return self
+        except SQLAlchemyError:
+            db.session.rollback()
+            return False
+
     def __repr__(self):
         return f'<Reading {self.id} for book {self.volume_id} by {self.reader_id} { "has read" if self.has_read else "unread" }>'
 
@@ -51,7 +90,7 @@ class ReadingSchema(ma.SQLAlchemyAutoSchema):
         reading['username'] = reading['reader']['username']
         del reading['reader']
         return reading
-    
+
 
 reading_schema = ReadingSchema()
 readings_schema = ReadingSchema(many=True)
