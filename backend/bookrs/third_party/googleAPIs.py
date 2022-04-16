@@ -1,11 +1,10 @@
 import json
 import requests
 
-
 from bookrs.model.bookModel import BookModel, book_details_schema
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
-from bookrs.utils.exceptions import BookCreateException
+from bookrs.utils.exceptions import BookCreateException, InvalidSearchException
 
 def get_book_details_from_google(volume_id):
   try:
@@ -30,3 +29,34 @@ def get_book_details_from_google(volume_id):
     raise BookCreateException()
 
 
+def seach_books_from_google(query_string, startIndex):
+  """Search books with google api"""
+  try:
+    url = f'https://www.googleapis.com/books/v1/volumes?q={query_string}&startIndex={startIndex}&maxResults=40'
+    resp = requests.get(url)
+
+    if resp.status_code == 200:
+      data = json.loads(resp.text)
+      #Google book api may return 200 with 0 totalItems / no items / empty items[]
+      if int(data.get('totalItems')) > 0 and data.get('items') and len(data.get('items')) > 0:
+        return data
+
+    raise InvalidSearchException()
+  except Exception as e:
+    raise e
+
+
+def seach_book_detail_from_google(volume_id):
+  """Search book detail with google api"""
+  try:
+    url = f'https://www.googleapis.com/books/v1/volumes/{volume_id}'
+    resp = requests.get(url)
+
+    if resp.status_code == 200:
+      data = json.loads(resp.text)
+
+      return data
+
+    raise InvalidSearchException()
+  except Exception as e:
+    raise e
