@@ -4,6 +4,8 @@ import { makeStyles } from '@mui/styles';
 import { Box, Grid, Paper } from '@mui/material';
 import CollectionListOverview from '../components/CollectionListOverview';
 import GoalOverview from '../components/GoalOverview';
+import RankingList from '../components/RankingList';
+import SearchBox from '../components/SearchBox';
 const useStyles = makeStyles((theme: Theme) => ({
   mainContainer: {
     display: 'flex',
@@ -24,7 +26,10 @@ const HomePage: React.FC = () => {
           <Paper className={classes.componentPaper}>Profile</Paper>
         </Grid>
         <Grid item xs={12} lg={8}>
-          <Paper className={classes.componentPaper}>Search</Paper>
+          <Paper className={classes.componentPaper} sx={{ flexDirection: 'column' }}>
+            <SearchBox showFullResults={true} />
+            <RankingList />
+          </Paper>
         </Grid>
         <Grid item xs={12} sm={6} lg={4}>
           <Paper className={classes.componentPaper}>
