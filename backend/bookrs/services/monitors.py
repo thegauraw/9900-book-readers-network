@@ -3,10 +3,11 @@ import json
 from bookrs.model.achievementModel import AchievementModel, achievement_schema
 from bookrs.utils.badges import badges_def
 from bookrs.utils.exceptions import BadgeRegisterException
-from bookrs.model.readingModel import ReadingModel
 
 
 def monitor_readings(reader_id):
+  from bookrs.model.readingModel import ReadingModel
+  
   readings = ReadingModel.query.filter_by(reader_id=reader_id).all()
 
   reviews = [1 for r in readings if r.review and len(r.review) > 0]

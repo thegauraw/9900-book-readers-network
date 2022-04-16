@@ -7,7 +7,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from bookrs.utils.exceptions import BookCreateException
 from bookrs.resources import api
 from bookrs.third_party.googleAPIs import get_book_details_from_google
-from bookrs.services.monitors import monitor_readings
+
 
 
 owned_readings_bp = Blueprint('owned_readings', __name__)
@@ -47,12 +47,10 @@ class OwnedReadingByBookId(Resource):
             if db_result:
                 reading = reading_schema.load(data, instance=db_result)
                 result = reading_schema.dump(reading.update())
-                monitor_readings(reader_id=current_user)
                 return SUCCESS(payload=result)
             else:
                 reading = reading_schema.load(data)
                 result = reading_schema.dump(reading.save())
-                monitor_readings(reader_id=current_user)
                 return SUCCESS(payload=result, status_code=201)
         except Exception as e:
             raise e

@@ -4,6 +4,7 @@ from sqlalchemy import func
 
 from bookrs.model import BaseModel, db, ma
 from bookrs.utils.custom_datetime import get_str_datetime_now, get_response_datetime_format, get_str_date_now
+from bookrs.services.monitors import monitor_readings
 
 class ReadingModel(BaseModel):
     __tablename__ = 'readings'
@@ -21,6 +22,8 @@ class ReadingModel(BaseModel):
         """Save an instance of the model from the database."""
         try:
 
+            db.session.add(self)
+            db.session.commit()
             reading_data = [{item.volume_id: item.average} for item in ReadingModel.query.with_entities(func.avg(ReadingModel.rating).label('average'), ReadingModel.volume_id).filter_by(volume_id=self.volume_id)]
             
             # update book average_rating
@@ -28,8 +31,9 @@ class ReadingModel(BaseModel):
             book_data = BookModel.query.filter_by(volume_id=self.volume_id).first()
             book_data.average_rating = reading_data[0][self.volume_id]
 
-            db.session.add(self)
             db.session.commit()
+            monitor_readings(reader_id=self.reader_id)
+
             return self
         except IntegrityError:
             db.session.rollback()
@@ -47,8 +51,10 @@ class ReadingModel(BaseModel):
             from .bookModel import BookModel
             book_data = BookModel.query.filter_by(volume_id=self.volume_id).first()
             book_data.average_rating = reading_data[0][self.volume_id]
-       
+
             db.session.commit()
+            monitor_readings(reader_id=self.reader_id)
+
             return self
         except SQLAlchemyError:
             db.session.rollback()
