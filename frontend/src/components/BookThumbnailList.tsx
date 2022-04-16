@@ -9,11 +9,17 @@ interface BookThumbnailListProps {
   bookList: BookThumbnail[];
   isOverview: boolean;
   detailPath?: string;
+  size?: keyof typeof bookImageSizes;
 }
 
-const BookThumbnailList: FC<BookThumbnailListProps> = ({ bookList, isOverview, detailPath }) => {
+const BookThumbnailList: FC<BookThumbnailListProps> = ({
+  bookList,
+  isOverview,
+  detailPath,
+  size,
+}) => {
   let navigate = useNavigate();
-
+  const bookImageSize = size ? bookImageSizes[size] : bookImageSizes.medium;
   const bookOverview = (book: BookThumbnail) => {
     return (
       <Box
@@ -22,12 +28,14 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({ bookList, isOverview, d
       >
         <CardMedia
           component="img"
-          sx={{ mx: 1, ...bookImageSizes.medium }}
+          sx={{ mx: 1, ...bookImageSize }}
           image={book.smallThumbnail || noCoverImg}
         />
-        <Typography variant="subtitle1" component="div">
-          {book.title || book.volume_id}
-        </Typography>
+        {!isOverview && (
+          <Typography variant="subtitle2" component="div">
+            {book.title || book.volume_id}
+          </Typography>
+        )}
       </Box>
     );
   };
@@ -54,8 +62,9 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({ bookList, isOverview, d
   };
 
   const bookFullList = () => {
+    const spacingValue = size && size === 'large' ? 5 : 1;
     return (
-      <Grid container spacing={1} sx={{ p: 2 }}>
+      <Grid container spacing={spacingValue} sx={{ p: 2 }}>
         {bookList.map((book) => (
           <Grid
             item

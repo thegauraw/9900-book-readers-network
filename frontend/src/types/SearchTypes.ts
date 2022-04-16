@@ -4,6 +4,12 @@ export enum SearchMethods {
   books = 'books',
 }
 
+export enum RecommendationModes {
+  book = 'book',
+  author = 'author',
+  category = 'category',
+}
+
 export interface SearchParams {
   q?: string | null;
   by?: SearchMethods | null;
