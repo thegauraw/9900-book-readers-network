@@ -7,12 +7,26 @@ import { RecommendationModes } from '../types/SearchTypes';
 import { getRecommendations } from '../services/searchAPIs';
 import LoadingIndicator from './LoadingIndicator';
 import isEmpty from 'lodash/isEmpty';
+import { useParams } from 'react-router-dom';
 
-const RecommendationList: FC = () => {
+interface RecommendationListProps {
+  title: string;
+  authors: string[];
+  categories: string[];
+  publisher: string;
+}
+
+const RecommendationList: FC<RecommendationListProps> = ({
+  title,
+  authors,
+  categories,
+  publisher,
+}) => {
   const [bookList, setBookList] = useState<BookThumbnail[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [value, setValue] = useState(RecommendationModes.author);
+  const [value, setValue] = useState(RecommendationModes.title);
+  const { bookId } = useParams();
 
   const handleChange = (selectedValue: RecommendationModes) => {
     setValue(selectedValue);
@@ -22,7 +36,22 @@ const RecommendationList: FC = () => {
     (async function () {
       try {
         setIsLoading(true);
-        const response = await getRecommendations(value);
+        let query = '';
+        switch (value) {
+          case RecommendationModes.author:
+            query = authors[0];
+            break;
+          case RecommendationModes.category:
+            query = categories[0];
+            break;
+          case RecommendationModes.title:
+            query = title;
+            break;
+          case RecommendationModes.publisher:
+            query = publisher;
+            break;
+        }
+        const response = await getRecommendations(value, query, bookId ?? '');
         setBookList(response);
       } catch (error) {
         setError(error as string);
@@ -30,7 +59,7 @@ const RecommendationList: FC = () => {
         setIsLoading(false);
       }
     })();
-  }, []);
+  }, [value]);
 
   return (
     <Box
