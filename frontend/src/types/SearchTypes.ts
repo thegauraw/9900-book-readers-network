@@ -5,9 +5,10 @@ export enum SearchMethods {
 }
 
 export enum RecommendationModes {
-  book = 'book',
+  title = 'title',
   author = 'author',
   category = 'category',
+  publisher = 'publisher',
 }
 
 export interface SearchParams {

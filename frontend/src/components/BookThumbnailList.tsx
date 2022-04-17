@@ -34,7 +34,11 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
           onClick={() => navigate(`${bookPath}/${book.volume_id}`)}
         />
         {!isOverview && (
-          <Typography variant="subtitle2" component="div">
+          <Typography
+            variant="subtitle2"
+            component="div"
+            sx={{ height: '100px', overflow: 'scroll' }}
+          >
             {book.title || book.volume_id}
           </Typography>
         )}
@@ -66,7 +70,11 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
   const bookFullList = () => {
     const spacingValue = size && size === 'large' ? 5 : 1;
     return (
-      <Grid container spacing={spacingValue} sx={{ p: 2 }}>
+      <Grid
+        container
+        spacing={spacingValue}
+        sx={{ p: 2, alignItems: 'flex-start', textAlign: 'center' }}
+      >
         {bookList.map((book) => (
           <Grid
             item

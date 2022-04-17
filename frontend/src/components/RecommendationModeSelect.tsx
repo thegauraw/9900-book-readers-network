@@ -19,13 +19,14 @@ const RecommendationModeSelect: FC<RecommendationModeSelectProps> = ({ value, ha
       <Select
         value={value}
         onChange={(event) =>
-          handleChange((event?.target?.value as RecommendationModes) ?? RecommendationModes.author)
+          handleChange((event?.target?.value as RecommendationModes) ?? RecommendationModes.title)
         }
         sx={{ minWidth: '240px' }}
       >
+        <MenuItem value={RecommendationModes.title}>Similar Books</MenuItem>
         <MenuItem value={RecommendationModes.author}>Recommend By Author</MenuItem>
         <MenuItem value={RecommendationModes.category}>Recommend By Category</MenuItem>
-        <MenuItem value={RecommendationModes.book}>Similar Books</MenuItem>
+        <MenuItem value={RecommendationModes.publisher}>Recommend By Publisher</MenuItem>
       </Select>
     </FormControl>
   );
