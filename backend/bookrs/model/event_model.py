@@ -36,10 +36,10 @@ class EventModel(BaseModel):
   def get_all(cls, group):
     group = group or "upcoming"
 
-    if type == "past":
-      return cls.query.filter(EventModel.date_and_time > datetime.now()).all()
-    else:
+    if group == "past":
       return cls.query.filter(EventModel.date_and_time < datetime.now()).all()
+    else:
+      return cls.query.filter(EventModel.date_and_time > datetime.now()).all()
 
   @classmethod
   def get_all_for_reader(cls, organised_by, involvement):
