@@ -1,5 +1,4 @@
 from marshmallow import fields, post_dump
-from sqlalchemy import func
 from sqlalchemy.orm import relationship, backref
 from werkzeug.exceptions import NotFound
 
