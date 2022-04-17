@@ -30,7 +30,12 @@ const BookThumbnailItem: FC<BookThumbnailProps> = ({ book, isOverview, size }) =
         <Typography
           variant="subtitle2"
           component="div"
-          sx={{ height: '100px', overflow: 'scroll' }}
+          sx={{
+            height: '100px',
+            overflow: 'hidden',
+            width: bookImageSize.width,
+            textOverflow: 'ellipsis',
+          }}
         >
           {book.title || book.volume_id}
         </Typography>
