@@ -12,7 +12,7 @@ class RankingBooks(Resource):
 
   def get(self):
     """
-      get top-rated books `GET /ranking?n=<int: number>`
+      List top-rated books `GET /ranking?n=<int: number>`
     """
 
     n = int(request.args.get('n')) if request.args.get('n') else 5
