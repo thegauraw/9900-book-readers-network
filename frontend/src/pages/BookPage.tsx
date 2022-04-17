@@ -29,7 +29,6 @@ const BookPage: FC = () => {
             const response = await getBookDetailsApi(bookId);
             setBookDetails({ settlement: response, error: null });
           } catch (error) {
-            console.log('error page', error);
             setBookDetails({ error: error });
           } finally {
             setBookDetails({ isLoading: false });
@@ -37,7 +36,7 @@ const BookPage: FC = () => {
         }
       })();
     }
-  }, []);
+  }, [bookId]);
 
   const bookActions = () => {
     return (
@@ -82,7 +81,12 @@ const BookPage: FC = () => {
             {bookActions()}
           </Box>
           <BookRatingReview />
-          <RecommendationList />
+          <RecommendationList
+            title={settlement.volumeInfo.title}
+            authors={settlement.volumeInfo.authors}
+            categories={settlement.volumeInfo.categories}
+            publisher={settlement.volumeInfo.publisher}
+          />
         </>
       )}
     </>

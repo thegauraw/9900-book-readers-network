@@ -8,3 +8,4 @@ export const ReadingsURL = `${BASE_URL}/readings`;
 export const OwnedReadingsURL = `${BASE_URL}/owned_readings`;
 export const GoalsURL = `${BASE_URL}/goals`;
 export const searchBooksURL = `${BASE_URL}/search`;
+export const recommendationBooksURL = `${BASE_URL}/recommendation`;
