@@ -8,3 +8,8 @@ export const iconSizes = {
   small: { width: '16px', height: '16px' },
   large: { width: '64px', height: '64px' },
 };
+
+export const badgeSizes = {
+  small: { width: '16px', height: '16px' },
+  large: { width: '66px', height: '77px' },
+};
