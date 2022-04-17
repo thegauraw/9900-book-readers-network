@@ -6,6 +6,7 @@ import { bookImageSizes } from '../config/constants';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import noCoverImg from '../assets/no_cover_thumb.gif';
 import { bookPath } from '../config/paths';
+import BookThumbnailItem from './BookThumbnailItem';
 interface BookThumbnailListProps {
   bookList: BookThumbnail[];
   isOverview: boolean;
@@ -57,7 +58,9 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
           overflow: 'hidden',
         }}
       >
-        {bookList.map((book) => bookOverview(book))}
+        {bookList.map((book) => (
+          <BookThumbnailItem book={book} isOverview={isOverview} size={size} />
+        ))}
         {typeof detailPath === 'string' && detailPath && (
           <Button sx={{ ...bookImageSizes.small }} onClick={() => navigate(detailPath)}>
             <MoreHorizIcon />
@@ -91,7 +94,7 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
               alignItems: 'center',
             }}
           >
-            {bookOverview(book)}
+            <BookThumbnailItem book={book} isOverview={isOverview} size={size} />
           </Grid>
         ))}
       </Grid>
