@@ -7,6 +7,7 @@ import { RecommendationModes } from '../types/SearchTypes';
 import { getRecommendations } from '../services/searchAPIs';
 import LoadingIndicator from './LoadingIndicator';
 import isEmpty from 'lodash/isEmpty';
+import { useParams } from 'react-router-dom';
 
 interface RecommendationListProps {
   title: string;
@@ -25,6 +26,7 @@ const RecommendationList: FC<RecommendationListProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [value, setValue] = useState(RecommendationModes.title);
+  const { bookId } = useParams();
 
   const handleChange = (selectedValue: RecommendationModes) => {
     setValue(selectedValue);
@@ -49,7 +51,7 @@ const RecommendationList: FC<RecommendationListProps> = ({
             query = publisher;
             break;
         }
-        const response = await getRecommendations(value, query);
+        const response = await getRecommendations(value, query, bookId ?? '');
         setBookList(response);
       } catch (error) {
         setError(error as string);
