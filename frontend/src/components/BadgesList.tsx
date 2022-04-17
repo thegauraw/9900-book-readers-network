@@ -73,7 +73,9 @@ const BadgesList: FC<BadgesListProps> = ({ readerId }) => {
             {badgesList.map((badge) => badgeItem(badge))}
           </Box>
         ) : (
-          <></>
+          <Typography variant="subtitle1" component="div">
+            Keep Reading and Reviewing to grab your Badges!
+          </Typography>
         ))}
     </Box>
   );

@@ -67,8 +67,14 @@ export default function ProfilePage() {
       <Grid
         container
         rowSpacing={1}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        sx={{ m: 0, width: '100%', p: 2, alignItems: 'center' }}
+        sx={{
+          m: 0,
+          width: '100%',
+          height: '100%',
+          alignContent: 'center',
+          p: 3,
+          alignItems: 'center',
+        }}
       >
         <Grid item xs={6}>
           <AccountCircleIcon />
@@ -220,8 +226,8 @@ export default function ProfilePage() {
         mt: 'auto',
       }}
     >
-      <Paper sx={{ width: '600px' }}>{profile()}</Paper>
-      <Paper sx={{ width: '600px', p: 3 }}>
+      <Paper sx={{ width: '600px', height: '600px' }}>{profile()}</Paper>
+      <Paper sx={{ width: '600px', height: '600px', p: 3 }}>
         <Typography variant="subtitle1">MY ACHIEVEMENTS</Typography>
         <Divider />
         <BadgesList />
