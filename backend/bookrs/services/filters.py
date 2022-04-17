@@ -50,7 +50,7 @@ def filterBooksWithRating(minRating=0., data=None):
       book = BookModel.query.filter_by(volume_id=volume_id).first()
 
       if book:
-        item['average_rating'] = book.average_rating if book.average_rating else 0
+        item['average_rating'] = book.average_rating
       else:
         item['average_rating'] = 0
       

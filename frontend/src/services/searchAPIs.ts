@@ -74,21 +74,18 @@ export const getRecommendations = async (
 
     const maxResults = 5;
     const queryString = `?q=${query}'&m=${mode}&maxResults=${maxResults}`;
-    const requestedURL = `${searchBooksURL}${queryString}`;
+    const requestedURL = `${recommendationBooksURL}${queryString}`;
     const response = await fetch(requestedURL, requestOptions);
 
     if (response.status !== 200) return Promise.reject('No more results');
 
     const data = await response.json();
-
-    console.log('recommend book data: ', data);
-
     if (data?.payload?.items.length > 0) {
       const response = data.payload as ST.SearchSuccessResponse;
       const bookList: BookThumbnail[] = response.items.slice(0, maxResults).map((book) => ({
         volume_id: book.id,
         title: book.volumeInfo.title,
-        smallThumbnail: book.volumeInfo.imageLinks.smallThumbnail,
+        smallThumbnail: book.volumeInfo?.imageLinks?.smallThumbnail,
       }));
       return bookList;
     } else return [];
