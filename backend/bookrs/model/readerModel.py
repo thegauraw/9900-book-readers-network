@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship, backref
 
 from bookrs.model import db, ma
 from bookrs.model.collection import Collection
+from bookrs.model.event_model import EventModel
 from bookrs.utils.exceptions import EmailRegisteredException, EmailFormatException, UsernameRegisteredException
 from .readingModel import ReadingModel
 from .achievementModel import AchievementModel
@@ -21,6 +22,7 @@ class ReaderModel(db.Model):
     gender = db.Column(db.String(5))
     age = db.Column(db.Integer)
     collections = db.relationship("Collection", backref="owner")
+    events = db.relationship("EventModel", backref="organiser")
     readings = db.relationship(ReadingModel, backref='reader')
     achievements = db.relationship(AchievementModel, backref='reader')
 
