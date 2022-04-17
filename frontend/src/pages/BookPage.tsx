@@ -78,6 +78,7 @@ const BookPage: FC = () => {
               categories={settlement.volumeInfo.categories}
               publisher={settlement.volumeInfo.publisher}
               publishedDate={settlement.volumeInfo.publishedDate}
+              averageRatings={settlement.average_rating}
             />
             {bookActions()}
           </Box>

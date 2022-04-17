@@ -21,6 +21,7 @@ export interface SearchParams {
 export interface SearchSuccessItemResponse {
   id: string;
   selfLink: string;
+  average_rating: number;
   volumeInfo: {
     title: string;
     authors: string[];

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, CardContent, CardMedia, Typography, Chip } from '@mui/material';
+import { Box, CardContent, CardMedia, Typography, Chip, Rating } from '@mui/material';
 import noCoverImg from '../assets/no_cover_thumb.gif';
 interface BookDetailsProps {
   bookCoverImg: string | undefined;
@@ -8,6 +8,7 @@ interface BookDetailsProps {
   categories: string[];
   publisher: string;
   publishedDate: string;
+  averageRatings: number;
 }
 
 const BookDetails: React.FC<BookDetailsProps> = ({
@@ -17,7 +18,9 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   categories,
   publisher,
   publishedDate,
+  averageRatings,
 }) => {
+  const rating = averageRatings > 0 ? `Average rating: ${averageRatings}` : 'No rating';
   const bookDetails = () => {
     return (
       <Box
@@ -31,6 +34,23 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         <Typography gutterBottom variant="h4" component="div">
           {title}
         </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Rating name="rating" readOnly={true} precision={0.1} value={averageRatings} />
+          <Typography
+            gutterBottom
+            variant="subtitle2"
+            component="div"
+            sx={{ display: 'inline-flex', m: 0, pl: 1 }}
+          >
+            {rating}
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: 'flex',

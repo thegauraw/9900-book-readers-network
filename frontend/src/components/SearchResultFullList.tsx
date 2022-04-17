@@ -1,5 +1,5 @@
 import { FC, useContext, useState } from 'react';
-import { Box, Typography, Divider, Pagination, Stack, Button } from '@mui/material';
+import { Box, Typography, Pagination, Stack, Button } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import BookDetails from './BookDetails';
 import LoadingIndicator from './LoadingIndicator';
@@ -75,6 +75,7 @@ const SearchResultFullList: FC = () => {
                   categories={item.volumeInfo.categories}
                   publisher={item.volumeInfo.publisher}
                   publishedDate={item.volumeInfo.publishedDate}
+                  averageRatings={item.average_rating}
                 />
                 <Button
                   variant="text"

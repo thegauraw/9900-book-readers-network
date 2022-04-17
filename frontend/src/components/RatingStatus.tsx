@@ -38,7 +38,7 @@ const RatingStatus: FC<RatingStatusProps> = ({
         onChange={(event, newRating) => {
           if (setRatingValue) {
             newRating = Number(newRating);
-            setRatingValue(newRating);
+            if (newRating > 0) setRatingValue(newRating);
           }
         }}
       />
