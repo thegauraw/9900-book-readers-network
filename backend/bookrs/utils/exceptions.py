@@ -95,4 +95,4 @@ def BadgeRegisterException():
 
 # Recommendation related exceptions
 def InvalidRecommendationException():
-  return InvalidUsage('Invalid recommendationi request', status_code=400)
+  return InvalidUsage('Invalid recommendation request', status_code=400)
