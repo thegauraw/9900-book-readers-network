@@ -1,7 +1,10 @@
 from marshmallow import fields, post_dump
+from sqlalchemy import func
 from sqlalchemy.orm import relationship, backref
+from werkzeug.exceptions import NotFound
 
 from bookrs.model import BaseModel, db, ma
+from bookrs.utils.exceptions import BookNotFoundException
 from .readingModel import ReadingModel, ReadingSchema
 
 
@@ -17,6 +20,15 @@ class BookModel(BaseModel):
     publisher = db.Column(db.String(), default=None)
     publishedDate = db.Column(db.String(20), default=None)
     readings = relationship(ReadingModel, backref=backref('book_details'))
+
+    @classmethod
+    def get_by_top_average_rating(cls, n):
+        try:
+            book_list = cls.query.order_by(cls.average_rating.desc()).all()
+            n = min(len(book_list), n)
+            return book_list[:n]
+        except NotFound:
+            raise BookNotFoundException()
 
 
 class BookDetailsSchema(ma.SQLAlchemyAutoSchema):
