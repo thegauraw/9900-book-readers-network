@@ -30,6 +30,7 @@ const BookPage: FC = () => {
             setBookDetails({ settlement: response, error: null });
           } catch (error) {
             setBookDetails({ error: error });
+            navigate(NotFoundPath, { state: { error: error } });
           } finally {
             setBookDetails({ isLoading: false });
           }
