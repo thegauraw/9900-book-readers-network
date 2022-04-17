@@ -4,7 +4,7 @@ import requests
 from bookrs.model.bookModel import BookModel, book_details_schema
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
-from bookrs.utils.exceptions import BookCreateException, InvalidSearchException
+from bookrs.utils.exceptions import BookCreateException, InvalidSearchException, InvalidRecommendationException
 
 def get_book_details_from_google(volume_id):
   try:
@@ -82,6 +82,6 @@ def seach_books_from_google_with_filter_mode(query, mode, startIndex, maxResults
 
       return data
 
-    raise InvalidSearchException()
+    raise InvalidRecommendationException()
   except Exception as e:
     raise e

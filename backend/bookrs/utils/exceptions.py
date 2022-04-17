@@ -81,7 +81,7 @@ def ReadingNotFoundException():
 def OwnedReadingHasExistedException():
   return InvalidUsage('Requested reading has existed', status_code=400)
 
-# Search api related exceptions
+# Search related exceptions
 def InvalidSearchException():
   return InvalidUsage('Invalid search request', status_code=400)
 
@@ -92,3 +92,7 @@ def AchievementListException():
 
 def BadgeRegisterException():
   return InvalidUsage('Fail to register badges', status_code=500)
+
+# Recommendation related exceptions
+def InvalidRecommendationException():
+  return InvalidUsage('Invalid recommendation request', status_code=400)

@@ -1,13 +1,9 @@
-import copy
-import json
-import requests
-
 from flask import Blueprint, request
 from flask_restful import Resource
-from bookrs.model.bookModel import book_details_schema, BookModel
+
+from bookrs.model.bookModel import BookModel
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
-from bookrs.utils.exceptions import InvalidSearchException
 from bookrs.services.filters import filterBooksWithRating
 from bookrs.third_party.googleAPIs import seach_books_from_google, seach_book_detail_from_google
 
