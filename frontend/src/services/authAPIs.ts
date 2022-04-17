@@ -1,5 +1,4 @@
-import { LoginApiURL, RegisterApiURL } from './callableURLs';
-import { LoginDataType, RegisterDataType } from '../types/ResponseTypes';
+import { LoginApiURL, RegisterApiURL, verifyTokenURL } from './callableURLs';
 
 export const LoginAPI = async (props: any): Promise<string> => {
   try {
@@ -72,5 +71,28 @@ export const RegisterAPI = async (props: any): Promise<string> => {
     return 'success';
   } catch (err) {
     return Promise.reject(err);
+  }
+};
+
+export const verifyToken = async (token: string): Promise<any> => {
+  try {
+    if (token) {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+        },
+      };
+
+      const response = await fetch(verifyTokenURL, requestOptions);
+      if (response.status === 200) {
+        return true;
+      }
+    }
+    return Promise.reject(`Invalid token`);
+  } catch (error) {
+    return Promise.reject('Internal Error');
   }
 };
