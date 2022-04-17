@@ -55,6 +55,11 @@ const CollectionListPage: FC = () => {
           <CollectionNew dataLoader={fetchMyCollections} />
         </Grid>
       )}
+      {settlement && !isLoading && (settlement instanceof Error || isEmpty(settlement[0])) && (
+        <Grid container spacing={2}>
+          <CollectionNew dataLoader={fetchMyCollections} />
+        </Grid>
+      )}
     </Box>
   );
 };
