@@ -43,6 +43,9 @@ def UpdateReaderException():
 def SendEmailException():
   return InvalidUsage('Fail to send password reset email', status_code=500)
 
+def InvalidTokenException():
+  return InvalidUsage('Fail to verify token', status_code=400)
+
 
 # Collection related exceptions
 def CollectionCreateException():
