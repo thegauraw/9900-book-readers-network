@@ -11,7 +11,7 @@ class RecommendingBooks(Resource):
 
   def get(self):
     """
-      recommend books `GET /search?q=<string: q>&startIndex=<int: startIndex>&m=<string: mode>&maxResults=<int: maxResults>&minRating=<float: minRating>`
+      recommend books `GET /recommendation?q=<string: q>&startIndex=<int: startIndex>&m=<string: mode>&maxResults=<int: maxResults>&minRating=<float: minRating>`
       mode includes: title, author, category and publisher
     """
 
