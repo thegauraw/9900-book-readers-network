@@ -9,6 +9,8 @@ export const OwnedReadingsURL = `${BASE_URL}/owned_readings`;
 export const GoalsURL = `${BASE_URL}/goals`;
 export const searchBooksURL = `${BASE_URL}/search`;
 export const recommendationBooksURL = `${BASE_URL}/recommendation`;
+export const myCollectedBooks = (collectionId: number) =>
+  `${BASE_URL}/collections/${collectionId}/books`;
 export const topRatedURL = `${BASE_URL}/ranking`;
 export const achievementURL = `${BASE_URL}/achievements`;
 export const ownedAchievementURL = `${BASE_URL}/owned_achievements`;

@@ -18,10 +18,12 @@ class CollectedBooks(Resource):
     List books in a collection
     `GET /collections/:collection_id/books`
     """
-    collection = Collection.get_by_id(collection_id)
-
-    books_data_dump = books_details_schema.dump(collection.books)
-    return SUCCESS(payload=books_data_dump)
+    try:
+      collection = Collection.query.filter_by(id=collection_id).first_or_404()
+      books_data_dump = books_details_schema.dump(collection.books)
+      return SUCCESS(payload=books_data_dump)
+    except Exception as e:
+      raise e
 
   def post(self, collection_id):
     # check if the user owns the collection
