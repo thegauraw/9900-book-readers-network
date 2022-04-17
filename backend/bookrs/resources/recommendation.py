@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from flask_restful import Resource
+
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
 from bookrs.third_party.googleAPIs import seach_books_from_google_with_filter_mode
@@ -12,7 +13,7 @@ class RecommendingBooks(Resource):
   def get(self):
     """
       recommend books `GET /recommendation?q=<string: q>&startIndex=<int: startIndex>&m=<string: mode>&maxResults=<int: maxResults>&minRating=<float: minRating>`
-      mode includes: title, author, category and publisher
+      mode includes: title, Qauthor, category and publisher
     """
 
     query_string = request.args.get('q') if request.args.get('q') else None
