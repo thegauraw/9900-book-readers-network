@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import { Typography, Grid, Box } from '@mui/material';
+import { Typography, Breadcrumbs, Box, Link } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import BookThumbnailList from '../components/BookThumbnailList';
 import LoadingIndicator from '../components/LoadingIndicator';
@@ -16,7 +16,6 @@ const CollectedBooksPage: FC = () => {
   const [error, setError] = useState('');
   const { collectionId } = useParams();
   let navigate = useNavigate();
-  console.log('collected', collectionId);
   useEffect(() => {
     (async function () {
       try {
@@ -38,8 +37,7 @@ const CollectedBooksPage: FC = () => {
 
   const bookListBlock = () => {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography variant="subtitle1">test</Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', p: 5 }}>
         <BookThumbnailList bookList={bookList} isOverview={false} size={'large'} />
       </Box>
     );
@@ -54,6 +52,12 @@ const CollectedBooksPage: FC = () => {
         p: 2,
       }}
     >
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" color="inherit" href={NavMenuList.MyCollections}>
+          My Collections
+        </Link>
+        <Typography color="text.primary">{collectionId}</Typography>
+      </Breadcrumbs>
       {isLoading && <LoadingIndicator />}
       {!isLoading && error && !isEmpty(error) && <Typography>{error}</Typography>}
       {!isLoading &&
