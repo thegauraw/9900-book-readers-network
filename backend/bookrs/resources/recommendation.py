@@ -13,7 +13,7 @@ class RecommendingBooks(Resource):
   def get(self):
     """
       recommend books `GET /recommendation?q=<string: q>&startIndex=<int: startIndex>&m=<string: mode>&maxResults=<int: maxResults>&minRating=<float: minRating>`
-      mode includes: title, Qauthor, category and publisher
+      mode includes: title, author, category and publisher
     """
 
     query_string = request.args.get('q') if request.args.get('q') else None
