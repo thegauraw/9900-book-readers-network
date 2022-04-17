@@ -9,6 +9,8 @@ import { NotFoundPath } from '../config/paths';
 import { getBookDetailsApi } from '../services/searchAPIs';
 import LoadingIndicator from '../components/LoadingIndicator';
 import BookDetails from '../components/BookDetails';
+import MarkReadButton from '../components/MarkReadButton';
+import RecommendationList from '../components/RecommendationList';
 const BookPage: FC = () => {
   const context = useContext(Appctx);
   let navigate = useNavigate();
@@ -27,7 +29,6 @@ const BookPage: FC = () => {
             const response = await getBookDetailsApi(bookId);
             setBookDetails({ settlement: response, error: null });
           } catch (error) {
-            console.log('error page', error);
             setBookDetails({ error: error });
           } finally {
             setBookDetails({ isLoading: false });
@@ -35,7 +36,24 @@ const BookPage: FC = () => {
         }
       })();
     }
-  }, []);
+  }, [bookId]);
+
+  const bookActions = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignSelf: 'center',
+          alignItems: 'center',
+          px: 6,
+        }}
+      >
+        <BookRatingReviewStat />
+        <MarkReadButton />
+      </Box>
+    );
+  };
 
   return (
     <>
@@ -46,10 +64,12 @@ const BookPage: FC = () => {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
             }}
           >
-            <BookRatingReviewStat />
             <BookDetails
               title={settlement.volumeInfo.title}
               authors={settlement.volumeInfo.authors}
@@ -58,8 +78,15 @@ const BookPage: FC = () => {
               publisher={settlement.volumeInfo.publisher}
               publishedDate={settlement.volumeInfo.publishedDate}
             />
+            {bookActions()}
           </Box>
           <BookRatingReview />
+          <RecommendationList
+            title={settlement.volumeInfo.title}
+            authors={settlement.volumeInfo.authors}
+            categories={settlement.volumeInfo.categories}
+            publisher={settlement.volumeInfo.publisher}
+          />
         </>
       )}
     </>

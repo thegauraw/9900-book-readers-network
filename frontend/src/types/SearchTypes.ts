@@ -4,10 +4,18 @@ export enum SearchMethods {
   books = 'books',
 }
 
+export enum RecommendationModes {
+  title = 'title',
+  author = 'author',
+  category = 'category',
+  publisher = 'publisher',
+}
+
 export interface SearchParams {
   q?: string | null;
   by?: SearchMethods | null;
   p?: string | null;
+  min?: string | null;
 }
 
 export interface SearchSuccessItemResponse {

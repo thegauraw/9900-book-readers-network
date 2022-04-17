@@ -1,5 +1,17 @@
 from bookrs.utils.common import InvalidUsage
 
+# Generic Errors
+def BadRequestError(error):
+  return InvalidUsage(error.__str__(), status_code=400).to_json() 
+
+def ResourceNotFoundError(error):
+  return InvalidUsage(error.__str__(), status_code=404).to_json()
+
+def InternalServerError(error):
+  return InvalidUsage(str(error), status_code=500).to_json()
+
+
+# Reader authentication related exceptions
 def EmailRegisteredException():
   return InvalidUsage('This email has been registered!', status_code=409)
 
@@ -46,7 +58,6 @@ def CollectionNotFoundException():
   return InvalidUsage('Requested collection not found', status_code=404)
 
 
-
 # Books related exceptions
 def BookCollectException():
   return InvalidUsage('Could not add book to the collection', status_code=500)
@@ -61,7 +72,6 @@ def BookNotFoundException():
   return InvalidUsage('Requested book not found', status_code=404)
 
 
-
 def InvalidParameterException(error):
   return InvalidUsage(error.__str__(), status_code=400).to_json() 
 
@@ -71,15 +81,18 @@ def ReadingNotFoundException():
 def OwnedReadingHasExistedException():
   return InvalidUsage('Requested reading has existed', status_code=400)
 
-
-# Generic Errors
-def BadRequestError(error):
-  return InvalidUsage(error.__str__(), status_code=400).to_json() 
-
-def ResourceNotFoundError(error):
-  return InvalidUsage(error.__str__(), status_code=404).to_json()
-
-def InternalServerError(error):
-  return InvalidUsage(error.__str__(), status_code=500).to_json()
+# Search related exceptions
+def InvalidSearchException():
+  return InvalidUsage('Invalid search request', status_code=400)
 
 
+# Achievement related exceptions
+def AchievementListException():
+  return InvalidUsage('Fail to list achievements', status_code=500)
+
+def BadgeRegisterException():
+  return InvalidUsage('Fail to register badges', status_code=500)
+
+# Recommendation related exceptions
+def InvalidRecommendationException():
+  return InvalidUsage('Invalid recommendation request', status_code=400)

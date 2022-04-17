@@ -16,7 +16,7 @@ class Reader(Resource):
     def get(self):
       """
         endpoint for reader: /reader
-        endpoint for password reset: /reader?email=apolloliuhx@gmail.com&reset=true
+        endpoint for password reset: /reader?email=<string:email>&reset=true
 
       """
       account = None
@@ -46,7 +46,6 @@ class Reader(Resource):
       return SUCCESS(status_code=200, payload=account)
 
     def put(self):
-      # import pdb; pdb.set_trace()
       data = request.get_json()
       account = None
 

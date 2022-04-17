@@ -6,74 +6,91 @@ import LoadingIndicator from './LoadingIndicator';
 import SearchNotFound from './SearchNotFound';
 import { Appctx } from '../utils/LocalContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import SearchFilter from './SearchFilter';
 const SearchResultFullList: FC = () => {
   const context = useContext(Appctx);
   const { searchResultList } = context;
   const { settlement, isLoading, error } = searchResultList;
   let [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(Number(searchParams.get('p')));
+  const [page, setPage] = useState(Number(searchParams.get('p')) || 1);
 
   let navigate = useNavigate();
 
   const handleChange = (event: any, value: number) => {
     setPage(value);
-    const newParams = { q: '', by: 'all', p: '1' };
-    if (searchParams.has('q') && searchParams.has('by')) {
-      newParams['q'] = searchParams.get('q') ?? '';
-      newParams['by'] = searchParams.get('by') ?? '';
-      if (searchParams.has('p')) {
-        newParams['p'] = String(value);
-      }
-      setSearchParams(newParams);
-    }
+    const newParams = {
+      q: searchParams.get('q') ?? '',
+      by: searchParams.get('by') ?? 'all',
+      p: String(value) ?? '1',
+      min: searchParams.get('min') ?? '0',
+    };
+    setSearchParams(newParams);
   };
 
   const onClick = (id: string | undefined) => {
     if (id) navigate(`/books/${id}`);
   };
 
+  const listHeader = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+        }}
+      >
+        <Typography variant="subtitle1">{Number(settlement?.totalItems)} books found</Typography>
+        <SearchFilter />
+      </Box>
+    );
+  };
+
   const showList = () => {
     if (!isLoading && !isEmpty(settlement) && isEmpty(error)) {
       return (
-        <Box
-          sx={{
-            height: '66vh',
-            overflowY: 'scroll',
-          }}
-        >
-          <Typography variant="subtitle1">{Number(settlement?.totalItems)} books found</Typography>
-          <Divider />
-          {settlement?.items.map((item) => (
-            <Box
-              id={item.id}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                border: '1px solid',
-                borderColor: 'primary.main',
-              }}
-            >
-              <BookDetails
-                title={item.volumeInfo.title}
-                authors={item.volumeInfo.authors}
-                bookCoverImg={item.volumeInfo.imageLinks?.smallThumbnail}
-                categories={item.volumeInfo.categories}
-                publisher={item.volumeInfo.publisher}
-                publishedDate={item.volumeInfo.publishedDate}
-              />
-              <Button
-                variant="text"
+        <>
+          {listHeader()}
+          <Box
+            sx={{
+              height: '56vh',
+              overflowY: 'scroll',
+            }}
+          >
+            {settlement?.items.map((item) => (
+              <Box
+                key={item.id}
                 sx={{
-                  width: '20%',
-                  p: 1,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  border: '1px solid',
+                  borderColor: 'primary.main',
                 }}
-                onClick={() => onClick(item.id)}
               >
-                View Details
-              </Button>
-            </Box>
-          ))}
-        </Box>
+                <BookDetails
+                  title={item.volumeInfo.title}
+                  authors={item.volumeInfo.authors}
+                  bookCoverImg={item.volumeInfo.imageLinks?.smallThumbnail}
+                  categories={item.volumeInfo.categories}
+                  publisher={item.volumeInfo.publisher}
+                  publishedDate={item.volumeInfo.publishedDate}
+                />
+                <Button
+                  variant="text"
+                  sx={{
+                    width: '20%',
+                    p: 1,
+                    ml: 'auto',
+                  }}
+                  onClick={() => onClick(item.id)}
+                >
+                  View Details
+                </Button>
+              </Box>
+            ))}
+          </Box>
+        </>
       );
     } else return <></>;
   };

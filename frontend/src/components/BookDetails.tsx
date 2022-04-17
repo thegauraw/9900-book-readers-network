@@ -18,15 +18,8 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   publisher,
   publishedDate,
 }) => {
-  return (
-    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
-      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-        <CardMedia
-          component="img"
-          sx={{ mx: 1, width: '76px', height: '114px' }}
-          image={bookCoverImg ?? noCoverImg}
-        />
-      </CardContent>
+  const bookDetails = () => {
+    return (
       <Box
         sx={{
           display: 'flex',
@@ -55,7 +48,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
             by
           </Typography>
           {authors?.map((author) => (
-            <Typography gutterBottom variant="subtitle2" component="div">
+            <Typography gutterBottom variant="subtitle2" component="div" key={author + title}>
               {author}
             </Typography>
           ))}
@@ -67,7 +60,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
           }}
         >
           {categories?.map((category) => (
-            <Typography gutterBottom variant="subtitle1" component="div">
+            <Typography gutterBottom variant="subtitle1" component="div" key={category + title}>
               <Chip label={category} variant="outlined" size="small" />
             </Typography>
           ))}
@@ -75,6 +68,27 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         <Typography component="legend" variant="subtitle2">
           {`Published ${publishedDate} by ${publisher}`}
         </Typography>
+      </Box>
+    );
+  };
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+      }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <CardContent>
+          <CardMedia
+            component="img"
+            sx={{ mx: 1, width: '76px', height: '114px' }}
+            image={bookCoverImg || noCoverImg}
+          />
+        </CardContent>
+        {bookDetails()}
       </Box>
     </Box>
   );

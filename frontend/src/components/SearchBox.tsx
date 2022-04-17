@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -6,7 +6,6 @@ import {
   InputAdornment,
   IconButton,
   Button,
-  FormLabel,
   FormControlLabel,
   RadioGroup,
   Radio,
@@ -15,8 +14,8 @@ import {
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import isEmpty from 'lodash/isEmpty';
-import { Appctx } from '../utils/LocalContext';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, createSearchParams, useNavigate } from 'react-router-dom';
+import { NavMenuList } from '../config/paths';
 interface SearchBoxProps {
   //Unused variable
   //In case we want to search without jumping to a new page.
@@ -24,7 +23,7 @@ interface SearchBoxProps {
   showFullResults: boolean;
 }
 const SearchBox: FC<SearchBoxProps> = ({ showFullResults }) => {
-  const context = useContext(Appctx);
+  const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
   const [input, setInput] = useState(searchParams.get('q') ?? '');
   const [method, setMethod] = useState(searchParams.get('by') ?? 'all');
@@ -42,12 +41,26 @@ const SearchBox: FC<SearchBoxProps> = ({ showFullResults }) => {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key == 'Enter') {
-      if (!isEmpty(input)) setSearchParams({ q: input, by: method });
+      if (!isEmpty(input))
+        navigate({
+          pathname: NavMenuList.Explore,
+          search: createSearchParams({
+            q: input,
+            by: method,
+          }).toString(),
+        });
     }
   };
 
   const handleShowFullResultsSearch = () => {
-    if (!isEmpty(input)) setSearchParams({ q: input, by: method });
+    if (!isEmpty(input))
+      navigate({
+        pathname: NavMenuList.Explore,
+        search: createSearchParams({
+          q: input,
+          by: method,
+        }).toString(),
+      });
   };
 
   return (

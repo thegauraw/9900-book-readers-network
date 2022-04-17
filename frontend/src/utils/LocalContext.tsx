@@ -7,6 +7,7 @@ import {
   ReadingsListByBookIdResponse,
 } from '../types/ReadingTypes';
 import { SearchSuccessResponse, SearchSuccessItemResponse } from '../types/SearchTypes';
+import { MonthlyGoalStatus } from '../types/GoalTypes';
 
 export type ContextType = {
   logged: boolean;
@@ -25,6 +26,8 @@ export type ContextType = {
   setSearchResultList: Function;
   bookDetails: TransferState<SearchSuccessItemResponse>;
   setBookDetails: Function;
+  goals: TransferState<MonthlyGoalStatus[]>;
+  setGoals: Function;
 };
 
 export const globalParas = {
@@ -44,6 +47,8 @@ export const globalParas = {
   setSearchResultList: (f: Partial<TransferState<SearchSuccessResponse>>) => f,
   bookDetails: { isLoading: false, settlement: null },
   setBookDetails: (f: Partial<TransferState<SearchSuccessItemResponse>>) => f,
+  goals: { isLoading: false, settlement: null },
+  setGoals: (f: Partial<TransferState<MonthlyGoalStatus[]>>) => f,
 };
 
 export const Appctx = React.createContext<ContextType>(globalParas);
@@ -103,6 +108,14 @@ export const AppProvider = ({ children }: any) => {
     { isLoading: false, settlement: null }
   );
 
+  const [goals, setGoals] = useReducer(
+    (
+      fetchState: TransferState<MonthlyGoalStatus[]>,
+      updates: Partial<TransferState<MonthlyGoalStatus[]>>
+    ) => ({ ...fetchState, ...updates }),
+    { isLoading: false, settlement: null }
+  );
+
   useEffect(() => {
     setLocalStorage('logged', logged);
   }, [logged]);
@@ -130,6 +143,8 @@ export const AppProvider = ({ children }: any) => {
         setSearchResultList,
         bookDetails,
         setBookDetails,
+        goals,
+        setGoals,
       }}
     >
       {children}
