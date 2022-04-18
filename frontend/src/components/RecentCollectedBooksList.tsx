@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, useContext } from 'react';
-import { Box, Typography, Divider, Paper } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 import BookThumbnailList from './BookThumbnailList';
 import { BookThumbnail } from '../types/BookTypes';
 import LoadingIndicator from './LoadingIndicator';
@@ -28,12 +28,11 @@ const RecentCollectedBooksList: FC = () => {
   }, []);
 
   return (
-    <Paper
+    <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        p: 2,
         mb: 2,
       }}
     >
@@ -51,7 +50,7 @@ const RecentCollectedBooksList: FC = () => {
         ) : (
           <></>
         ))}
-    </Paper>
+    </Box>
   );
 };
 
