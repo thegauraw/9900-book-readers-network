@@ -1,5 +1,5 @@
-import { UserApiURL, profileURL } from './callableURLs';
-import { ProfileType } from '../types/ProfileTypes';
+import { UserApiURL, profileURL, recentCollectedUsersURL } from './callableURLs';
+import { ProfileType, ReaderType } from '../types/ProfileTypes';
 
 export const resetReaderPassword = async (props: any): Promise<string> => {
   try {
@@ -129,6 +129,41 @@ export const getReaderById = async (id: number): Promise<ProfileType> => {
       return data.payload;
     }
   } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const getRecentCollectedReadersByVolumeId = async (
+  volumeId: string
+): Promise<ReaderType[]> => {
+  try {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    };
+
+    const response = await fetch(`${recentCollectedUsersURL}/${volumeId}`, requestOptions);
+
+    if (response.status === 404) {
+      return Promise.reject(`The book was not found.`);
+    } else {
+      const data = await response.json();
+      return data.payload;
+    }
+  } catch (err) {
+    return [
+      { id: 1, username: 'testUser' },
+      { id: 2, username: 't2' },
+      { id: 3, username: 't3' },
+      { id: 4, username: 't4' },
+      { id: 5, username: 'testUser5' },
+      { id: 6, username: 't6' },
+      { id: 7, username: 'testUser7' },
+      { id: 8, username: 't8' },
+    ];
     return Promise.reject(err);
   }
 };
