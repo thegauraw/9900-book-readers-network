@@ -1,13 +1,15 @@
 import { FC, useState, useEffect, useContext } from 'react';
-import { Box, Typography, Divider, Paper } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 import BookThumbnailList from './BookThumbnailList';
 import { BookThumbnail } from '../types/BookTypes';
 import LoadingIndicator from './LoadingIndicator';
 import isEmpty from 'lodash/isEmpty';
 import { getRecentlyCollectedBooks } from '../services/bookAPIs';
 import { Appctx } from '../utils/LocalContext';
-
-const RecentCollectedBooksList: FC = () => {
+interface RecentCollectedBooksListProps {
+  readerId?: number;
+}
+const RecentCollectedBooksList: FC<RecentCollectedBooksListProps> = ({ readerId }) => {
   const [bookList, setBookList] = useState<BookThumbnail[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -17,7 +19,7 @@ const RecentCollectedBooksList: FC = () => {
     (async function () {
       try {
         setIsLoading(true);
-        const response = await getRecentlyCollectedBooks(token);
+        const response = await getRecentlyCollectedBooks(token, readerId);
         setBookList(response);
       } catch (error) {
         setError(error as string);
@@ -28,12 +30,11 @@ const RecentCollectedBooksList: FC = () => {
   }, []);
 
   return (
-    <Paper
+    <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        p: 2,
         mb: 2,
       }}
     >
@@ -51,7 +52,7 @@ const RecentCollectedBooksList: FC = () => {
         ) : (
           <></>
         ))}
-    </Paper>
+    </Box>
   );
 };
 

@@ -35,7 +35,7 @@ const BadgesList: FC<BadgesListProps> = ({ readerId }) => {
     const imgURL = require(`../assets/badges/${badge.image}.png`);
     return (
       <Box
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pr: 2, pb: 2 }}
         key={badge.id}
       >
         <CardMedia component="img" sx={{ mx: 1, ...badgeSizes.large }} image={imgURL} />
@@ -66,7 +66,7 @@ const BadgesList: FC<BadgesListProps> = ({ readerId }) => {
               display: 'flex',
               flexDirection: 'row',
               flexWrap: 'wrap',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
             }}
           >
             {badgesList.map((badge) => badgeItem(badge))}

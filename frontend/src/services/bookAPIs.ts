@@ -83,7 +83,10 @@ export const addBookToCollections = async (
   }
 };
 
-export const getRecentlyCollectedBooks = async (token: string): Promise<BookThumbnail[]> => {
+export const getRecentlyCollectedBooks = async (
+  token: string,
+  readerId?: number | undefined
+): Promise<BookThumbnail[]> => {
   try {
     const requestOptions = {
       method: 'GET',
@@ -94,7 +97,10 @@ export const getRecentlyCollectedBooks = async (token: string): Promise<BookThum
       },
     };
 
-    const response = await fetch(recentCollectedBooksURL, requestOptions);
+    const requestedURL = readerId
+      ? `${recentCollectedBooksURL}/${readerId}`
+      : recentCollectedBooksURL;
+    const response = await fetch(requestedURL, requestOptions);
     if (response.status === 404) {
       return Promise.reject(`The collection you requested was not found.`);
     } else {
