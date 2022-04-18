@@ -1,5 +1,5 @@
 import { BookThumbnail } from '../types/BookTypes';
-import { myCollectedBooks } from './callableURLs';
+import { myCollectedBooks, recentCollectedBooksURL } from './callableURLs';
 
 export const getCollectedBooksList = async (token: string, collectionId: string): Promise<any> => {
   try {
@@ -79,6 +79,34 @@ export const addBookToCollections = async (
       }
     });
   } catch (error) {
+    return Promise.reject('Internal Error');
+  }
+};
+
+export const getRecentlyCollectedBooks = async (token: string): Promise<BookThumbnail[]> => {
+  try {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    };
+
+    const response = await fetch(recentCollectedBooksURL, requestOptions);
+    if (response.status === 404) {
+      return Promise.reject(`The collection you requested was not found.`);
+    } else {
+      const data = await response.json();
+      const bookList = data.payload as BookThumbnail[];
+      return bookList;
+    }
+  } catch (error) {
+    return [
+      { volume_id: 'UAYvDwAAQBAJ', title: 'js', smallThumbnail: null },
+      { volume_id: 'UAYvDwAAQBA', title: 'js2', smallThumbnail: null },
+    ];
     return Promise.reject('Internal Error');
   }
 };
