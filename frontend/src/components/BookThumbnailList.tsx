@@ -73,31 +73,20 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
   const bookFullList = () => {
     const spacingValue = size && size === 'large' ? 5 : 1;
     return (
-      <Grid
-        container
-        spacing={spacingValue}
-        sx={{ p: 2, alignItems: 'flex-start', textAlign: 'center' }}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          textAlign: 'center',
+        }}
       >
         {bookList.map((book) => (
-          <Grid
-            item
-            xs={4}
-            sm={3}
-            md={2}
-            lg={1}
-            xl={1}
-            key={book.volume_id}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <BookThumbnailItem book={book} isOverview={isOverview} size={size} />
-          </Grid>
+          <BookThumbnailItem book={book} isOverview={isOverview} size={size} key={book.volume_id} />
         ))}
-      </Grid>
+      </Box>
     );
   };
   return <>{isOverview ? bookOverviewList() : bookFullList()}</>;
