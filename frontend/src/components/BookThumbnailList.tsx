@@ -59,7 +59,7 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
         }}
       >
         {bookList.map((book) => (
-          <BookThumbnailItem book={book} isOverview={isOverview} size={size} />
+          <BookThumbnailItem book={book} isOverview={isOverview} size={size} key={book.volume_id} />
         ))}
         {typeof detailPath === 'string' && detailPath && (
           <Button sx={{ ...bookImageSizes.small }} onClick={() => navigate(detailPath)}>

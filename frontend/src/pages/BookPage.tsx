@@ -11,6 +11,7 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import BookDetails from '../components/BookDetails';
 import MarkReadButton from '../components/MarkReadButton';
 import RecommendationList from '../components/RecommendationList';
+import CollectBookDialog from '../components/CollectBookDialog';
 const BookPage: FC = () => {
   const context = useContext(Appctx);
   let navigate = useNavigate();
@@ -52,6 +53,7 @@ const BookPage: FC = () => {
       >
         <BookRatingReviewStat />
         <MarkReadButton />
+        <CollectBookDialog />
       </Box>
     );
   };

@@ -51,3 +51,34 @@ export const deleteCollectedBook = async (
     return Promise.reject('Internal Error');
   }
 };
+
+export const addBookToCollections = async (
+  token: string,
+  collectionIds: number[],
+  volumeId: string
+): Promise<any> => {
+  try {
+    collectionIds.forEach(async (collectionId) => {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+        },
+        body: JSON.stringify({
+          volume_id: volumeId,
+        }),
+      };
+      const collectionURL = myCollectedBooks(collectionId);
+      const response = await fetch(`${collectionURL}`, requestOptions);
+      if (response.status === 404) {
+        return Promise.reject(
+          `The collection ${collectionId} was not found, please refresh and try again.`
+        );
+      }
+    });
+  } catch (error) {
+    return Promise.reject('Internal Error');
+  }
+};
