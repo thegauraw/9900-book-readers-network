@@ -8,7 +8,7 @@ import { fetchCollectionListData } from '../services/collectionAPIs';
 import { Appctx } from '../utils/LocalContext';
 import { NavMenuList } from '../config/paths';
 import { CollectionData } from '../types/collectionTypes';
-
+import RecentCollectedBooksList from '../components/RecentCollectedBooksList';
 const CollectionListPage: FC = () => {
   const context = useContext(Appctx);
   const { collectionList, setCollectionList, token } = context;
@@ -47,7 +47,8 @@ const CollectionListPage: FC = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '80vh', display: 'flex', p: 2 }}>
+    <Box sx={{ minHeight: '80vh', display: 'flex', p: 2, flexDirection: 'column' }}>
+      <RecentCollectedBooksList />
       {isLoading && <LoadingIndicator />}
       {!isLoading && settlement && settlement instanceof Error && (
         <Typography>{(settlement as Error).message}</Typography>
