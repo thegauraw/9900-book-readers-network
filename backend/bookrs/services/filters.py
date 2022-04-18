@@ -35,16 +35,14 @@ def retriveBooks(minRating=0., book_data=None):
   return books_list, volume_id_list
 
 def filterBooksWithRating(minRating=0., data=None):
-  books_list, volume_id_list = retriveBooks(minRating=minRating, book_data=data.get('items')[0])
-
+  """List books sorted by average rating"""
+  
   items = data.get('items')
   
+  books_list = []
+
   for item in items:
     volume_id = item.get('id')
-
-    # Skip if the book info exists
-    if volume_id_list.count(volume_id):
-      continue
 
     try:
       book = BookModel.query.filter_by(volume_id=volume_id).first()
