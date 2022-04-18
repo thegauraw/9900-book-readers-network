@@ -19,7 +19,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { Appctx } from '../utils/LocalContext';
-import { updateReaderPassword } from '../services/ReaderAPIs';
+import { updateReaderPassword } from '../services/readerAPIs';
 import { AuthenticationPaths, NavMenuList } from '../config/paths';
 
 function PasswordResetPage() {

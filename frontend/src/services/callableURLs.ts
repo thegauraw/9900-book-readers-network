@@ -15,3 +15,4 @@ export const topRatedURL = `${BASE_URL}/ranking`;
 export const achievementURL = `${BASE_URL}/achievements`;
 export const ownedAchievementURL = `${BASE_URL}/owned_achievements`;
 export const verifyTokenURL = `${BASE_URL}/verify`;
+export const profileURL = `${BASE_URL}/profile`;

@@ -14,7 +14,7 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { resetReaderPassword } from '../services/ReaderAPIs';
+import { resetReaderPassword } from '../services/readerAPIs';
 import { AuthenticationPaths, NavMenuList } from '../config/paths';
 
 function ForgottenPassword() {
