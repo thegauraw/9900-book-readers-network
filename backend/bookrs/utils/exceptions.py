@@ -101,4 +101,4 @@ def InvalidRecommendationException():
   return InvalidUsage('Invalid recommendation request', status_code=400)
 
 def InvalidProfileException():
-  return InvalidUsage('Failed to get profile information', status_code=500)
+  return InvalidUsage('Failed to get profile information', status_code=404)

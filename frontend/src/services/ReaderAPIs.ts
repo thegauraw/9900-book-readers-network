@@ -1,4 +1,5 @@
-import { UserApiURL } from './callableURLs';
+import { UserApiURL, profileURL } from './callableURLs';
+import { ProfileType } from '../types/ProfileTypes';
 
 export const resetReaderPassword = async (props: any): Promise<string> => {
   try {
@@ -53,33 +54,6 @@ export const updateReaderPassword = async (props: any): Promise<string> => {
   }
 };
 
-export const getReader = async (props: any): Promise<any> => {
-  try {
-    console.log('start grasping user info. ', props.email);
-
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/json',
-        Authorization: 'Bearer ' + props.token,
-      },
-    };
-
-    const response = await fetch(`${UserApiURL}`, requestOptions);
-    const data = await response.json();
-
-    console.log('status: ', response.status);
-
-    response.status === 200 && console.log('succeed to get user info!');
-    response.status !== 200 && console.log('error message: ', data.msg);
-
-    return data;
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
-
 export const updateReaderProfile = async (props: any): Promise<string> => {
   try {
     console.log('start updating user profile. ', props.email);
@@ -109,6 +83,51 @@ export const updateReaderProfile = async (props: any): Promise<string> => {
     response.status !== 200 && console.log('error message: ', data);
 
     return data.msg;
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const getReader = async (props: any): Promise<ProfileType> => {
+  try {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+        Authorization: 'Bearer ' + props.token,
+      },
+    };
+    const response = await fetch(`${UserApiURL}`, requestOptions);
+    if (response.status === 404) {
+      return Promise.reject(`The user was not found.`);
+    } else {
+      const data = await response.json();
+      return data.payload;
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const getReaderById = async (id: number): Promise<ProfileType> => {
+  try {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+    };
+
+    const response = await fetch(`${profileURL}/${id}`, requestOptions);
+
+    if (response.status === 404) {
+      return Promise.reject(`The user was not found.`);
+    } else {
+      const data = await response.json();
+      return data.payload;
+    }
   } catch (err) {
     return Promise.reject(err);
   }

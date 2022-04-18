@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import { Appctx } from '../utils/LocalContext';
-import { Box, Typography, Divider, CardMedia } from '@mui/material';
+import { Box, Typography, CardMedia } from '@mui/material';
 import { BadgesType } from '../types/AchievementTypes';
 import { getOwnedBadges, getBadgesByReader } from '../services/achievementAPI';
 import LoadingIndicator from './LoadingIndicator';
@@ -16,13 +16,12 @@ const BadgesList: FC<BadgesListProps> = ({ readerId }) => {
   const [error, setError] = useState('');
   const context = useContext(Appctx);
   const { token } = context;
-  const callableFunction = readerId ? getBadgesByReader(readerId) : getOwnedBadges(token);
 
   useEffect(() => {
     (async function () {
       try {
         setIsLoading(true);
-        const response = await callableFunction;
+        const response = readerId ? await getBadgesByReader(readerId) : await getOwnedBadges(token);
         setBadgesList(response);
       } catch (error) {
         setError(error as string);
@@ -74,7 +73,9 @@ const BadgesList: FC<BadgesListProps> = ({ readerId }) => {
           </Box>
         ) : (
           <Typography variant="subtitle1" component="div">
-            Keep Reading and Reviewing to grab your Badges!
+            {readerId
+              ? 'No achievement was found.'
+              : 'Keep Reading and Reviewing to grab your Badges!'}
           </Typography>
         ))}
     </Box>
