@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useState, useEffect } from 'react';
 import { Appctx } from '../utils/LocalContext';
 import {
   Button,
@@ -16,15 +16,30 @@ import {
   Divider,
 } from '@mui/material';
 import { addBookToCollections } from '../services/bookAPIs';
+import { fetchCollectionListData } from '../services/collectionAPIs';
+import { CollectionData } from '../types/collectionTypes';
 import LoadingIndicator from './LoadingIndicator';
 
 const CollectBookDialog: FC = () => {
   const context = useContext(Appctx);
-  const { collectionList, bookDetails, token } = context;
+  const { bookDetails, token } = context;
   const [checked, setChecked] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState('');
+  const [collectionList, setCollectionList] = useState<CollectionData[]>();
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await fetchCollectionListData(token);
+        setCollectionList(response);
+      } catch (error) {
+        setAlert(error as string);
+      }
+    })();
+  }, []);
+
   const handleToggle = (value: string) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -54,30 +69,32 @@ const CollectBookDialog: FC = () => {
     setOpen(false);
   };
 
-  const customList = () => (
-    <Box sx={{ width: 200, height: 230, overflow: 'auto' }}>
-      <List dense component="div" role="list">
-        {collectionList?.settlement?.map((collection) => {
-          return (
-            <ListItem
-              key={collection.id}
-              role="listitem"
-              button
-              onClick={handleToggle(collection.id)}
-            >
-              <Checkbox
-                checked={checked.indexOf(collection.id) !== -1}
-                tabIndex={-1}
-                disableRipple
-              />
-              <ListItemText id={collection.id} primary={`${collection.title}`} />
-            </ListItem>
-          );
-        })}
-        <ListItem />
-      </List>
-    </Box>
-  );
+  const customList = () => {
+    return (
+      <Box sx={{ width: 200, height: 230, overflow: 'auto' }}>
+        <List dense component="div" role="list">
+          {collectionList?.map((collection) => {
+            return (
+              <ListItem
+                key={collection.id}
+                role="listitem"
+                button
+                onClick={handleToggle(collection.id)}
+              >
+                <Checkbox
+                  checked={checked.indexOf(collection.id) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                />
+                <ListItemText id={collection.id} primary={`${collection.title}`} />
+              </ListItem>
+            );
+          })}
+          <ListItem />
+        </List>
+      </Box>
+    );
+  };
 
   const toCollect = () => (
     <Dialog open={open} onClose={onClose}>
