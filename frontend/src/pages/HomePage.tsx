@@ -25,8 +25,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   componentPaper: {
     display: 'flex',
-    //height: '300px',
-    //overflow: 'auto',
     margin: theme.spacing(2),
     flexDirection: 'column',
     width: '88.5%',
@@ -93,10 +91,10 @@ const HomePage: React.FC = () => {
       </Box>
       <Box className={classes.componentContainer}>
         <Paper className={classes.componentPaperHalf}>
-          <GoalOverview />
+          <CollectionListOverview />
         </Paper>
         <Paper className={classes.componentPaperHalf}>
-          <CollectionListOverview />
+          <GoalOverview />
         </Paper>
       </Box>
     </Box>
