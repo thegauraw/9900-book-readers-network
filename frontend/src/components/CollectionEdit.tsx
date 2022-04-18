@@ -67,7 +67,7 @@ const CollectionEdit: React.FC<CollectionEditProps> = ({ collectionId, dataLoade
   );
 
   return (
-    <Grid item xs={12} sm={6} lg={4}>
+    <Box>
       <Button variant="contained" startIcon={<EditIcon />} onClick={handleOpen}></Button>
       <Modal
         open={open}
@@ -85,7 +85,7 @@ const CollectionEdit: React.FC<CollectionEditProps> = ({ collectionId, dataLoade
           />
         </Box>
       </Modal>
-    </Grid>
+    </Box>
   );
 };
 
