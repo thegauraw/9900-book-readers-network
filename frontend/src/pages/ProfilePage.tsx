@@ -26,7 +26,7 @@ export default function ProfilePage() {
           <Typography variant="subtitle1">ACHIEVEMENTS</Typography>
           <Divider />
           <BadgesList readerId={Number(searchParams.get('id'))} />
-          <RecentCollectedBooksList />
+          <RecentCollectedBooksList readerId={Number(searchParams.get('id'))} />
         </Paper>
       ) : (
         <EditableProfile />
