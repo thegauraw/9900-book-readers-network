@@ -48,7 +48,9 @@ class Readers(Resource):
 
 
 class RecentReaders(Resource):
-    def get(self, volume_id):
+    def get(self):
+        data = request.get_json()
+        volume_id = data.get("volumeId")
         book_data = BookModel.query.filter_by(volume_id=volume_id).first()
         book = book_details_schema.dump(book_data)
         collected_data = Collectedbooks.query.filter_by(book_id=book.get("id")).order_by(desc("collected_date")).limit(10).all()
@@ -59,11 +61,11 @@ class RecentReaders(Resource):
             reader_id = collection_schema.dump(collection).get("reader_id")
             reader = ReaderModel.query.filter_by(id=reader_id).first()
             user_name = reader_schema.dump(reader).get("username")
-            reader_data = {"reader_id": reader_id,
-                           "user_name": user_name}
+            reader_data = {"id": reader_id,
+                           "username": user_name}
             res_list.append(reader_data)
         return SUCCESS(payload=res_list)
 
 
 api.add_resource(Readers, '/readers')
-api.add_resource(RecentReaders, '/recentreaders/<string:volume_id>')
+api.add_resource(RecentReaders, '/recent_collected_users')
