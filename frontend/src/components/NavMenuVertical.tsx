@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Box, Typography, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { NavMenuList } from '../config/paths';
+import { VisibleMenuList } from '../config/paths';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import * as Icons from '@mui/icons-material';
 const NavMenuVertical: React.FC = () => {
   let navigate = useNavigate();
-  const NavMenuKeys = Object.keys(NavMenuList) as (keyof typeof NavMenuList)[];
+  const NavMenuKeys = Object.keys(VisibleMenuList) as (keyof typeof VisibleMenuList)[];
   const location = useLocation();
 
   const [anchorElNav, setAnchorElNav] = React.useState<
@@ -21,14 +21,7 @@ const NavMenuVertical: React.FC = () => {
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-      <IconButton
-        size="large"
-        aria-label="account of current user"
-        aria-controls="menu-appbar"
-        aria-haspopup="true"
-        onClick={handleOpenNavMenu}
-        color="inherit"
-      >
+      <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
         <MenuIcon />
       </IconButton>
       <Menu
@@ -50,11 +43,14 @@ const NavMenuVertical: React.FC = () => {
         }}
       >
         {NavMenuKeys.map((page) => {
-          const color = location.pathname === NavMenuList[page] ? 'text.secondary' : 'text.primary';
+          const iconName = VisibleMenuList[page].iconName as keyof typeof Icons;
+          const color =
+            location.pathname === VisibleMenuList[page].path ? 'text.secondary' : 'text.primary';
           return (
-            <MenuItem key={page} onClick={() => navigate(`${NavMenuList[page]}`)}>
+            <MenuItem key={page} onClick={() => navigate(`${VisibleMenuList[page].path}`)}>
+              {React.createElement(Icons[iconName])}
               <Typography textAlign="center" sx={{ p: 2, color: color, typography: 'h3' }}>
-                {page}
+                {VisibleMenuList[page].display}
               </Typography>
             </MenuItem>
           );
