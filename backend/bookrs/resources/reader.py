@@ -1,14 +1,14 @@
 from flask import Blueprint, request
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 from flask_restful import Resource
-from werkzeug.security import generate_password_hash
 
 from bookrs.model import db
 from bookrs.resources import api
 from bookrs.model.readerModel import ReaderModel, reader_schema
-from bookrs.utils.exceptions import InvalidEmailException, SendEmailException
+from bookrs.utils.exceptions import InvalidEmailException, SendEmailException, InvalidProfileException
 from bookrs.utils.common import SUCCESS
 from bookrs.tools.email import send_password_reset_email
-from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
+
 
 reader_bp = Blueprint('reader', __name__)
 
@@ -78,4 +78,23 @@ class Reader(Resource):
 
       return SUCCESS()
 
+
+class ProfileById(Resource):
+  def get(self, reader_id):
+    """
+      Get profile: `GET /profile/<int:reader_id>`
+
+    """
+
+    data = ReaderModel.query.filter_by(id=reader_id).first()
+    
+    if not data:
+      raise InvalidProfileException()
+
+    profile = reader_schema.dump(data)
+
+    return SUCCESS(status_code=200, payload=profile)
+    
+
 api.add_resource(Reader, '/reader')
+api.add_resource(ProfileById, '/profile/<int:reader_id>')

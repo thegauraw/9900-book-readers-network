@@ -99,3 +99,6 @@ def BadgeRegisterException():
 # Recommendation related exceptions
 def InvalidRecommendationException():
   return InvalidUsage('Invalid recommendation request', status_code=400)
+
+def InvalidProfileException():
+  return InvalidUsage('Failed to get profile information', status_code=500)
