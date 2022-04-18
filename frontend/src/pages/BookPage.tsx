@@ -12,6 +12,7 @@ import BookDetails from '../components/BookDetails';
 import MarkReadButton from '../components/MarkReadButton';
 import RecommendationList from '../components/RecommendationList';
 import CollectBookDialog from '../components/CollectBookDialog';
+import RecentCollectedUsersList from '../components/RecentCollectedUsersList';
 const BookPage: FC = () => {
   const context = useContext(Appctx);
   let navigate = useNavigate();
@@ -84,6 +85,7 @@ const BookPage: FC = () => {
             />
             {bookActions()}
           </Box>
+          <RecentCollectedUsersList />
           <BookRatingReview />
           <RecommendationList
             title={settlement.volumeInfo.title}
