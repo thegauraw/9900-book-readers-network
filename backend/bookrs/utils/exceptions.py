@@ -75,6 +75,20 @@ def BookNotFoundException():
   return InvalidUsage('Requested book not found', status_code=404)
 
 
+# Event related exceptions
+def EventCreateException():
+  return InvalidUsage('Could not create event', status_code=500)
+
+def EventDeleteException():
+  return InvalidUsage('Could not delete event', status_code=500)
+
+def EventUpdateException():
+  return InvalidUsage('Could not update event', status_code=500)
+
+def EventNotFoundException():
+  return InvalidUsage('Requested event not found', status_code=404)
+
+
 def InvalidParameterException(error):
   return InvalidUsage(error.__str__(), status_code=400).to_json() 
 

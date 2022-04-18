@@ -11,6 +11,7 @@ from .resources.reader import Reader, reader_bp
 from .resources.logins import Login, login_bp
 from .resources.collections import collections_bp
 from .resources.books import books_bp
+from .resources.events import events_bp
 from .resources.search import search_bp
 from .resources.achievements import achievements_bp
 from .resources.recommendation import recommendation_bp
@@ -104,5 +105,6 @@ def create_app(test_config=None):
         return response
 
     app.register_blueprint(books_bp)
+    app.register_blueprint(events_bp)
 
     return app

@@ -23,6 +23,8 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password_hash', sa.String(length=120), nullable=False),
     sa.Column('status', sa.Boolean(), default=True, server_default="true", nullable=True),
+    sa.Column('gender', sa.String(length=5), nullable=True),
+    sa.Column('age', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username'))
