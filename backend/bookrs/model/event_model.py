@@ -51,7 +51,13 @@ class EventModel(BaseModel):
       # TODO: handle participation
       # UPDATE: participation to be handled from a different model
       return cls.query.filter_by(organised_by=organised_by).all()
-
+  
+  def allows_registration(self):
+    """allow reader to register to/book for an event until before it starts"""
+    if datetime.now() < self.date_and_time:
+      return True
+    else:
+      return False
 
 
 class EventSchema(ma.SQLAlchemySchema):

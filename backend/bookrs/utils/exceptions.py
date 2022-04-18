@@ -85,6 +85,29 @@ def EventUpdateException():
 def EventNotFoundException():
   return InvalidUsage('Requested event not found', status_code=404)
 
+# Event participation related exceptions
+# def EventParticipationException():
+def EventRegistrationException():
+  return InvalidUsage('Could not register to the reqested event', status_code=500)
+
+def EventRegistrationTimePassedException():
+  return InvalidUsage('The requested event does not take registration any longer', status_code=400)
+
+def EventParticipationNotFoundException():
+  return InvalidUsage('Requested event participation/registration record not found', status_code=404)
+
+def EventRegistrationCancelException():
+  return InvalidUsage('Could not cancel the registration/booking to the requested event', status_code=500)
+
+def EventFeedbackUpdateException():
+  return InvalidUsage('Could not update comment on the participated event', status_code=500)
+
+def EventFeedbackRemoveException():
+  return InvalidUsage('Could not remove comment on the participated event', status_code=500)
+
+def EventFeedbackNotFoundException():
+  return InvalidUsage('Requested event comment record not found', status_code=404)
+
 
 def InvalidParameterException(error):
   return InvalidUsage(error.__str__(), status_code=400).to_json() 
