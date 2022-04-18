@@ -1,14 +1,7 @@
 import * as React from 'react';
 import { Appctx } from '../utils/LocalContext';
 import AddIcon from '@mui/icons-material/Add';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  Modal,
-} from '@mui/material';
+import { Box, Button, Card, CardContent, Grid, Modal } from '@mui/material';
 import { createCollection } from '../services/collectionAPIs';
 import { CollectionFormData } from '../types/collectionTypes';
 import CollectionForm from './CollectionForm';
@@ -34,7 +27,7 @@ interface CollectionNewProps {
   dataLoader: () => Promise<void>;
 }
 
-const CollectionNew: React.FC<CollectionNewProps> = ({dataLoader}) => {
+const CollectionNew: React.FC<CollectionNewProps> = ({ dataLoader }) => {
   const context = React.useContext(Appctx);
   const { collection, setCollection, token } = context;
   const { settlement, isLoading, error } = collection;
@@ -55,14 +48,14 @@ const CollectionNew: React.FC<CollectionNewProps> = ({dataLoader}) => {
           setCollection({ isLoading: false });
           handleClose();
           dataLoader();
-      });
+        });
     },
     [createCollection]
   );
 
   return (
     <Grid item xs={12} sm={6} lg={4}>
-      <Card sx={{ width: '100%' }}>
+      <Card sx={{ width: '100%', height: '300px' }}>
         <CardContent
           sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', p: 12 }}
         >
@@ -79,7 +72,13 @@ const CollectionNew: React.FC<CollectionNewProps> = ({dataLoader}) => {
         aria-describedby="modal-new-collection"
       >
         <Box sx={style.modal}>
-          <CollectionForm title="" description="" submitHandler={handleSubmitData} closeHandler={handleClose} mode="add" />
+          <CollectionForm
+            title=""
+            description=""
+            submitHandler={handleSubmitData}
+            closeHandler={handleClose}
+            mode="add"
+          />
         </Box>
       </Modal>
     </Grid>

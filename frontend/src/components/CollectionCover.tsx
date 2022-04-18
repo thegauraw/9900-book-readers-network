@@ -5,7 +5,6 @@ import { CollectionData } from '../types/collectionTypes';
 import CollectionEdit from '../components/CollectionEdit';
 import CollectionDelete from '../components/CollectionDelete';
 
-
 interface CollectionCoverProps {
   collection: CollectionData;
   buttonName: string;
@@ -21,10 +20,7 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
 }) => {
   let navigate = useNavigate();
   return (
-    <Card sx={{ width: '100%' }}>
-      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', py: 5 }}>
-        {collection.description}
-      </CardContent>
+    <Card sx={{ width: '100%', height: '100%', minHeight: '300px' }}>
       <Box
         sx={{
           display: 'flex',
@@ -33,6 +29,7 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
           bgcolor: 'primary.main',
           px: 2,
           py: 1,
+          alignItems: 'center',
         }}
       >
         <Box>
@@ -51,6 +48,9 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
           {buttonName}
         </Button>
       </Box>
+      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', py: 5 }}>
+        {collection.description}
+      </CardContent>
     </Card>
   );
 };
