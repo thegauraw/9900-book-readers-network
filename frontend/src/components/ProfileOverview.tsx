@@ -71,11 +71,13 @@ const ProfileOverview: FC<ProfileOverviewProps> = ({ readerId }) => {
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        p: 3,
+        p: 2,
       }}
     >
       {isLoading && <LoadingIndicator />}
-      {!isLoading && error && !isEmpty(error) && <Typography>{error}</Typography>}
+      {!isLoading && error && !isEmpty(error) && (
+        <Typography variant="subtitle1">{error}</Typography>
+      )}
       {!isLoading && profile && isEmpty(error) && !isEmpty(profile) && profileList()}
     </Box>
   );
