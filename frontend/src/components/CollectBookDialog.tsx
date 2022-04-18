@@ -23,7 +23,7 @@ import LoadingIndicator from './LoadingIndicator';
 const CollectBookDialog: FC = () => {
   const context = useContext(Appctx);
   const { bookDetails, token } = context;
-  const [checked, setChecked] = useState<string[]>([]);
+  const [checked, setChecked] = useState<number[]>([]);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState('');
@@ -40,7 +40,7 @@ const CollectBookDialog: FC = () => {
     })();
   }, []);
 
-  const handleToggle = (value: string) => () => {
+  const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
     if (currentIndex === -1) {
@@ -79,10 +79,10 @@ const CollectBookDialog: FC = () => {
                 key={collection.id}
                 role="listitem"
                 button
-                onClick={handleToggle(collection.id)}
+                onClick={handleToggle(Number(collection.id))}
               >
                 <Checkbox
-                  checked={checked.indexOf(collection.id) !== -1}
+                  checked={checked.indexOf(Number(collection.id)) !== -1}
                   tabIndex={-1}
                   disableRipple
                 />

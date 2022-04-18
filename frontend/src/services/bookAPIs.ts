@@ -54,7 +54,7 @@ export const deleteCollectedBook = async (
 
 export const addBookToCollections = async (
   token: string,
-  collectionIds: string[],
+  collectionIds: number[],
   volumeId: string
 ): Promise<any> => {
   try {
@@ -70,7 +70,7 @@ export const addBookToCollections = async (
           volume_id: volumeId,
         }),
       };
-      const collectionURL = myCollectedBooks(Number(collectionId));
+      const collectionURL = myCollectedBooks(collectionId);
       const response = await fetch(`${collectionURL}`, requestOptions);
       if (response.status === 404) {
         return Promise.reject(
