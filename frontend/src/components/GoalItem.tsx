@@ -18,7 +18,7 @@ interface GoalItemProps {
 const GoalItem: FC<GoalItemProps> = ({ isOverview, isCurrent, goal }) => {
   let navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const bookList = isOverview ? goal.book_list.slice(0, 3) : goal.book_list;
+  const bookList = isOverview ? goal.book_list.slice(0, 5) : goal.book_list;
   const goalHeader = () => {
     return (
       <Box

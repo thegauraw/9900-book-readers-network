@@ -70,7 +70,7 @@ const ProfileOverview: FC<ProfileOverviewProps> = ({ readerId }) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: '100%',
+        minWidth: '300px',
         p: 2,
       }}
     >

@@ -53,7 +53,7 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
         }}

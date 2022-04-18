@@ -33,7 +33,8 @@ const GoalOverview: FC = () => {
         sx={{
           width: '100%',
           bgcolor: 'primary.main',
-          p: 2,
+          px: 2,
+          py: 1,
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -60,7 +61,7 @@ const GoalOverview: FC = () => {
   };
 
   return (
-    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       {isLoading && <LoadingIndicator />}
       {!isLoading && error && !isEmpty(error) && <Typography>{error}</Typography>}
       {!isLoading && settlement && isEmpty(error) && (

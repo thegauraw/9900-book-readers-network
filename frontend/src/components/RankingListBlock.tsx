@@ -33,8 +33,9 @@ const RankingListBlock: FC<RankingListBlockProps> = ({ callableFunction, title }
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: '100%',
+        width: 'fit-content',
         p: 2,
+        alignSelf: 'center',
       }}
     >
       {isLoading && <LoadingIndicator />}
