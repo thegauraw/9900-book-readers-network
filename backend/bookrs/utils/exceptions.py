@@ -102,6 +102,9 @@ def EventRegistrationCancelException():
 def EventFeedbackUpdateException():
   return InvalidUsage('Could not update comment on the participated event', status_code=500)
 
+def EventFeedbackBeforeTimeException():
+  return InvalidUsage('The requested event has not occured yet', status_code=500)
+
 def EventFeedbackRemoveException():
   return InvalidUsage('Could not remove comment on the participated event', status_code=500)
 

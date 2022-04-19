@@ -1,14 +1,12 @@
 from datetime import datetime
-from flask import Blueprint, abort, request
+from flask import Blueprint, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
-from bookrs.model.bookModel import BookModel, book_details_schema, books_details_schema
 from bookrs.model.event_model import EventModel
 from bookrs.model.event_participation_model import EventParticipationModel, participation_schema, participations_schema
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
-from bookrs.utils.exceptions import EventFeedbackNotFoundException, EventFeedbackRemoveException, EventFeedbackUpdateException, EventRegistrationCancelException, EventRegistrationException, EventRegistrationTimePassedException # BookCollectException, BookCreateException, BookDropException
-from bookrs.third_party.googleAPIs import get_book_details_from_google
+from bookrs.utils.exceptions import EventFeedbackBeforeTimeException, EventFeedbackNotFoundException, EventFeedbackRemoveException, EventFeedbackUpdateException, EventRegistrationCancelException, EventRegistrationException, EventRegistrationTimePassedException
 
 event_participations_bp = Blueprint('event_participations', __name__)
 
@@ -26,7 +24,7 @@ class EventParticipation(Resource):
     if event.allows_registration:
       # register current user to the event i.e. add a record
       current_user = get_jwt_identity()
-      data = {'event_id': event_id, 'participant_id': current_user, 'registered_at': datetime.now()}
+      data = {'event_id': event_id, 'participant_id': current_user}
       event_participation = participation_schema.load(data)
       if event_participation.save():
         return SUCCESS(message='Participant registered to the event successfully')
@@ -44,7 +42,6 @@ class EventParticipation(Resource):
     # check if the user is currently registered or not?
     current_user = get_jwt_identity()
     event_participation = EventParticipationModel.get_by_participant_and_event_id(event_id=event_id, participant_id=current_user)
-    # event = EventModel.get_by_reader_and_id(participant_id=current_user, id=event_id)
 
     if event_participation.delete():
       return SUCCESS(message='Participant registration/booking to the event has been cancelled successfully')
@@ -60,6 +57,8 @@ class EventFeedbackList(Resource):
     List all the comments in an event
     `GET /events/:event_id/comments`
     """
+    # find event to verify it exists
+    event = EventModel.get_by_id(event_id)
     event_comments = EventParticipationModel.get_all_for_event(event_id=event_id)
 
     participant_comments_data_dump = participations_schema.dump(event_comments)
@@ -74,29 +73,34 @@ class EventFeedback(Resource):
       Comment on an event that one had participated
       `PUT /events/:event_id/comment`
     """
-    # check if the user owns the event
+    event = EventModel.get_by_id(event_id)
+    # check if the user has participated in the event
     current_user = get_jwt_identity()
     event_participation_obj = EventParticipationModel.get_by_participant_and_event_id(event_id=event_id, participant_id=current_user)
 
-    data = request.get_json()
-    # import pdb; pdb.set_trace()
+    if event.allows_comment:
 
-    data['event_id'] = event_id
-    data['participant_id'] = current_user
+      data = request.get_json()
+      # only required to set if event_id and participant_id are set to required=True in participation_schema
+      # data['event_id'] = event_id
+      # data['participant_id'] = current_user
 
-    event_participation = participation_schema.load(data, instance=event_participation_obj)
-    if event_participation.update():
-      event_participation_data_dump = participation_schema.dump(event_participation)
-      return SUCCESS(message='Event comment updated successfully', payload=event_participation_data_dump)
+      event_participation = participation_schema.load(data, instance=event_participation_obj)
+      if event_participation.update():
+        event_participation_data_dump = participation_schema.dump(event_participation)
+        return SUCCESS(message='Event comment updated successfully', payload=event_participation_data_dump)
+      else:
+        raise EventFeedbackUpdateException()
     else:
-      raise EventFeedbackUpdateException()
+      raise EventFeedbackBeforeTimeException()
+
 
   def delete(self, event_id):
     """
       Delete own comment on an event that one had participated
       `DELETE /events/:event_id/comment`
     """
-    # check if the user owns the event
+    # check if the user has participated in the event
     current_user = get_jwt_identity()
     event_participation_obj = EventParticipationModel.get_by_participant_and_event_id(event_id=event_id, participant_id=current_user)
     data = {'comment': None}
@@ -113,7 +117,7 @@ class EventFeedback(Resource):
       Show own comment on an event that one had participated
       `GET /events/:event_id/comment`
     """
-    # check if the user owns the event
+    # check if the user has participated in the event
     current_user = get_jwt_identity()
     event_participation = EventParticipationModel.get_by_participant_and_event_id(event_id=event_id, participant_id=current_user)
     if event_participation:

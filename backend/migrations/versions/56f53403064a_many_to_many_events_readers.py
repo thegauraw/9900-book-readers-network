@@ -1,8 +1,8 @@
 """many to many events readers
 
-Revision ID: 0b57acf4fafc
+Revision ID: 56f53403064a
 Revises: 2243f7758867
-Create Date: 2022-04-19 01:48:07.566091
+Create Date: 2022-04-19 09:29:59.624490
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0b57acf4fafc'
+revision = '56f53403064a'
 down_revision = '2243f7758867'
 branch_labels = None
 depends_on = None
@@ -26,12 +26,12 @@ def upgrade():
     sa.Column('participant_id', sa.Integer(), nullable=False),
     sa.Column('like', sa.Boolean(), nullable=True),
     sa.Column('comment', sa.Text(), nullable=True),
-    sa.Column('registered_at', sa.DateTime(), nullable=True),
+    sa.Column('registered_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
     sa.Column('registration_code', sa.String(length=8), nullable=True),
     sa.Column('status', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['event_id'], ['events.id'], ),
     sa.ForeignKeyConstraint(['participant_id'], ['readers.id'], ),
-    sa.PrimaryKeyConstraint('id', 'event_id', 'participant_id')
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 

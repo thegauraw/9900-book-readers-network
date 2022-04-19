@@ -54,10 +54,17 @@ class EventModel(BaseModel):
   
   def allows_registration(self):
     """allow reader to register to/book for an event until before it starts"""
-    if datetime.now() < self.date_and_time:
+    if self.date_and_time > datetime.now() : # i.e. if event date-and-time is in the future
       return True
     else:
       return False
+
+  def allows_comment(self):
+    """allow reader to comment on the event after they have participated"""
+    if self.date_and_time > datetime.now() : # i.e. if event date-and-time is in the future
+      return False
+    else:
+      return True
 
 
 class EventSchema(ma.SQLAlchemySchema):
