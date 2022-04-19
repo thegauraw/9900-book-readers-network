@@ -43,6 +43,9 @@ def UpdateReaderException():
 def SendEmailException():
   return InvalidUsage('Fail to send password reset email', status_code=500)
 
+def InvalidTokenException():
+  return InvalidUsage('Fail to verify token', status_code=400)
+
 
 # Collection related exceptions
 def CollectionCreateException():
@@ -136,3 +139,6 @@ def BadgeRegisterException():
 # Recommendation related exceptions
 def InvalidRecommendationException():
   return InvalidUsage('Invalid recommendation request', status_code=400)
+
+def InvalidProfileException():
+  return InvalidUsage('Failed to get profile information', status_code=404)

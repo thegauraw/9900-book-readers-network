@@ -11,6 +11,8 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import BookDetails from '../components/BookDetails';
 import MarkReadButton from '../components/MarkReadButton';
 import RecommendationList from '../components/RecommendationList';
+import CollectBookDialog from '../components/CollectBookDialog';
+import RecentCollectedUsersList from '../components/RecentCollectedUsersList';
 const BookPage: FC = () => {
   const context = useContext(Appctx);
   let navigate = useNavigate();
@@ -30,6 +32,7 @@ const BookPage: FC = () => {
             setBookDetails({ settlement: response, error: null });
           } catch (error) {
             setBookDetails({ error: error });
+            navigate(NotFoundPath, { state: { error: error } });
           } finally {
             setBookDetails({ isLoading: false });
           }
@@ -51,6 +54,7 @@ const BookPage: FC = () => {
       >
         <BookRatingReviewStat />
         <MarkReadButton />
+        <CollectBookDialog />
       </Box>
     );
   };
@@ -77,9 +81,11 @@ const BookPage: FC = () => {
               categories={settlement.volumeInfo.categories}
               publisher={settlement.volumeInfo.publisher}
               publishedDate={settlement.volumeInfo.publishedDate}
+              averageRatings={settlement.average_rating}
             />
             {bookActions()}
           </Box>
+          <RecentCollectedUsersList />
           <BookRatingReview />
           <RecommendationList
             title={settlement.volumeInfo.title}

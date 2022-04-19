@@ -6,6 +6,7 @@ import { bookImageSizes } from '../config/constants';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import noCoverImg from '../assets/no_cover_thumb.gif';
 import { bookPath } from '../config/paths';
+import BookThumbnailItem from './BookThumbnailItem';
 interface BookThumbnailListProps {
   bookList: BookThumbnail[];
   isOverview: boolean;
@@ -52,12 +53,14 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
         }}
       >
-        {bookList.map((book) => bookOverview(book))}
+        {bookList.map((book) => (
+          <BookThumbnailItem book={book} isOverview={isOverview} size={size} key={book.volume_id} />
+        ))}
         {typeof detailPath === 'string' && detailPath && (
           <Button sx={{ ...bookImageSizes.small }} onClick={() => navigate(detailPath)}>
             <MoreHorizIcon />
@@ -70,31 +73,20 @@ const BookThumbnailList: FC<BookThumbnailListProps> = ({
   const bookFullList = () => {
     const spacingValue = size && size === 'large' ? 5 : 1;
     return (
-      <Grid
-        container
-        spacing={spacingValue}
-        sx={{ p: 2, alignItems: 'flex-start', textAlign: 'center' }}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          textAlign: 'center',
+        }}
       >
         {bookList.map((book) => (
-          <Grid
-            item
-            xs={4}
-            sm={3}
-            md={2}
-            lg={1}
-            xl={1}
-            key={book.volume_id}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {bookOverview(book)}
-          </Grid>
+          <BookThumbnailItem book={book} isOverview={isOverview} size={size} key={book.volume_id} />
         ))}
-      </Grid>
+      </Box>
     );
   };
   return <>{isOverview ? bookOverviewList() : bookFullList()}</>;

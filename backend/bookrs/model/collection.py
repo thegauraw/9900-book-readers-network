@@ -3,7 +3,7 @@ from marshmallow_sqlalchemy import auto_field
 from werkzeug.exceptions import NotFound
 
 from bookrs.model import BaseModel, db, ma
-from bookrs.model.bookModel import collectedbooks
+from bookrs.model.bookModel import Collectedbooks
 from bookrs.utils.exceptions import CollectionNotFoundException
 
 
@@ -12,7 +12,8 @@ class Collection(BaseModel):
   title = db.Column(db.String(80), nullable=False)
   description = db.Column(db.String(200), nullable=False)
   reader_id = db.Column(db.Integer(), db.ForeignKey("readers.id"), nullable=False)
-  books = db.relationship("BookModel", secondary=collectedbooks, lazy="subquery", backref=db.backref('collections', lazy=True))
+  #books = db.relationship("BookModel", secondary="collectedbooks", lazy="subquery", backref=db.backref('collections', lazy=True))
+  books = db.relationship("BookModel", secondary=Collectedbooks.__tablename__, lazy="subquery", backref=db.backref('collections', lazy=True))
 
   @classmethod
   def get_by_id(cls, id):

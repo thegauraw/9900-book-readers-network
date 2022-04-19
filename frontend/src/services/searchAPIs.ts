@@ -51,7 +51,7 @@ export const getBookDetailsApi = async (volumeId: string): Promise<any> => {
     console.log('requestedURL: ', requestedURL);
     const response = await fetch(requestedURL, requestOptions);
     const data = await response.json();
-    if (response.status !== 200) return Promise.reject('Not found');
+    if (response.status !== 200) return Promise.reject('The book you requested was not found.');
 
     return data.payload as ST.SearchSuccessItemResponse;
   } catch (error) {

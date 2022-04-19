@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useEffect, } from 'react';
+import { FC, useCallback, useContext, useEffect } from 'react';
 import { Typography, Grid, Box } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import CollectionCover from '../components/CollectionCover';
@@ -8,23 +8,26 @@ import { fetchCollectionListData } from '../services/collectionAPIs';
 import { Appctx } from '../utils/LocalContext';
 import { NavMenuList } from '../config/paths';
 import { CollectionData } from '../types/collectionTypes';
-
+import RecentCollectedBooksList from '../components/RecentCollectedBooksList';
 const CollectionListPage: FC = () => {
   const context = useContext(Appctx);
   const { collectionList, setCollectionList, token } = context;
   const { settlement, isLoading } = collectionList;
 
-  const fetchMyCollections = useCallback(async function () {
-    try {
-      setCollectionList({ isLoading: true, settlement: null });
-      const response = await fetchCollectionListData(token);
-      setCollectionList({ settlement: response });
-    } catch (error) {
-      setCollectionList({ settlement: error });
-    } finally {
-      setCollectionList({ isLoading: false });
-    }
-  }, [fetchCollectionListData]);
+  const fetchMyCollections = useCallback(
+    async function () {
+      try {
+        setCollectionList({ isLoading: true, settlement: null });
+        const response = await fetchCollectionListData(token);
+        setCollectionList({ settlement: response });
+      } catch (error) {
+        setCollectionList({ settlement: error });
+      } finally {
+        setCollectionList({ isLoading: false });
+      }
+    },
+    [fetchCollectionListData]
+  );
 
   useEffect(() => {
     fetchMyCollections();
@@ -36,7 +39,7 @@ const CollectionListPage: FC = () => {
         <CollectionCover
           collection={collection}
           buttonName={'Details'}
-          buttonPath={`${NavMenuList.MyCollections}?id=${collection.id}`}
+          buttonPath={`${NavMenuList.MyCollections}/${collection.id}`}
           dataLoader={fetchMyCollections}
         />
       </Grid>
@@ -44,19 +47,20 @@ const CollectionListPage: FC = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '80vh', display: 'flex', p: 2 }}>
+    <Box sx={{ minHeight: '80vh', display: 'flex', p: 2, flexDirection: 'column' }}>
+      <RecentCollectedBooksList />
       {isLoading && <LoadingIndicator />}
       {!isLoading && settlement && settlement instanceof Error && (
         <Typography>{(settlement as Error).message}</Typography>
       )}
       {settlement && !(settlement instanceof Error) && !isEmpty(settlement[0]) && !isLoading && (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ overflow: 'auto' }}>
           {collectionCards(settlement)}
           <CollectionNew dataLoader={fetchMyCollections} />
         </Grid>
       )}
       {settlement && !isLoading && (settlement instanceof Error || isEmpty(settlement[0])) && (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ overflow: 'auto' }}>
           <CollectionNew dataLoader={fetchMyCollections} />
         </Grid>
       )}

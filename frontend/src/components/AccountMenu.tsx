@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { green, pink, yellow, blue } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -14,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import { Link as RouterLink, LinkProps as RouterLinkProps, useNavigate } from 'react-router-dom';
 
 import { AuthenticationPaths, NavMenuList } from '../config/paths';
@@ -37,11 +37,10 @@ export default function AccountMenu() {
 
   const context = React.useContext(Appctx);
   const { logged, setLogged, setToken } = context;
-  console.log('logged: ', logged);
 
   let navigate = useNavigate();
   const handlerLogout = () => {
-    setToken('xxx');
+    setToken('');
     setLogged(false);
     navigate(AuthenticationPaths.SignIn);
   };
@@ -147,13 +146,17 @@ export default function AccountMenu() {
                 <PersonIcon />
                 <ListItemLink to={NavMenuList.Profiles} primary="My Profile" />
               </MenuItem>,
+              <MenuItem key={'Collections'} sx={{ color: 'text.primary', typography: 'h4' }}>
+                <CollectionsBookmarkIcon />
+                <ListItemLink to={NavMenuList.MyCollections} primary="My Collections" />
+              </MenuItem>,
               <MenuItem
-                key={'Achievements'}
+                key={'Goal'}
                 sx={{ color: 'text.primary', typography: 'h4', mb: 2 }}
                 divider={true}
               >
                 <MilitaryTechIcon />
-                <ListItemLink to={NavMenuList.Achievements} primary="My Achievements" />
+                <ListItemLink to={NavMenuList.Goals} primary="My Reading Goals" />
               </MenuItem>,
               <MenuItem
                 key={'Logout'}

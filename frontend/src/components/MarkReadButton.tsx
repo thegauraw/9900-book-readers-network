@@ -117,7 +117,7 @@ const MarkReadButton: FC = () => {
   } else
     return (
       <>
-        <Button variant="contained" sx={{ mr: 1 }} onClick={() => setOpen(true)}>
+        <Button variant="contained" sx={{ mr: 1, width: '200px' }} onClick={() => setOpen(true)}>
           Mark it read
         </Button>
         {pickReadDate()}
