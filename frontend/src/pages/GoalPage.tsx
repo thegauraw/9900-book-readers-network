@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect } from 'react';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Divider } from '@mui/material';
 import isEmpty from 'lodash/isEmpty';
 import GoalItem from '../components/GoalItem';
 import LoadingIndicator from '../components/LoadingIndicator';
@@ -26,7 +26,7 @@ const GoalPage: FC = () => {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', p: 2, width: '100%' }}>
+    <Box sx={{ display: 'flex', p: 2, width: '100%', flexDirection: 'column' }}>
       {isLoading && <LoadingIndicator />}
       {!isLoading && error && !isEmpty(error) && <Typography>{error}</Typography>}
       {!isLoading &&
@@ -37,7 +37,12 @@ const GoalPage: FC = () => {
             if (index === 0)
               return <GoalItem isOverview={false} isCurrent={true} goal={goal} key={goal.month} />;
             else
-              return <GoalItem isOverview={false} isCurrent={false} goal={goal} key={goal.month} />;
+              return (
+                <>
+                  <Divider sx={{ mt: 2 }} />
+                  <GoalItem isOverview={false} isCurrent={false} goal={goal} key={goal.month} />
+                </>
+              );
           })
         ) : (
           <GoalAddedButton />
