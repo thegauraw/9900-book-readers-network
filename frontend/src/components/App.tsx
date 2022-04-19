@@ -7,6 +7,7 @@ import HomePage from '../pages/HomePage';
 import RegisterPage from '../pages/RegisterPage';
 import CollectionListPage from '../pages/CollectionListPage';
 import CollectedBooksPage from '../pages/CollectedBooksPage';
+import EventListPage from '../pages/EventListPage';
 import LoginPage from '../pages/LoginPage';
 import ForgottenPassword from '../pages/ForgottenPasswordPage';
 import PasswordResetPage from '../pages/PasswordResetPage';
@@ -17,7 +18,7 @@ import ProfilePage from '../pages/ProfilePage';
 import GoalPage from '../pages/GoalPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import Copyright from './Copyright';
-import { NavMenuList, AuthenticationPaths, bookPath, NotFoundPath } from '../config/paths';
+import { NavMenuList, AuthenticationPaths, bookPath, NotFoundPath, VisibleMenuList } from '../config/paths';
 import { Box } from '@mui/material';
 import GateKeeper from './GateKeeper';
 
@@ -53,6 +54,7 @@ const App: React.FC = () => {
                 <Route path=":bookId" element={<BookPage />} />
               </Route>
               <Route path={NavMenuList.Explore} element={<SearchPage />} />
+              <Route path={VisibleMenuList.Events.path} element={<EventListPage />} />
               <Route path={NavMenuList.Goals} element={<GoalPage />} />
               <Route path={NotFoundPath} element={<NotFoundPage />} />
               <Route path="*" element={<NotFoundPage />} />

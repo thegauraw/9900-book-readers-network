@@ -1,6 +1,8 @@
 const BASE_URL = 'https://daydayup-9900.ts.r.appspot.com';
 export const getCollectionListApi = `https://australia-southeast1-daydayup-9900.cloudfunctions.net/rs/v1/get?col=collections`;
 export const MyCollectionsURL = `${BASE_URL}/collections`;
+export const EventsURL = `${BASE_URL}/events`;
+export const MyEventsURL = `${BASE_URL}/events/my`;
 export const LoginApiURL = `${BASE_URL}/login`;
 export const RegisterApiURL = `${BASE_URL}/readers`;
 export const UserApiURL = `${BASE_URL}/reader`;

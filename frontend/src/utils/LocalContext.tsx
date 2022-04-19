@@ -1,6 +1,7 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import { TransferState } from '../types/TransferState';
 import { CollectionData } from '../types/collectionTypes';
+import { EventData } from '../types/eventTypes';
 import { setLocalStorage, getLocalStorage } from './useLocalStorage';
 import {
   ReadingByBookIdFromOwnerResponse,
@@ -18,6 +19,10 @@ export type ContextType = {
   setCollection: Function;
   collectionList: TransferState<CollectionData[]>;
   setCollectionList: Function;
+  event: TransferState<EventData>;
+  setEvent: Function;
+  eventList: TransferState<EventData[]>;
+  setEventList: Function;
   ownedReadingByBookId: TransferState<ReadingByBookIdFromOwnerResponse>;
   setOwnedReadingByBookId: Function;
   readingListByBookId: TransferState<ReadingsListByBookIdResponse>;
@@ -39,6 +44,10 @@ export const globalParas = {
   setCollection: (f: Partial<TransferState<CollectionData>>) => f,
   collectionList: { isLoading: false, settlement: null },
   setCollectionList: (f: Partial<TransferState<CollectionData[]>>) => f,
+  event: { isLoading: false, settlement: null },
+  setEvent: (f: Partial<TransferState<EventData>>) => f,
+  eventList: { isLoading: false, settlement: null },
+  setEventList: (f: Partial<TransferState<EventData[]>>) => f,
   ownedReadingByBookId: { isLoading: false, settlement: null },
   setOwnedReadingByBookId: (f: Partial<TransferState<ReadingByBookIdFromOwnerResponse>>) => f,
   readingListByBookId: { isLoading: false, settlement: null },
@@ -72,6 +81,22 @@ export const AppProvider = ({ children }: any) => {
     (
       fetchState: TransferState<CollectionData[]>,
       updates: Partial<TransferState<CollectionData[]>>
+    ) => ({ ...fetchState, ...updates }),
+    { isLoading: false, settlement: null }
+  );
+
+  const [event, setEvent] = useReducer(
+    (
+      fetchState: TransferState<EventData>,
+      updates: Partial<TransferState<EventData>>
+    ) => ({ ...fetchState, ...updates }),
+    { isLoading: false, settlement: null }
+  );
+
+  const [eventList, setEventList] = useReducer(
+    (
+      fetchState: TransferState<EventData[]>,
+      updates: Partial<TransferState<EventData[]>>
     ) => ({ ...fetchState, ...updates }),
     { isLoading: false, settlement: null }
   );
@@ -135,6 +160,10 @@ export const AppProvider = ({ children }: any) => {
         setCollection,
         collectionList,
         setCollectionList,
+        event,
+        setEvent,
+        eventList,
+        setEventList,
         ownedReadingByBookId,
         setOwnedReadingByBookId,
         readingListByBookId,
