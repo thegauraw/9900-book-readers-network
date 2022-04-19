@@ -23,10 +23,12 @@ class ReadingsByBookId(Resource):
             #TODO: delete the stats after finishing search apis
             valid_ratings = [p["rating"] for p in readings if p["rating"] is not None]
             valid_reviews = [p["review"] for p in readings if p["review"] is not None]
+            has_reads = [p["has_read"] for p in readings if p["has_read"] is True]
             result = {"readings": valid_readings}
             result["countValidRatings"] = len(valid_ratings)
             result["averageRatings"] = None if len(valid_ratings) == 0 else sum(valid_ratings)/len(valid_ratings)
             result["countValidReviews"] = len(valid_reviews)
+            result["countHasRead"] = len(has_reads)
             return SUCCESS(payload=result)
         except NotFound:
             raise BookNotFoundException()
