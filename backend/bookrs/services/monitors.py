@@ -26,7 +26,7 @@ def register_badges(n, reader_id, badge_mode):
     if not data:
       data = dict()
       data['image'] = image
-      data['description'] = image
+      data['description'] = badges_def[badge_mode][image]
       data['reader_id'] = reader_id
       achievement_data = achievement_schema.loads(json.dumps(data))
 
