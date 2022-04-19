@@ -123,5 +123,5 @@ class EventId(Resource):
 
 api.add_resource(EventMyList, '/events/my', endpoint='my_events')
 api.add_resource(EventMyId, '/events/my/<int:event_id>', endpoint='myevent_id')
-api.add_resource(EventsList, '/events/', endpoint='events')
+api.add_resource(EventsList, '/events', endpoint='events')
 api.add_resource(EventId, '/events/<int:event_id>', endpoint='event_id')
