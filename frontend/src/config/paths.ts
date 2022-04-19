@@ -1,6 +1,7 @@
 export const VisibleMenuList = {
   Home: { path: '/', iconName: 'Home', display: 'Home' },
   Explore: { path: '/explore', iconName: 'Search', display: 'Explore' },
+  Events: { path: '/events', iconName: 'Event', display: 'Events' },
 };
 
 export const NavMenuList = {
