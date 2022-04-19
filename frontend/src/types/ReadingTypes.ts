@@ -16,5 +16,6 @@ export interface ReadingsListByBookIdResponse {
   averageRatings: number;
   countValidRatings: number;
   countValidReviews: number;
+  countHasRead: number;
   readings: ReadingByBookIdFromOwnerResponse[];
 }
