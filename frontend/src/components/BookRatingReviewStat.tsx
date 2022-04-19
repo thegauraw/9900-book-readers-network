@@ -21,14 +21,8 @@ const BookRatingReviewStat: FC = () => {
       {!isLoading && !isEmpty(error) && <Typography>{error}</Typography>}
       {settlement && isEmpty(error) && (
         <>
-          <Rating
-            name="rating"
-            readOnly={true}
-            precision={0.1}
-            value={Number(settlement?.averageRatings)}
-          />
           <Typography component="legend" variant="subtitle2">
-            {settlement.averageRatings !== null ? settlement?.averageRatings : 'No rating'}
+            {settlement.countHasRead} reader(s) has read
           </Typography>
           <Divider orientation="vertical" light={true} sx={{ mx: 1 }} />
           <Typography component="legend" variant="subtitle2">
