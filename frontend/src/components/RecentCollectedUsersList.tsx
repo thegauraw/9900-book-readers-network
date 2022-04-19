@@ -47,7 +47,7 @@ const RecentCollectedUsersList: FC = () => {
           key={reader.id}
           variant="text"
           onClick={() => handleClick(reader.id)}
-          sx={{ width: '100px', color: 'secondary.main' }}
+          sx={{ width: '100px', color: 'secondary.main', justifyContent: 'flex-start' }}
         >
           <PersonIcon />
           {`${reader.username}`}
