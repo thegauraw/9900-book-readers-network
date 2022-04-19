@@ -5,6 +5,7 @@ from werkzeug.exceptions import NotFound
 from bookrs.model import BaseModel, db, ma
 from bookrs.utils.exceptions import BookNotFoundException
 from .readingModel import ReadingModel, ReadingSchema
+from marshmallow_sqlalchemy import auto_field
 
 
 class BookModel(BaseModel):
@@ -55,7 +56,35 @@ class BookDetailsSchema(ma.SQLAlchemyAutoSchema):
 book_details_schema = BookDetailsSchema()
 books_details_schema = BookDetailsSchema(many=True)
 
-collectedbooks = db.Table('collected_books',
-                          db.Column('collection_id', db.Integer, db.ForeignKey('collections.id'), primary_key=True),
-                          db.Column('book_id', db.Integer, db.ForeignKey('book_details.id'), primary_key=True)
-)
+class Collectedbooks(BaseModel):
+    __tablename__ = 'collectedbooks'
+    id = db.Column(db.Integer, primary_key=True)
+    collection_id = db.Column(db.Integer, db.ForeignKey("collections.id"))
+    book_id = db.Column(db.Integer, db.ForeignKey("book_details.id"))
+    collected_date = db.Column(db.DateTime)
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return self
+
+
+class CollectedBooksSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Collectedbooks
+        load_instance = True
+        include_fk = True
+
+    id = auto_field()
+    collection_id = fields.Int(required=True)
+    book_id = fields.Int(required=True)
+    collected_date = fields.DateTime(required=True)
+
+
+collected_book_schema = CollectedBooksSchema()
+collected_books_schema = CollectedBooksSchema(many=True)

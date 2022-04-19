@@ -109,10 +109,6 @@ export const getRecentlyCollectedBooks = async (
       return bookList;
     }
   } catch (error) {
-    return [
-      { volume_id: 'UAYvDwAAQBAJ', title: 'js', smallThumbnail: null },
-      { volume_id: 'UAYvDwAAQBA', title: 'js2', smallThumbnail: null },
-    ];
     return Promise.reject('Internal Error');
   }
 };

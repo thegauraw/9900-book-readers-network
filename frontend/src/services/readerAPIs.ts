@@ -146,7 +146,6 @@ export const getRecentCollectedReadersByVolumeId = async (
     };
 
     const response = await fetch(`${recentCollectedUsersURL}/${volumeId}`, requestOptions);
-
     if (response.status === 404) {
       return Promise.reject(`The book was not found.`);
     } else {
@@ -154,16 +153,6 @@ export const getRecentCollectedReadersByVolumeId = async (
       return data.payload;
     }
   } catch (err) {
-    return [
-      { id: 1, username: 'testUser' },
-      { id: 2, username: 't2' },
-      { id: 3, username: 't3' },
-      { id: 4, username: 't4' },
-      { id: 5, username: 'testUser5' },
-      { id: 6, username: 't6' },
-      { id: 7, username: 'testUser7' },
-      { id: 8, username: 't8' },
-    ];
     return Promise.reject(err);
   }
 };
