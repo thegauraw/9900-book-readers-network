@@ -71,6 +71,7 @@ class Goals(Resource):
                 goals_list.append(goal)
                 if current_month == now_month:
                     break
+            goals_list.sort(key=lambda i: i['month'], reverse=True)
             return SUCCESS(payload=goals_list)
         else:
             return SUCCESS(payload=[])
