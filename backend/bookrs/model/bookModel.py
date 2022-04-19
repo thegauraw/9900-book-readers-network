@@ -1,4 +1,5 @@
 from marshmallow import fields, post_dump
+from sqlalchemy import func
 from sqlalchemy.orm import relationship, backref
 from werkzeug.exceptions import NotFound
 
@@ -72,6 +73,12 @@ class Collectedbooks(BaseModel):
         db.session.delete(self)
         db.session.commit()
         return self
+
+    @classmethod
+    def get_most_collected_book(cls):
+        books = [ {item.book_id: item.count} for item in Collectedbooks.query.with_entities(func.count(Collectedbooks.book_id).label('count'), Collectedbooks.book_id).group_by(Collectedbooks.book_id).order_by(func.count(Collectedbooks.book_id).desc()).all()]
+    
+        return books
 
 
 class CollectedBooksSchema(ma.SQLAlchemyAutoSchema):

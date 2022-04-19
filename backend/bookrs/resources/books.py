@@ -5,7 +5,7 @@ from bookrs.model.bookModel import BookModel, Collectedbooks, book_details_schem
 from bookrs.model.collection import Collection, collection_schema, collections_schema
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
-from bookrs.utils.exceptions import BookCollectException, BookCreateException, BookDropException
+from bookrs.utils.exceptions import BookCollectException, BookCreateException, BookDropException, GetMostColletedBooksException
 from bookrs.third_party.googleAPIs import get_book_details_from_google
 from datetime import datetime
 from sqlalchemy import desc
@@ -112,5 +112,24 @@ class RecentBooks(Resource):
     return SUCCESS(payload=res_list)
 
 
+class MostCollectedBooks(Resource):
+  def get(self):
+    try:
+      most_collected_books = Collectedbooks.get_most_collected_book()
+
+      book_list = []
+      for item in most_collected_books:
+        for id in item.keys():
+          book = BookModel.query.filter_by(id=id).first()
+
+          if book:
+            book_data = book_details_schema.dump(book)
+            book_list.append(book_data)
+
+      return SUCCESS(payload=book_list)
+    except:
+      raise GetMostColletedBooksException()
+
+
 api.add_resource(RecentBooks, '/recent_collected_books/<int:reader_id>')
-# api.add_resource(RecentBooksbyId, '/recent_collected_books/<int:reader_id>')
+api.add_resource(MostCollectedBooks, '/recent_collected_books')
