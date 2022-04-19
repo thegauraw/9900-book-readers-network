@@ -15,7 +15,12 @@ const GateKeeper: React.FC = ({ children }) => {
     (async function () {
       try {
         setIsLoading(true);
-        if (!/^\/sign-in/.test(currentPath) && !/^\/sign-up/.test(currentPath)) {
+        if (
+          !/^\/sign-in/.test(currentPath) &&
+          !/^\/sign-up/.test(currentPath) &&
+          !/^\/forgottenPassword/.test(currentPath) &&
+          !/^\/passwordReset/.test(currentPath)
+        ) {
           await verifyToken(token);
         }
       } catch (error) {
