@@ -54,13 +54,13 @@ const CollectionListPage: FC = () => {
         <Typography>{(settlement as Error).message}</Typography>
       )}
       {settlement && !(settlement instanceof Error) && !isEmpty(settlement[0]) && !isLoading && (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ overflow: 'auto' }}>
           {collectionCards(settlement)}
           <CollectionNew dataLoader={fetchMyCollections} />
         </Grid>
       )}
       {settlement && !isLoading && (settlement instanceof Error || isEmpty(settlement[0])) && (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ overflow: 'auto' }}>
           <CollectionNew dataLoader={fetchMyCollections} />
         </Grid>
       )}

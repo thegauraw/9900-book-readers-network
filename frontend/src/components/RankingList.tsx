@@ -11,6 +11,7 @@ const RankingList: FC = () => {
         flexDirection: 'column',
         width: '100%',
         p: 2,
+        justifyContent: 'center',
       }}
     >
       <Box
@@ -18,7 +19,7 @@ const RankingList: FC = () => {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
-          justifyContent: 'space-between',
+          justifyContent: { sm: 'center', xl: 'space-around' },
         }}
       >
         <RankingListBlock title="TOP RATED" callableFunction={getRankings} />

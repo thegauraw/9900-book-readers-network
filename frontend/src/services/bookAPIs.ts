@@ -99,7 +99,7 @@ export const getRecentlyCollectedBooks = async (
 
     const requestedURL = readerId
       ? `${recentCollectedBooksURL}/${readerId}`
-      : recentCollectedBooksURL;
+      : `${recentCollectedBooksURL}/0`;
     const response = await fetch(requestedURL, requestOptions);
     if (response.status === 404) {
       return Promise.reject(`The collection you requested was not found.`);
