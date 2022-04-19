@@ -99,14 +99,14 @@ def create_app(test_config=None):
 
     app.register_blueprint(ranking_bp)
 
+    app.register_blueprint(books_bp)
+    app.register_blueprint(events_bp)
+    app.register_blueprint(event_participations_bp)
+
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
         return response
-
-    app.register_blueprint(books_bp)
-    app.register_blueprint(events_bp)
-    app.register_blueprint(event_participations_bp)
 
     return app
