@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Box } from '@mui/material';
 import RankingListBlock from './RankingListBlock';
-import { getRankings } from '../services/rankingAPIs';
+import { getRankings, getMostCollectedBooks } from '../services/rankingAPIs';
 
 const RankingList: FC = () => {
   return (
@@ -23,7 +23,7 @@ const RankingList: FC = () => {
         }}
       >
         <RankingListBlock title="TOP RATED" callableFunction={getRankings} />
-        <RankingListBlock title="MOST COLLECTED" callableFunction={getRankings} />
+        <RankingListBlock title="MOST COLLECTED" callableFunction={getMostCollectedBooks} />
       </Box>
     </Box>
   );
