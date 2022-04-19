@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 from flask_restful import Resource
+from werkzeug.security import generate_password_hash
 
 from bookrs.model import db
 from bookrs.resources import api
