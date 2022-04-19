@@ -116,3 +116,8 @@ def InvalidRecommendationException():
 
 def InvalidProfileException():
   return InvalidUsage('Failed to get profile information', status_code=404)
+
+
+# Most collected books related exceptions
+def GetMostColletedBooksException():
+  return InvalidUsage('Fail to get most collected books', status_code=500)
