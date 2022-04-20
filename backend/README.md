@@ -35,6 +35,7 @@ Check and edit (if necessary) newly generate migration file in
 
 - NOTE: the migration file can be generated after defining a model class. If you
   make update on the class, you have to update the migration file accordingly.
+- NOTE: to reverse the `flask db upgrade` operation, run: `flask db downgrade`
 
 ## API end points available in this version:
 

@@ -3,7 +3,8 @@ import { EventAPIData, EventData, EventFormData } from '../types/eventTypes';
 import { ErrorResponse, SuccessResponse } from '../types/ServerResponseTypes';
 
 export const fetchEventListData = async (
-  token: string
+  token: string,
+  eventType?: string | undefined,
   ): Promise<EventData[]> => {
   try {
     const requestOptions = {
@@ -15,7 +16,16 @@ export const fetchEventListData = async (
       }
     }
     // console.log(`events-url: ${EventsURL}`)
-    const response = await fetch(EventsURL, requestOptions);
+    let response;
+    if (eventType==="participate") {
+      response = await fetch(`${EventsURL}/my?involvement=participate`, requestOptions);
+    } else if (eventType==="organise") {
+      response = await fetch(`${EventsURL}/my?involvement=organise`, requestOptions);
+    } else if (eventType==="past") {
+      response = await fetch(`${EventsURL}?group=past`, requestOptions);
+    } else {
+      response = await fetch(EventsURL, requestOptions);
+    }
     const data: SuccessResponse = await response.json();
     // // return data.payload as EventData[];
     // const data = await response.json();

@@ -34,7 +34,7 @@ interface EventNewProps {
   dataLoader: () => Promise<void>;
 }
 
-const EventNew: React.FC<EventNewProps> = ({dataLoader}) => {
+const EventNew: React.FC<EventNewProps> = ({ dataLoader }) => {
   const context = React.useContext(Appctx);
   const { event, setEvent, token } = context;
   const { settlement, isLoading, error } = event;
@@ -55,22 +55,16 @@ const EventNew: React.FC<EventNewProps> = ({dataLoader}) => {
           setEvent({ isLoading: false });
           handleClose();
           dataLoader();
-      });
+        });
     },
     [createEvent]
   );
 
   return (
     <Grid item xs={12} sm={6}>
-      <Card sx={{ width: '100%' }}>
-        <CardContent
-          sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', p: 12 }}
-        >
-          <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpen}>
-            Add New Event
-          </Button>
-        </CardContent>
-      </Card>
+      <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpen}>
+        Add New Event
+      </Button>
 
       <Modal
         open={open}
@@ -79,7 +73,16 @@ const EventNew: React.FC<EventNewProps> = ({dataLoader}) => {
         aria-describedby="modal-new-event"
       >
         <Box sx={style.modal}>
-          <EventForm title="" description="" eventTime={new Date(new Date().getTime()+(7*24*60*60*1000))} venue="" bookId="" submitHandler={handleSubmitData} closeHandler={handleClose} mode="add" />
+          <EventForm
+            title=""
+            description=""
+            eventTime={new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)}
+            venue=""
+            bookId=""
+            submitHandler={handleSubmitData}
+            closeHandler={handleClose}
+            mode="add"
+          />
         </Box>
       </Modal>
     </Grid>
