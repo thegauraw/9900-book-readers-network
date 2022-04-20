@@ -14,7 +14,7 @@
 
 runtime: python
 env: flex
-entrypoint: gunicorn -b :$PORT install_database:app
+entrypoint: gunicorn -b :$PORT cloud_run:app
 
 runtime_config:
   python_version: 3

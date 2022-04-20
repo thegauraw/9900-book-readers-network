@@ -1,5 +1,4 @@
-const BASE_URL = 'https://daydayup-9900.ts.r.appspot.com';
-export const getCollectionListApi = `https://australia-southeast1-daydayup-9900.cloudfunctions.net/rs/v1/get?col=collections`;
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 export const MyCollectionsURL = `${BASE_URL}/collections`;
 export const EventsURL = `${BASE_URL}/events`;
 export const MyEventsURL = `${BASE_URL}/events/my`;
