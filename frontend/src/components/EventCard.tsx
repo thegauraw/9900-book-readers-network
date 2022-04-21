@@ -14,6 +14,7 @@ interface EventCardProps {
   buttonName: string;
   detailsPath: string;
   dataLoader: () => Promise<void>;
+  action: string;
 }
 
 const style = {
@@ -26,7 +27,7 @@ const style = {
   }
 };
 
-const EventCard: React.FC<EventCardProps> = ({ event, buttonName, detailsPath, dataLoader }) => {
+const EventCard: React.FC<EventCardProps> = ({ event, buttonName, detailsPath, dataLoader, action }) => {
 
   return (
     <Grid item xs={12} sm={6} lg={6}>
@@ -56,14 +57,21 @@ const EventCard: React.FC<EventCardProps> = ({ event, buttonName, detailsPath, d
             </Typography>
           </Box>
           <Box sx={style.spacedButton}>
-            <EventView sx={style.spacedButton} eventId={event.id} dataLoader={dataLoader} />
+            <EventView sx={style.spacedButton} eventId={event.id} dataLoader={dataLoader} action={action} />
+            {action === 'organise' && (
+              <EventEdit sx={style.spacedButton} eventId={event.id} dataLoader={dataLoader} />
+            )}
+            {action === 'organise' && (
+              <EventDelete sx={style.spacedButton} eventId={event.id} dataLoader={dataLoader} />
+            )}
+
+            {/* { action === "organise" && (
             <EventEdit sx={style.spacedButton} eventId={event.id} dataLoader={dataLoader} />
             <EventDelete sx={style.spacedButton} eventId={event.id} dataLoader={dataLoader} />
+            )} */}
           </Box>
         </Box>
-        <CardContent
-          sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', p: 5 }}
-        >
+        <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'left', p: 5 }}>
           {event.description}
         </CardContent>
       </Card>
