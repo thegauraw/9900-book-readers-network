@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 from bookrs.model.event_model import EventModel, event_schema, events_schema
+from bookrs.model.readerModel import ReaderModel
 from bookrs.resources import api
 from bookrs.utils.common import SUCCESS
 from bookrs.utils.exceptions import EventCreateException, EventDeleteException, EventUpdateException
@@ -15,15 +16,19 @@ class EventMyList(Resource):
   decorators = [jwt_required()]
   
   def get(self):
-    """list all my events `GET /events/my` """
+    """
+      list all my events (default is: participate)
+      `GET /events/my`
+      `GET /events/my?involvement=participate`
+      `GET /events/my?involvement=organise`
+    """
     current_user = get_jwt_identity()
     event_involvement = request.args.get('involvement') or "participate"
     if event_involvement == "organise":
       events = EventModel.get_all_for_reader(organised_by=current_user, involvement=event_involvement)
     else:
-      # TODO: get event_ids from ParticipationModel (participations table)
-      event_ids  = [1]
-      events = EventModel.get_by_ids(event_ids)
+      # DONE: get event_ids from ParticipationModel (participations table)
+      events = [pt.event for pt in ReaderModel.query.get(current_user).participations]
     events_data_dump = events_schema.dump(events)
     return SUCCESS(payload=events_data_dump)
 
@@ -100,7 +105,12 @@ class EventsList(Resource):
   decorators = [jwt_required()]
 
   def get(self):#, type="upcoming"):
-    """list all events"""
+    """
+      list all events (default is: upcoming)
+      `GET /events`
+      `GET /events?group=upcoming`
+      `GET /events?group=past`
+    """
     eventGroup = request.args.get('group')
 
     events_data_dump = []

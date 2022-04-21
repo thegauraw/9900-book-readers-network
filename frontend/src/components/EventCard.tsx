@@ -29,22 +29,18 @@ const style = {
 const EventCard: React.FC<EventCardProps> = ({ event, buttonName, detailsPath, dataLoader }) => {
   console.log(format(new Date(event.eventTime), 'MM/dd/yyyy'));
 
-  let navigate = useNavigate();
   return (
     <Grid item xs={12} sm={6} lg={6}>
       <Card sx={{ width: '100%' }}>
         <Box
           sx={{
             display: 'flex',
-            // flexDirection: 'row',
             justifyContent: 'space-between',
             bgcolor: 'primary.main',
             px: 2,
-            // py: 1,
             cursor: 'pointer',
-            alignContent: 'center',
+            alignItems: 'center',
           }}
-          // onClick={() => navigate(detailsPath)}
         >
           <Box>
             <Typography
@@ -52,11 +48,9 @@ const EventCard: React.FC<EventCardProps> = ({ event, buttonName, detailsPath, d
               component="span"
               sx={{
                 mr: 5,
-                // py: 2,
               }}
             >
               {format(new Date(event.eventTime), 'eee MMM d, yyyy p')}
-              {/* {event.eventTime} */}
             </Typography>
             <Typography variant="h3" component="span">
               {event.title}
