@@ -26,7 +26,6 @@ const SearchPage: FC = () => {
           const response = await searchBooksApi(toSearch);
           setSearchResultList({ settlement: response, error: null });
         } catch (error) {
-          console.log('error page', error);
           setSearchResultList({ error: error });
         } finally {
           setSearchResultList({ isLoading: false });

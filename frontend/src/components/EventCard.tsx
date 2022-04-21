@@ -28,7 +28,6 @@ const style = {
 };
 
 const EventCard: React.FC<EventCardProps> = ({ event, buttonName, detailsPath, dataLoader, action }) => {
-  console.log(format(new Date(event.eventTime), 'MM/dd/yyyy'));
 
   return (
     <Grid item xs={12} sm={6} lg={6}>

@@ -25,8 +25,6 @@ const EventEdit: React.FC<EventEditProps> = ({ eventId, dataLoader, sx }) => {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
-    console.log('deleting');
-    console.log(eventId);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);

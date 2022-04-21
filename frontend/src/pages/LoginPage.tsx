@@ -27,16 +27,10 @@ function SignIn() {
   const { token, setToken, logged, setLogged } = context;
   const [error, setError] = React.useState('none');
   const [message, setMessage] = React.useState('');
-  console.log('token: xxxxxxxxxx', token);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
 
     const reqPara = {
       email: data.get('email'),
@@ -46,8 +40,6 @@ function SignIn() {
     };
 
     LoginAPI(reqPara).then((msg) => setMessage(msg));
-    console.log('get token: ', token);
-    console.log('logged status: ', logged);
   };
 
   let navigate = useNavigate();

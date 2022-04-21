@@ -1,4 +1,3 @@
-import * as ST from '../types/SearchTypes';
 import { BookThumbnail } from '../types/BookTypes';
 import { topRatedURL, recentCollectedBooksURL } from './callableURLs';
 
