@@ -63,3 +63,13 @@ Check and edit (if necessary) newly generate migration file in
   ```
 
 ==========================
+
+### Deploy it to Cloud
+
+Go to the folder backend/ and install gcloud suite by downloading a
+corresponding package here: https://cloud.google.com/sdk/docs/install Run this
+command under the folder `backend/`:
+
+```bash
+gcloud app deploy
+```
