@@ -58,7 +58,6 @@ const EventBox: React.FC<EventBoxProps> = ({
   return (
     <Box component="form" noValidate sx={{ mt: 3 }}>
       <Grid container spacing={2}>
-      
         <Grid item xs={12}>
           <Typography id="modal-modal-title" variant="h3" component="h3">
             {title}
@@ -71,8 +70,7 @@ const EventBox: React.FC<EventBoxProps> = ({
           </Typography>
 
           <Grid item xs={4} sx={{ mr: 5, py: 4, float: 'left', width: '60%' }}>
-          <img src="https://via.placeholder.com/150" alt="`Book ${bookId}`"/>
-
+            <img src="https://via.placeholder.com/150" alt="`Book ${bookId}`" />
           </Grid>
         </Grid>
 
@@ -90,17 +88,28 @@ const EventBox: React.FC<EventBoxProps> = ({
           </Typography>
         </Grid>
 
-
         <Grid item xs={12}>
           <Box sx={style.actionButtons}>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleSubmit}
-              sx={style.spacedButton}
-            >
-              Register for this event
-            </Button>
+            {mode === 'participate' && (
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleSubmit}
+                sx={style.spacedButton}
+              >
+                Cancel my registration
+              </Button>
+            )}
+            {mode !== 'participate' && mode !== 'past' && (
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleSubmit}
+                sx={style.spacedButton}
+              >
+                Register for this event
+              </Button>
+            )}
             <Button
               variant="outlined"
               color="secondary"
@@ -112,11 +121,7 @@ const EventBox: React.FC<EventBoxProps> = ({
           </Box>
         </Grid>
 
-        <Grid item xs={12}>
-
-        </Grid>
-
-        
+        <Grid item xs={12}></Grid>
       </Grid>
     </Box>
   );

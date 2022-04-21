@@ -37,20 +37,20 @@ class EventModel(BaseModel):
     group = group or "upcoming"
 
     if group == "past":
-      return cls.query.filter(EventModel.date_and_time < datetime.now()).all()
+      return cls.query.filter(EventModel.date_and_time < datetime.now()).order_by(cls.date_and_time.desc()).all()
     else:
-      return cls.query.filter(EventModel.date_and_time > datetime.now()).all()
+      return cls.query.filter(EventModel.date_and_time > datetime.now()).order_by(cls.date_and_time.asc()).all()
 
   @classmethod
   def get_all_for_reader(cls, organised_by, involvement):
     """type: ['participate',  'organise']"""
     involvement = involvement or "participate"
     if involvement == "organise":
-      return cls.query.filter_by(organised_by=organised_by).all()
+      return cls.query.filter_by(organised_by=organised_by).order_by(cls.date_and_time.asc()).all()
     else:
       # TODO: handle participation
       # UPDATE: participation to be handled from a different model
-      return cls.query.filter_by(organised_by=organised_by).all()
+      return cls.query.filter_by(organised_by=organised_by).order_by(cls.date_and_time.asc()).all()
   
   def allows_registration(self):
     """allow reader to register to/book for an event until before it starts"""
