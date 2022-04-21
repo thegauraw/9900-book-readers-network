@@ -1,0 +1,37 @@
+badges_def = {
+  "review":{
+    'review_1': "First Review",
+    'review_5': "5 Reviews",
+    'review_10': "10 Reviews",
+    "review_20": "20 Reviews",
+    'review_50': "50 Reviews",
+    'review_100': "100 Reviews",
+    'review_200': "200 Reviews",
+    'review_300': "300 Reviews",
+    'review_400': "400 Reviews",
+    'review_500': "500 Reviews",
+  },
+  "read":{
+    'read_1': "First Read",
+    'read_5': "5 Reads",
+    'read_10': "10 Reads",
+    'read_20': '20 Reads',
+    'read_50': "50 Reads",
+    'read_100': "100 Reads",
+    'read_200': "200 Reads",
+    'read_300': "300 Reads",
+    'read_400': "400 Reads",
+    'read_500': "500 Reads",
+  },
+  "seq":[
+    1,
+    5,
+    10,
+    20,
+    50,
+    100,
+    200,
+    300,
+    400,
+    500]
+}

@@ -1,33 +1,26 @@
 import * as React from 'react';
-import { Box, Card, CardContent, CardMedia, Button, Typography } from '@mui/material';
+import { Box, Card, CardContent, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { CollectionData } from '../types/collectionTypes';
+import CollectionEdit from '../components/CollectionEdit';
+import CollectionDelete from '../components/CollectionDelete';
+
 interface CollectionCoverProps {
-  bookCovers: string[];
-  collectionName: string;
-  totalCaption: string;
+  collection: CollectionData;
   buttonName: string;
   buttonPath: string;
+  dataLoader: () => Promise<void>;
 }
 
 const CollectionCover: React.FC<CollectionCoverProps> = ({
-  bookCovers,
-  collectionName,
-  totalCaption,
+  collection,
   buttonName,
   buttonPath,
+  dataLoader,
 }) => {
   let navigate = useNavigate();
   return (
-    <Card sx={{ width: '100%' }}>
-      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', py: 5 }}>
-        {bookCovers.map((bookCoverPath) => (
-          <CardMedia
-            component="img"
-            sx={{ mx: 1, width: '76px', height: '114px' }}
-            image={bookCoverPath}
-          />
-        ))}
-      </CardContent>
+    <Card sx={{ width: '100%', height: '100%', minHeight: '300px' }}>
       <Box
         sx={{
           display: 'flex',
@@ -36,16 +29,16 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
           bgcolor: 'primary.main',
           px: 2,
           py: 1,
+          alignItems: 'center',
         }}
       >
         <Box>
           <Typography gutterBottom variant="h4" component="div">
-            {collectionName}
-          </Typography>
-          <Typography gutterBottom variant="subtitle1" component="div">
-            {totalCaption}
+            {collection.title}
           </Typography>
         </Box>
+        <CollectionEdit collectionId={collection.id} dataLoader={dataLoader} />
+        <CollectionDelete collectionId={collection.id} dataLoader={dataLoader} />
         <Button
           size="medium"
           color="secondary"
@@ -55,6 +48,9 @@ const CollectionCover: React.FC<CollectionCoverProps> = ({
           {buttonName}
         </Button>
       </Box>
+      <CardContent sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', py: 5 }}>
+        {collection.description}
+      </CardContent>
     </Card>
   );
 };

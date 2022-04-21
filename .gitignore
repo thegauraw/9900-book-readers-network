@@ -11,3 +11,8 @@ __pycache__/
 
 # ignore instance config and database file
 instance/
+
+.idea
+**/dist
+
+frontend/package-lock.json

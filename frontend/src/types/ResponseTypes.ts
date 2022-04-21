@@ -1,20 +1,14 @@
 export interface LoginDataType {
-  email: string;
-  password: string;
+  email: string | null;
+  password: string | null;
   setToken: Function;
   setLogged: Function;
 }
 
 export interface RegisterDataType {
-  email: string;
-  password: string;
+  username: string | null;
+  email: string | null;
+  password: string | null;
   setToken: Function;
   setLogged: Function;
-}
-
-export interface CollectionListData {
-  id: string;
-  name: string;
-  bookNumber: number;
-  recentBookCovers: string[];
 }

@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAp4uvJzdjlF8s7ERGFI7F7N99IQ2dWMgk',
-  authDomain: 'bookrs.firebaseapp.com',
-  projectId: 'bookrs',
-  storageBucket: 'bookrs.appspot.com',
-  messagingSenderId: '966754210029',
-  appId: '1:966754210029:web:dd858a103151b713773ce4',
-  measurementId: 'G-JGBFJV3LK9',
+  apiKey: 'AIzaSyAYOLd3Z4FwyCJa8w_Ebn3eMj4ikE_XfaU',
+  authDomain: 'daydayup-9900.firebaseapp.com',
+  projectId: 'daydayup-9900',
+  storageBucket: 'daydayup-9900.appspot.com',
+  messagingSenderId: '344215169528',
+  appId: '1:344215169528:web:9715324897e1f1185c0e0d',
+  measurementId: 'G-CYF2P8KGX5',
 };
 
 // Initialize Firebase
