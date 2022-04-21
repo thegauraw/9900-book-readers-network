@@ -193,3 +193,28 @@ export const registerForEvent = async (
     }
   }
 };
+export const cancelEventRegistration = async (
+  eventId: string | undefined,
+  token: string
+  ): Promise<EventData> => {
+  try {
+    const requestOptions = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+      // body: JSON.stringify({}),
+    };
+    const response = await fetch(`${EventsURL}/${eventId}/register`, requestOptions);
+    const data: SuccessResponse = await response.json();
+    return data.payload;
+  } catch (err) {
+    if ((err as ErrorResponse).msg) {
+      return Promise.reject((err as ErrorResponse).msg);
+    } else {
+      return Promise.reject('Internal Error');
+    }
+  }
+};

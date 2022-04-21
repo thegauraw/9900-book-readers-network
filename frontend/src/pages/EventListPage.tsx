@@ -51,6 +51,7 @@ const EventListPage: FC = () => {
           buttonName={'Details'}
           detailsPath={`${NavMenuList.Events}?id=${event.id}`}
           dataLoader={fetchMyEvents}
+          action={value}
         />
       </Grid>
     ));

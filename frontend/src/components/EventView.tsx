@@ -3,7 +3,7 @@ import { Appctx } from '../utils/LocalContext';
 // import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box, Button, Grid, Modal } from '@mui/material';
-import { getEventById, registerForEvent } from '../services/eventAPIs';
+import { getEventById, registerForEvent, cancelEventRegistration } from '../services/eventAPIs';
 import { EventData, EventFormData } from '../types/eventTypes';
 import EventBox from './EventBox';
 
@@ -25,9 +25,10 @@ interface EventViewProps {
   dataLoader: () => Promise<void>;
   eventId: string;
   sx: object;
+  action: string;
 }
 
-const EventView: React.FC<EventViewProps> = ({ eventId, dataLoader, sx }) => {
+const EventView: React.FC<EventViewProps> = ({ eventId, dataLoader, sx, action }) => {
   const context = React.useContext(Appctx);
   const { event, setEvent, token } = context;
   const { settlement, isLoading, error } = event;
@@ -62,18 +63,31 @@ const EventView: React.FC<EventViewProps> = ({ eventId, dataLoader, sx }) => {
     // ({ title, description, eventTime, venue, bookId }: EventFormData) => {
     () => {
       setEvent({ isLoading: true });
-      registerForEvent(eventId, token)
-        // .then((data) => setEvent({ settlement: data }))
-        .catch((error) => {
-          setEvent({ error: error });
-        })
-        .finally(() => {
-          setEvent({ isLoading: false });
-          handleClose();
-          dataLoader();
-        });
+      if (action === "participate"){
+        cancelEventRegistration(eventId, token)
+          // .then((data) => setEvent({ settlement: data }))
+          .catch((error) => {
+            setEvent({ error: error });
+          })
+          .finally(() => {
+            setEvent({ isLoading: false });
+            handleClose();
+            dataLoader();
+          });
+      } else {
+        registerForEvent(eventId, token)
+          // .then((data) => setEvent({ settlement: data }))
+          .catch((error) => {
+            setEvent({ error: error });
+          })
+          .finally(() => {
+            setEvent({ isLoading: false });
+            handleClose();
+            dataLoader();
+          });
+      }
     },
-    [registerForEvent]
+    [registerForEvent, cancelEventRegistration]
   );
 
   return (
@@ -94,7 +108,7 @@ const EventView: React.FC<EventViewProps> = ({ eventId, dataLoader, sx }) => {
             bookId={settlement?.bookId || ''}
             submitHandler={handleSubmitData}
             closeHandler={handleClose}
-            mode="edit"
+            mode={action}
           />
         </Box>
       </Modal>
