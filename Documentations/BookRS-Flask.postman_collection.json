@@ -1,0 +1,701 @@
+{
+	"info": {
+		"_postman_id": "cadb61ab-2cad-4d16-8957-d403d5baf21f",
+		"name": "BookRS-Flask",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get_own_readings_by_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/owned_readings/4",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"owned_readings",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_readers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/readers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"readers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_readers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"username\": \"mx\",\n        \"email\": \"test2@example.com\",\n        \"password\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/readers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"readers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_readings",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"book_id\": 5,\n    \"review\": \"rest\",\n    \"rating\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/readings",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"readings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"email\": \"test@example.com\",\n        \"password\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_readings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/readings",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"readings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_own_readings_by_bookid",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"book_id\": 2,\n    \"review\": \"rest\",\n    \"rating\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/owned_readings/4",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"owned_readings",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "put_own_readings_by_bookid",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"has_read\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/owned_readings/YTFhtAEACAAJ",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"owned_readings",
+						"YTFhtAEACAAJ"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "del_own_readings_by_id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/owned_readings/7",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"owned_readings",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_collections",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"username\": \"j-wick\",\n        \"email\": \"test@example.com\",\n        \"password\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/readers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"readers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_readings_by_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/readings/YTFhtAEACAAJ",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"readings",
+						"YTFhtAEACAAJ"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \"volume_id\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/books_details",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"books_details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_book",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/search?q=js&startIndex=0",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "js"
+						},
+						{
+							"key": "startIndex",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_goal",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/goals",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"goals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_goal",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \"id\": \"Book2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/books_details",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"books_details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "put_goal",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \"id\": \"Book2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/books_details",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"books_details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_collections",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/collections",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"collections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_book_to_collections",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"volume_id\":\"zLI-zQEACAAJ\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/collections/1/books",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"collections",
+						"1",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_collections_books",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/collections/1/books",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"collections",
+						"1",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_book_from_a_collection",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/collections/1/books/UAYvDwAAQBAJ",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"collections",
+						"1",
+						"books",
+						"UAYvDwAAQBAJ"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_achievements",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/achievements/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"achievements",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_owned_achievements",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/owned_achievements",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"owned_achievements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_book_recommend",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/search/test",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_top_ranking",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/search/test",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verify_reader",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/verify",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_reader_by_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/profile/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profile",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_recent_collected_users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"volumeId\":\"xEApjgEACAAJ\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/recent_collected_users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"recent_collected_users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY1MDExNDY5MSwianRpIjoiZDZjZTU1N2YtOGVkOC00YzQxLWEyMDMtZGNhNTQ3M2IyYTI5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE2NTAxMTQ2OTF9.9a6ZrdWB898fJf5ynIfcSmzv8TX9Hv3fovGWDUg0Ekk",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:5000"
+		}
+	]
+}

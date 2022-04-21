@@ -1,4 +1,4 @@
-#!bin/dash
+#!bin/bash
 
 python install_database.py
 export FLASK_APP=bookrs
