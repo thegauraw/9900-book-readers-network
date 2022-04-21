@@ -26,7 +26,7 @@ How to run the app?
 
 ```js
 frontend
-│   README.md
+│   README.md                     // Readme for backend
 |   start_app.sh                  // For deployment in localhost
 |   cloud_run.py                  // For deployment in the Cloud Service Platform
 |   install_database.py           // Data installation script 
@@ -51,7 +51,7 @@ frontend
 
 
 
-## 2 Development Guide:
+## 3 Development Guide:
 
 ### 3.1 How to add any new database changes?
 
