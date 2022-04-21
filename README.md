@@ -16,7 +16,7 @@ Dongkun Ren (Backend)
 
 
 
-**NOTE**: The detailed README files are located:
+#### Other README
 
 [**Backend README**](https://github.com/unsw-cse-comp3900-9900-22T1/capstone-project-9900-t16p-daydayup/blob/dev/backend/README.md)
 
