@@ -33,14 +33,10 @@ const EventEdit: React.FC<EventEditProps> = ({ eventId, dataLoader, sx }) => {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
-    console.log('editing');
-    console.log(eventId);
     (async function () {
       try {
         setEvent({ isLoading: true, settlement: null });
         const response = await getEventById(eventId, token);
-        // console.log(`response: ${response}`)
-        // setEvent({ settlement: mappedResponse(response), error: null });
         setEvent({ settlement: response, error: null });
       } catch (error) {
         setEvent({ error: null });

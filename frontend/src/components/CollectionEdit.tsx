@@ -32,8 +32,6 @@ const CollectionEdit: React.FC<CollectionEditProps> = ({ collectionId, dataLoade
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
-    console.log('editing');
-    console.log(collectionId);
     (async function () {
       try {
         setCollection({ isLoading: true, settlement: null });

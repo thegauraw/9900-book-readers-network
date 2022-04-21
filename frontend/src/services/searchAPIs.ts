@@ -30,8 +30,6 @@ export const searchBooksApi = async (query: ST.SearchParams): Promise<any> => {
 
     const data = await response.json();
 
-    console.log('search book data: ', data);
-
     return data.payload as ST.SearchSuccessResponse;
   } catch (error) {
     return Promise.reject('Internal Error');
@@ -48,7 +46,6 @@ export const getBookDetailsApi = async (volumeId: string): Promise<any> => {
       },
     };
     const requestedURL = `${searchBooksURL}/${volumeId}`;
-    console.log('requestedURL: ', requestedURL);
     const response = await fetch(requestedURL, requestOptions);
     const data = await response.json();
     if (response.status !== 200) return Promise.reject('The book you requested was not found.');

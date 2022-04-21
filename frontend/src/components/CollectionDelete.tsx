@@ -24,8 +24,6 @@ const CollectionEdit: React.FC<CollectionEditProps> = ({ collectionId, dataLoade
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
-    console.log('deleting');
-    console.log(collectionId);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);

@@ -4,8 +4,8 @@ import { ErrorResponse, SuccessResponse } from '../types/ServerResponseTypes';
 
 export const fetchEventListData = async (
   token: string,
-  eventType?: string | undefined,
-  ): Promise<EventData[]> => {
+  eventType?: string | undefined
+): Promise<EventData[]> => {
   try {
     const requestOptions = {
       method: 'GET',
@@ -13,25 +13,20 @@ export const fetchEventListData = async (
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
         accept: 'application/json',
-      }
-    }
-    // console.log(`events-url: ${EventsURL}`)
+      },
+    };
     let response;
-    if (eventType==="participate") {
+    if (eventType === 'participate') {
       response = await fetch(`${EventsURL}/my?involvement=participate`, requestOptions);
-    } else if (eventType==="organise") {
+    } else if (eventType === 'organise') {
       response = await fetch(`${EventsURL}/my?involvement=organise`, requestOptions);
-    } else if (eventType==="past") {
+    } else if (eventType === 'past') {
       response = await fetch(`${EventsURL}?group=past`, requestOptions);
     } else {
       response = await fetch(EventsURL, requestOptions);
     }
     const data: SuccessResponse = await response.json();
-    // // return data.payload as EventData[];
-    // const data = await response.json();
-    // return data.map((ev: EventAPIData) => (mapToUI(ev))) as EventData[];
-    // console.log(data)
-    return data.payload.map((ev: EventAPIData) => (mapToUI(ev))) as EventData[];
+    return data.payload.map((ev: EventAPIData) => mapToUI(ev)) as EventData[];
   } catch (err) {
     if ((err as ErrorResponse).msg) {
       return Promise.reject((err as ErrorResponse).msg);
@@ -43,31 +38,30 @@ export const fetchEventListData = async (
 
 const mapToAPI = (eventFormObj: EventFormData): object => {
   return {
-    'title': eventFormObj.title,
-    'description': eventFormObj.description,
-    'date_and_time': eventFormObj.eventTime,
-    'venue': eventFormObj.venue,
-    // 'organised_by': eventFormObj.createdBy,
-    'related_book': eventFormObj.bookId,
-  }
-}
+    title: eventFormObj.title,
+    description: eventFormObj.description,
+    date_and_time: eventFormObj.eventTime,
+    venue: eventFormObj.venue,
+    related_book: eventFormObj.bookId,
+  };
+};
 
 const mapToUI = (event: EventAPIData): EventData => {
   return {
-    'id': event.id,
-    'title': event.title,
-    'description': event.description,
-    'eventTime': event.date_and_time,
-    'venue': event.venue,
-    'createdBy': event.organised_by,
-    'bookId': event.related_book,
-  }
-}
+    id: event.id,
+    title: event.title,
+    description: event.description,
+    eventTime: event.date_and_time,
+    venue: event.venue,
+    createdBy: event.organised_by,
+    bookId: event.related_book,
+  };
+};
 
 export const createEvent = async (
   { ...props }: EventFormData,
   token: string
-  ): Promise<EventData> => {
+): Promise<EventData> => {
   try {
     const requestOptions = {
       method: 'POST',
@@ -92,7 +86,7 @@ export const createEvent = async (
 
 export const getEventById = async (
   eventId: string | undefined,
-  token: string,
+  token: string
 ): Promise<EventData> => {
   try {
     const requestOptions = {
@@ -118,8 +112,8 @@ export const getEventById = async (
 export const updateEvent = async (
   { ...props }: EventFormData,
   eventId: string | undefined,
-  token: string,
-  ): Promise<EventData> => {
+  token: string
+): Promise<EventData> => {
   try {
     const requestOptions = {
       method: 'PUT',
@@ -142,11 +136,7 @@ export const updateEvent = async (
   }
 };
 
-
-export const deleteEvent = async (
-  eventId: string | undefined,
-  token: string,
-  ): Promise<string> => {
+export const deleteEvent = async (eventId: string | undefined, token: string): Promise<string> => {
   try {
     const requestOptions = {
       method: 'DELETE',
@@ -167,11 +157,10 @@ export const deleteEvent = async (
   }
 };
 
-
 export const registerForEvent = async (
   eventId: string | undefined,
   token: string
-  ): Promise<EventData> => {
+): Promise<EventData> => {
   try {
     const requestOptions = {
       method: 'POST',
